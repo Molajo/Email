@@ -1,0 +1,166 @@
+<?php
+/**
+ * Adapter for Email
+ *
+ * @package   Molajo
+ * @copyright 2013 Amy Stephen. All rights reserved.
+ * @license   http://www.opensource.org/licenses/mit-license.html MIT License
+ */
+namespace Molajo\Email;
+
+defined('MOLAJO') or die;
+
+use Exception;
+use Molajo\Email\Exception\AdapterException;
+use Molajo\Email\Api\EmailInterface;
+
+/**
+ * Adapter for Email
+ *
+ * @package   Molajo
+ * @copyright 2013 Amy Stephen. All rights reserved.
+ * @license   http://www.opensource.org/licenses/mit-license.html MIT License
+ * @since     1.0
+ */
+class Adapter implements EmailInterface
+{
+    /**
+     * Email Adapter Handler
+     *
+     * @var     object
+     * @since   1.0
+     */
+    public $adapterHandler;
+
+    /**
+     * Constructor
+     *
+     * @param   EmailInterface  $cache
+     * @param   array           $options
+     *
+     * @since   1.0
+     */
+    public function __construct(EmailInterface $cache)
+    {
+        $this->adapterHandler = $cache;
+    }
+
+    /**
+     * Connect to the Email Adapter Handler
+     *
+     * @param   array $options
+     *
+     * @return  $this
+     * @since   1.0
+     * @throws  AdapterException
+     * @api
+     */
+    public function connect($options = array())
+    {
+        try {
+            $this->adapterHandler->connect($options);
+
+        } catch (Exception $e) {
+
+            throw new AdapterException
+            ('Email: Caught Exception: ' . $e->getMessage());
+        }
+
+        return $this;
+    }
+
+    /**
+     * Return cached or parameter value
+     *
+     * @param  string $key md5 name uniquely identifying content
+     *
+     * @return  bool|EmailItem cache for this key that has not been serialized
+     * @since   1.0
+     * @throws  AdapterException
+     */
+    public function get($key)
+    {
+        return $this->adapterHandler->get($key);
+    }
+
+    /**
+     * Create a cache entry
+     *
+     * @param string       $key   md5 name uniquely identifying content
+     * @param mixed        $value Data to be serialized and then saved as cache
+     * @param null|integer $ttl
+     *
+     * @return  object EmailInterface
+     * @since   1.0
+     * @throws  AdapterException
+     */
+    public function set($key, $value, $ttl = 0)
+    {
+        return $this->adapterHandler->set($key, $value, $ttl);
+    }
+
+    /**
+     * Clear all cache
+     *
+     * @return  object EmailInterface
+     * @since   1.0
+     */
+    public function clear()
+    {
+        return $this->adapterHandler->clear();
+    }
+
+    /**
+     * Remove cache for specified $key value
+     *
+     * @param string $key md5 name uniquely identifying content
+     *
+     * @return  object EmailInterface
+     * @since   1.0
+     * @throws  AdapterException
+     */
+    public function remove($key = null)
+    {
+        return $this->adapterHandler->remove($key);
+    }
+
+    /**
+     * Get multiple EmailItems by Key
+     *
+     * @param   array $keys
+     *
+     * @return  array
+     * @since   1.0
+     */
+    public function getMultiple($keys = array())
+    {
+        return $this->adapterHandler->getMultiple($keys);
+    }
+
+    /**
+     * Create a set of cache entries
+     *
+     * @param   array         $items
+     * @param   null|integer  $ttl
+     *
+     * @return  $this
+     * @since   1.0
+     */
+    public function setMultiple($items = array(), $ttl = null)
+    {
+        return $this->adapterHandler->setMultiple($items, $ttl);
+    }
+
+    /**
+     * Remove a set of cache entries
+     *
+     * @param   array  $keys
+     *
+     * @return  $this
+     * @since   1.0
+     */
+    public function removeMultiple($keys = array())
+    {
+        return $this->adapterHandler->removeMultiple($keys);
+    }
+}
