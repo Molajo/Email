@@ -1,5 +1,5 @@
 {
-    "name": "molajo/Email",
+    "name": "molajo/email",
     "type": "molajo-bundle",
     "description": "Molajo Email: platform independent support with adapters for PHPMailer, SwiftMail, and native PHP mail",
     "keywords": ["Email", "Molajo", "phpMailer", "Swiftmail"],
@@ -21,10 +21,9 @@
         "email": "hello@molajo.org",
         "irc": "irc://irc.freenode.org/molajo"
     },
-    "target-dir": "Molajo/Email",
     "autoload": {
-        "psr-0": {
-            "Molajo": "./"
+        "psr-4": {
+            "Molajo\\Email": "./"
         }
     }
 }
