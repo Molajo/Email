@@ -2,28 +2,40 @@
 /**
  * Email Test
  *
- * @package   Molajo
- * @license   http://www.opensource.org/licenses/mit-license.html MIT License
- * @copyright 2013 Amy Stephen. All rights reserved.
+ * @package    Molajo
+ * @license    http://www.opensource.org/licenses/mit-license.html MIT License
+ * @copyright  2013 Amy Stephen. All rights reserved.
  */
 namespace Molajo\Email\Test;
-
-defined('MOLAJO') or die;
 
 /**
  * Email Test
  *
- * @author    Amy Stephen
- * @license   http://www.opensource.org/licenses/mit-license.html MIT License
- * @copyright 2013 Amy Stephen. All rights reserved.
- * @since     1.0
+ * @author     Amy Stephen
+ * @license    http://www.opensource.org/licenses/mit-license.html MIT License
+ * @copyright  2013 Amy Stephen. All rights reserved.
+ * @since      1.0
  */
+class Fieldhandler
+{
+    /**
+     * Facade: to mock up filtering and validation services
+     *
+     * @param   string $name
+     * @param   array  $arguments
+     */
+    public function __call($name, $arguments)
+    {
+        return $arguments[1];
+    }
+}
+
 class EmailTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var Email Object
      */
-    protected $emailInstance;
+    protected $adapter;
 
     /**
      * @var Email Object
@@ -35,13 +47,17 @@ class EmailTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $class = 'Molajo\\Email\\Adapter';
 
-        $email_type = 'PhpMailer';
-        $email_class = 'Phpmailer\\phpmailer';
-        $options = array();
+        $options                     = array();
+        $options['mailer_transport'] = 'mail';
+        $options['site_name']        = 'Sitename';
+        $options['Fieldhandler']     = new Fieldhandler();
 
-        $this->emailInstance = new $class($email_type, $email_class, $options);
+        $class   = 'Molajo\\Email\\Handler\\PhpMailer';
+        $handler = new $class($options);
+
+        $class         = 'Molajo\\Email\\Adapter';
+        $this->adapter = new $class($handler);
 
         return;
     }
@@ -49,23 +65,21 @@ class EmailTest extends \PHPUnit_Framework_TestCase
     /**
      * Create a Email entry or set a parameter value
      *
-     * @covers Molajo\Email\Type\FileEmail::set
+     * @covers Molajo\Email\Handler\FileEmail::set
      */
     public function testSet()
     {
-        $this->emailInstance->set('to', 'AmyStephen@gmail.com,Fname Lname');
-        $this->emailInstance->set('from', 'AmyStephen@gmail.com,Fname Lname');
-        $this->emailInstance->set('reply_to', 'AmyStephen@gmail.com,FName LName');
-        $this->emailInstance->set('cc', 'AmyStephen@gmail.com,FName LName');
-        $this->emailInstance->set('bcc', 'AmyStephen@gmail.com,FName LName');
-        $this->emailInstance->set('subject', 'Welcome to our Site');
-        $this->emailInstance->set('body', '<h2>Stuff goes here</h2>') ;
-        $this->emailInstance->set('mailer_html_or_text', 'html') ;
+        $this->adapter->set('to', 'AmyStephen@gmail.com,Fname Lname');
+        $this->adapter->set('from', 'AmyStephen@gmail.com,Fname Lname');
+        $this->adapter->set('reply_to', 'AmyStephen@gmail.com,FName LName');
+        $this->adapter->set('cc', 'AmyStephen@gmail.com,FName LName');
+        $this->adapter->set('bcc', 'AmyStephen@gmail.com,FName LName');
+        $this->adapter->set('subject', 'Welcome to our Site');
+        $this->adapter->set('body', 'Stuff goes here');
+        $this->adapter->set('mailer_html_or_text', 'html');
 
-        $this->emailInstance->send() ;
-
+        $this->adapter->send();
     }
-
 
     /**
      * Tears down the fixture, for example, closes a network connection.
@@ -73,6 +87,5 @@ class EmailTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-
     }
 }

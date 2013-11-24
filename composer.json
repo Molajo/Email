@@ -1,38 +1,30 @@
 {
-    "name":"molajo/Email",
-    "type":"molajo-bundle",
-    "description":"Molajo Email: File and Directory Services supports various Emails using Adapters, PHP platform independent",
-    "keywords":["Email", "Molajo", "PSR-0"],
-    "homepage":"http://github.com/Molajo/Email",
-    "license":"MIT",
-    "authors":[
+    "name": "molajo/Email",
+    "type": "molajo-bundle",
+    "description": "Molajo Email: platform independent support with adapters for PHPMailer, SwiftMail, and native PHP mail",
+    "keywords": ["Email", "Molajo", "phpMailer", "Swiftmail"],
+    "homepage": "http://github.com/Molajo/Email",
+    "license": "MIT",
+    "authors": [
         {
-            "name":"Amy Stephen",
-            "email":"AmyStephen@gmail.com",
-            "homepage":"http://AmyStephen.github.com"
-        },
-        {
-            "name":"Other Contributors",
-            "homepage":"http://github.com/Molajo/Email/contributors"
+            "name": "Amy Stephen",
+            "email": "AmyStephen@gmail.com",
+            "homepage": "http://AmyStephen.github.io"
         }
     ],
-    "require":{
-        "php":">=5.3.3"
+    "require": {
+        "php": ">=5.3.10",
+        "commonapi/email": "dev-master"
     },
 
-    "support":{
-        "email":"hello@molajo.org",
-        "irc":"irc://irc.freenode.org/molajo"
+    "support": {
+        "email": "hello@molajo.org",
+        "irc": "irc://irc.freenode.org/molajo"
     },
-    "autoload":{
-        "psr-0":{
-            "Molajo\\Email":"./"
-        }
-    },
-    "minimum-stability":"dev",
-    "extra":{
-        "branch-alias":{
-            "dev-master":"1.0.x-dev"
+    "target-dir": "Molajo/Email",
+    "autoload": {
+        "psr-0": {
+            "Molajo": "./"
         }
     }
 }

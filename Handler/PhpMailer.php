@@ -2,17 +2,18 @@
 /**
  * Abstract Email Class
  *
- * @package   Molajo
- * @copyright 2013 Amy Stephen. All rights reserved.
- * @license   http://www.opensource.org/licenses/mit-license.html MIT License
+ * @package    Molajo
+ * @copyright  2013 Amy Stephen. All rights reserved.
+ * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  */
-namespace Molajo\Email\Type;
+namespace Molajo\Email\Handler;
 
-defined('MOLAJO') or die;
-
-use Molajo\Email\Api\EmailInterface;
-
-use Molajo\Email\Exception\EmailException;
+use Exception;
+use PHPMailer as mailer;
+use Exception\Email\ConnectionException;
+use CommonApi\Model\FieldhandlerInterface;
+use CommonApi\Email\EmailInterface;
+use Exception\Email\EmailException;
 
 /**
  * Adapter for Email
@@ -21,64 +22,131 @@ use Molajo\Email\Exception\EmailException;
  *
  * Example usage:
  *
- * Services::Email()->set('to', 'person@example.com,Fname Lname');
- * Services::Email()->set('from', 'person@example.com,Fname Lname');
- * Services::Email()->set('reply_to', 'person@example.com,FName LName');
- * Services::Email()->set('cc', 'person@example.com,FName LName');
- * Services::Email()->set('bcc', 'person@example.com,FName LName');
- * Services::Email()->set('subject', 'Welcome to our Site');
- * Services::Email()->set('body', '<h2>Stuff goes here</h2>') ;
- * Services::Email()->set('mailer_html_or_text', 'html') ;
- * Services::Email()->set('attachment', SITE_MEDIA_FOLDER.'/molajo.sql') ;
+ * $adapter->set('to', 'person@example.com,Fname Lname');
+ * $adapter->set('from', 'person@example.com,Fname Lname');
+ * $adapter->set('reply_to', 'person@example.com,FName LName');
+ * $adapter->set('cc', 'person@example.com,FName LName');
+ * $adapter->set('bcc', 'person@example.com,FName LName');
+ * $adapter->set('subject', 'Welcome to our Site');
+ * $adapter->set('body', '<h2>Stuff goes here</h2>') ;
+ * $adapter->set('mailer_html_or_text', 'html') ;
+ * $adapter->set('attachment', SITE_MEDIA_FOLDER.'/molajo.sql') ;
  *
- * Services::Email()->send();
+ * $adapter->send();
  *
  * @package     Molajo
  * @subpackage  Service
  * @since       1.0
  */
-class PhpMailer extends AbstractType implements EmailInterface
+class PhpMailer extends AbstractHandler implements EmailInterface
 {
+    /**
+     * Email Instance
+     *
+     * @var     object
+     * @since   1.0
+     */
+    protected $email;
 
     /**
      * Construct
      *
-     * @param   string $email_class
-     * @param   array  $options
+     * @param   FieldhandlerInterface $fieldhandler
+     * @param   string                $mailer_transport
+     * @param   string                $site_name
+     * @param   string                $smtpauth
+     * @param   string                $smtphost
+     * @param   string                $smtpuser
+     * @param   string                $smtppass
+     * @param   string                $smtpsecure
+     * @param   string                $smtpport
+     * @param   string                $sendmail_path
+     * @param   string                $mailer_disable_sending
+     * @param   string                $to
+     * @param   string                $from
+     * @param   string                $reply_to
+     * @param   string                $cc
+     * @param   string                $bcc
+     * @param   string                $subject
+     * @param   string                $body
+     * @param   string                $mailer_html_or_text
+     * @param   string                $attachment
      *
-     * @return  object  EmailInterface
      * @since   1.0
-     * @throws  EmailException
      */
-    public function __construct($email_class, $options = array())
-    {
-        parent::__construct($email_class, $options);
-
-        $this->setEmailPackage($email_class, $options);
+    public function __construct(
+        FieldhandlerInterface $fieldhandler,
+        $mailer_transport,
+        $site_name,
+        $smtpauth,
+        $smtphost,
+        $smtpuser,
+        $smtppass,
+        $smtpsecure,
+        $smtpport,
+        $sendmail_path,
+        $mailer_disable_sending,
+        $to,
+        $from,
+        $reply_to,
+        $cc,
+        $bcc,
+        $subject,
+        $body,
+        $mailer_html_or_text,
+        $attachment
+    ) {
+        $this->fieldhandler           = $fieldhandler;
+        $this->mailer_transport       = $mailer_transport;
+        $this->site_name              = $site_name;
+        $this->smtpauth               = $smtpauth;
+        $this->smtphost               = $smtphost;
+        $this->smtpuser               = $smtpuser;
+        $this->smtppass               = $smtppass;
+        $this->smtpsecure             = $smtpsecure;
+        $this->smtpport               = $smtpport;
+        $this->sendmail_path          = $sendmail_path;
+        $this->mailer_disable_sending = $mailer_disable_sending;
+        $this->to                     = $to;
+        $this->from                   = $from;
+        $this->reply_to               = $reply_to;
+        $this->cc                     = $cc;
+        $this->bcc                    = $bcc;
+        $this->subject                = $subject;
+        $this->body                   = $body;
+        $this->mailer_html_or_text    = $mailer_html_or_text;
+        $this->attachment             = $attachment;
+        $this->email                  = new mailer();
     }
 
     /**
-     * Set the Email Type (PhpMailer, Swiftmailer)
+     * Set parameter value
      *
-     * @param   string $email_type
+     * @param   string $key
+     * @param   mixed  $value
      *
      * @return  $this
      * @since   1.0
      * @throws  EmailException
      */
-    public function setEmailPackage($email_class, $options = array())
+    public function set($key, $value = null)
     {
-        $class = 'PhpMailer\\phpmailer';
+        return parent::set($key, $value);
+    }
 
-        if (class_exists($class)) {
-        } else {
-            throw new EmailException
-            ('Email Type PhpMailer Class: ' . $class . ' does not exist.');
-        }
-
-        $this->mailInstance = new $class($email_class);
-
-        return $this;
+    /**
+     * Return value for a key
+     *
+     * @param   null|string $key
+     * @param   mixed       $default
+     *
+     * @return  mixed
+     * @since   1.0
+     * @throws  EmailException
+     */
+    public function get($key, $default = null)
+    {
+        return parent::get($key, $default);
     }
 
     /**
@@ -96,14 +164,17 @@ class PhpMailer extends AbstractType implements EmailInterface
 
         if (trim($this->get('mailer_only_deliver_to', '') == '')) {
         } else {
-            $this->set('reply_to', $this->mailer_only_deliver_to);
-            $this->set('from', $this->mailer_only_deliver_to);
-            $this->set('to', $this->mailer_only_deliver_to);
+            $this->mailer_only_deliver_to = 'AmyStephen@gmail.com';
+
+            $this->set(
+                'reply_to',
+                $this->fieldhandler->validate('reply_to', $this->mailer_only_deliver_to, 'email')
+            );
+            $this->set('from', $this->fieldhandler->validate('from', $this->mailer_only_deliver_to, 'email'));
+            $this->set('to', $this->fieldhandler->validate('to', $this->mailer_only_deliver_to, 'email'));
             $this->set('cc', '');
             $this->set('bcc', '');
         }
-
-        $this->error_count = 0;
 
         $this->setSubject();
 
@@ -119,21 +190,24 @@ class PhpMailer extends AbstractType implements EmailInterface
             $mailer_html_or_text = 'char';
         }
         if ($mailer_html_or_text == 'html') {
-            $this->mailInstance->IsHTML(true);
+            $this->email->IsHTML(true);
         }
 
-        $body     = $this->get('body');
-        $filtered = $this->filterInput('body', $body, $mailer_html_or_text);
-        $this->mailInstance->set('Body', $filtered);
+        $body = $this->get('body');
+//todo amy - $mailer_html_or_text
+        $this->email->set('Body', $this->fieldhandler->filter('subject', $body, 'string'));
 
         $attachment = $this->get('attachment', '');
         if ($attachment == '') {
         } else {
-            $attachment = $this->filterInput('attachment', $attachment, 'file');
+            $this->email->set(
+                'attachment',
+                $this->fieldhandler->filter('subject', $attachment, 'file')
+            );
         }
         if ($attachment === false || $attachment == '') {
         } else {
-            $this->mailInstance->AddAttachment(
+            $this->email->AddAttachment(
                 $attachment,
                 $name = 'Attachment',
                 $encoding = 'base64',
@@ -141,55 +215,15 @@ class PhpMailer extends AbstractType implements EmailInterface
             );
         }
 
-        switch ($this->get('mailer_transport')) {
+        try {
 
-            case 'smtp':
-                $this->mailInstance->mailer_smtpauth        = $this->get('mailer_smtpauth');
-                $this->mailInstance->smtphost               = $this->get('smtphost');
-                $this->mailInstance->mailer_smtpuser        = $this->get('mailer_smtpuser');
-                $this->mailInstance->mailer_mailer_smtphost = $this->get('mailer_mailer_smtphost');
-                $this->mailInstance->smtpsecure             = $this->get('smtpsecure');
-                $this->mailInstance->smtpport               = $this->get('smtpport');
+            $this->email->Send();
+        } catch (Exception $e) {
 
-                $this->mailInstance->IsSMTP();
-
-                break;
-
-            case 'sendmail':
-                $this->mailInstance->mailer_smtpauth        = $this->get('sendmail_path');
-
-                $this->mailInstance->IsSendmail();
-                break;
-
-            default:
-                $this->mailInstance->IsMail();
-                break;
+            throw new EmailException
+            ('Email PhpMailer Handler: Caught Exception: ' . $e->getMessage());
         }
-
         return $this;
-    }
-
-    /**
-     * permission
-     *
-     * Verify user and extension have permission to send email
-     *
-     * @return bool
-     * @since   1.0
-     */
-    protected function permission()
-    {
-        $permission = true;
-
-        /** Resource (authorises any user) */
-
-        /** User */
-
-        /** authorization event */
-
-        //@todo what is the catalog id of a service?
-        //$results = Services::Permissions()->verifyTask('email', $catalog_id);
-        return $permission;
     }
 
     /**
@@ -199,7 +233,7 @@ class PhpMailer extends AbstractType implements EmailInterface
      * @since   1.0
      * @throws  EmailException
      */
-    public function setSubject()
+    protected function setSubject()
     {
         $value = (string)$this->get('subject', '');
 
@@ -207,9 +241,7 @@ class PhpMailer extends AbstractType implements EmailInterface
             $value = $this->site_name;
         }
 
-        $value = $this->filterInput('subject', $value, 'char');
-
-        $this->mailInstance->set('Subject', $value);
+        $this->email->set('Subject', $this->fieldhandler->validate('subject', $value, 'string'));
 
         return $this;
     }
@@ -246,7 +278,7 @@ class PhpMailer extends AbstractType implements EmailInterface
             if ($z === false || $z == '') {
                 break;
             }
-            $z = $this->filterInput($field_name, $extract[0], 'email');
+            $z = $this->fieldhandler->filter('email', $extract[0], 'email');
             if ($z === false || $z == '') {
                 break;
             }
@@ -254,7 +286,7 @@ class PhpMailer extends AbstractType implements EmailInterface
 
             $useName = '';
             if (count($extract) > 1) {
-                $z = $this->filterInput($field_name, $extract[1], 'char');
+                $z = $this->fieldhandler->filter($field_name, $extract[1], 'string');
                 if ($z === false || $z == '') {
                 } else {
                     $useName = $z;
@@ -262,44 +294,43 @@ class PhpMailer extends AbstractType implements EmailInterface
             }
 
             if ($field_name == 'reply_to') {
-                $this->mailInstance->AddReplyTo($useEmail, $useName);
-
+                $this->email->AddReplyTo(
+                    $this->fieldhandler->filter('reply to email', $useEmail, 'email'),
+                    $this->fieldhandler->filter('reply to name', $useName, 'string')
+                );
             } elseif ($field_name == 'from') {
-                $this->mailInstance->SetFrom($useEmail, $useName);
-
+                $this->email->SetFrom(
+                    $this->fieldhandler->filter('from email', $useEmail, 'email'),
+                    $this->fieldhandler->filter('from name', $useName, 'string')
+                );
             } elseif ($field_name == 'cc') {
-                $this->mailInstance->AddCC($useEmail, $useName);
-
+                $this->email->AddCC(
+                    $this->fieldhandler->filter('cc email', $useEmail, 'email'),
+                    $this->fieldhandler->filter('cc name', $useName, 'string')
+                );
             } elseif ($field_name == 'bcc') {
-                $this->mailInstance->AddBCC($useEmail, $useName);
-
+                $this->email->AddBCC(
+                    $this->fieldhandler->filter('bcc email', $useEmail, 'email'),
+                    $this->fieldhandler->filter('bcc name', $useName, 'string')
+                );
             } else {
-                $this->mailInstance->AddAddress($useEmail, $useName);
+                $this->email->AddAddress(
+                    $this->fieldhandler->filter('bcc email', $useEmail, 'email'),
+                    $this->fieldhandler->filter('bcc name', $useName, 'string')
+                );
             }
         }
     }
 
     /**
-     * filterInput
+     * Close the Connection
      *
-     * @param string $name     Name of input field
-     * @param string $value    Value of input field
-     * @param string $dataType Datatype of input field
-     * @param int    $null     0 or 1 - is null allowed
-     * @param string $default  Default value, optional
-     *
-     * @return mixed
+     * @return  $this
      * @since   1.0
+     * @throws  ConnectionException
      */
-    protected function filterInput(
-        $name,
-        $value,
-        $dataType,
-        $null = null,
-        $default = null
-    ) {
-
-
-        return $value;
+    public function close()
+    {
+        return $this;
     }
 }
