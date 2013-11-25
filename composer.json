@@ -14,7 +14,8 @@
     ],
     "require": {
         "php": ">=5.3.10",
-        "commonapi/email": "dev-master"
+        "commonapi/email": "dev-master",
+        "phpMailer/phpMailer": "dev-master"
     },
 
     "support": {
@@ -22,7 +23,7 @@
         "irc": "irc://irc.freenode.org/molajo"
     },
     "autoload": {
-        "psr-4": {
+        "psr-0": {
             "Molajo\\Email": "./"
         }
     }
