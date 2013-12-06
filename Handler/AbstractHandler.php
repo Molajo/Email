@@ -8,9 +8,9 @@
  */
 namespace Molajo\Email\Handler;
 
-use CommonApi\Model\FieldhandlerInterface;
 use CommonApi\Email\EmailInterface;
 use CommonApi\Exception\RuntimeException;
+use CommonApi\Exception\UnexpectedValueException;
 
 /**
  * Adapter for Email
@@ -22,14 +22,6 @@ use CommonApi\Exception\RuntimeException;
  */
 abstract class AbstractHandler implements EmailInterface
 {
-    /**
-     * Field Handler
-     *
-     * @var    object
-     * @since  1.0
-     */
-    protected $fieldhandler = null;
-
     /**
      * Mailer Transport - smtp, sendmail, ismail
      *
@@ -197,7 +189,6 @@ abstract class AbstractHandler implements EmailInterface
      * @since  1.0
      */
     protected $property_array = array(
-        'fieldhandler',
         'mailer_transport',
         'site_name',
         'smtpauth',
@@ -223,52 +214,51 @@ abstract class AbstractHandler implements EmailInterface
     /**
      * Construct
      *
-     * @param   FieldhandlerInterface $fieldhandler
-     * @param   string                $mailer_transport
-     * @param   string                $site_name
-     * @param   string                $smtpauth
-     * @param   string                $smtphost
-     * @param   string                $smtpuser
-     * @param   string                $smtppass
-     * @param   string                $smtpsecure
-     * @param   string                $smtpport
-     * @param   string                $sendmail_path
-     * @param   string                $mailer_disable_sending
-     * @param   string                $to
-     * @param   string                $from
-     * @param   string                $reply_to
-     * @param   string                $cc
-     * @param   string                $bcc
-     * @param   string                $subject
-     * @param   string                $body
-     * @param   string                $mailer_html_or_text
-     * @param   string                $attachment
+     * @param   string $mailer_transport
+     * @param   string $site_name
+     * @param   string $smtpauth
+     * @param   string $smtphost
+     * @param   string $smtpuser
+     * @param   string $smtppass
+     * @param   string $smtpsecure
+     * @param   string $smtpport
+     * @param   string $sendmail_path
+     * @param   string $mailer_disable_sending
+     * @param   string $mailer_only_deliver_to
+     * @param   string $to
+     * @param   string $from
+     * @param   string $reply_to
+     * @param   string $cc
+     * @param   string $bcc
+     * @param   string $subject
+     * @param   string $body
+     * @param   string $mailer_html_or_text
+     * @param   string $attachment
      *
      * @since   1.0
      */
     public function __construct(
-        FieldhandlerInterface $fieldhandler,
-        $mailer_transport,
-        $site_name,
-        $smtpauth,
-        $smtphost,
-        $smtpuser,
-        $smtppass,
-        $smtpsecure,
-        $smtpport,
-        $sendmail_path,
-        $mailer_disable_sending,
-        $to,
-        $from,
-        $reply_to,
-        $cc,
-        $bcc,
-        $subject,
-        $body,
-        $mailer_html_or_text,
-        $attachment
+        $mailer_transport = '',
+        $site_name = '',
+        $smtpauth = '',
+        $smtphost = '',
+        $smtpuser = '',
+        $smtppass = '',
+        $smtpsecure = '',
+        $smtpport = '',
+        $sendmail_path = '',
+        $mailer_disable_sending = '',
+        $mailer_only_deliver_to = '',
+        $to = '',
+        $from = '',
+        $reply_to = '',
+        $cc = '',
+        $bcc = '',
+        $subject = '',
+        $body = '',
+        $mailer_html_or_text = '',
+        $attachment = ''
     ) {
-        $this->fieldhandler           = $fieldhandler;
         $this->mailer_transport       = $mailer_transport;
         $this->site_name              = $site_name;
         $this->smtpauth               = $smtpauth;
@@ -279,6 +269,7 @@ abstract class AbstractHandler implements EmailInterface
         $this->smtpport               = $smtpport;
         $this->sendmail_path          = $sendmail_path;
         $this->mailer_disable_sending = $mailer_disable_sending;
+        $this->mailer_only_deliver_to = $mailer_only_deliver_to;
         $this->to                     = $to;
         $this->from                   = $from;
         $this->reply_to               = $reply_to;
@@ -306,7 +297,8 @@ abstract class AbstractHandler implements EmailInterface
 
         if (in_array($key, $this->property_array)) {
         } else {
-            throw new RuntimeException ('Email Service Set: Unknown key: ' . $key);
+            throw new RuntimeException
+            ('Email: attempting to set value for unknown property: ' . $key);
         }
 
         $this->$key = $value;
@@ -331,7 +323,7 @@ abstract class AbstractHandler implements EmailInterface
         if (in_array($key, $this->property_array)) {
         } else {
             throw new RuntimeException
-            ('Email Service: attempting to get value for unknown property: ' . $key);
+            ('Email: attempting to get value for unknown property: ' . $key);
         }
 
         if ($this->$key === null) {
@@ -346,7 +338,6 @@ abstract class AbstractHandler implements EmailInterface
      *
      * @return  mixed
      * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException
      */
     abstract public function send();
 
@@ -357,4 +348,64 @@ abstract class AbstractHandler implements EmailInterface
      * @since   1.0
      */
     abstract public function close();
+
+    /**
+     * Filter String
+     *
+     * @param   string  $string
+     *
+     * @return  string
+     * @since   1.0
+     * @throws  \CommonApi\Exception\UnexpectedValueException
+     */
+    protected function filterString($string)
+    {
+        $filtered = (string)$this->mailer_only_deliver_to;
+
+        if ($filtered === false) {
+            throw new UnexpectedValueException ('Email Filter String Failed for: ' . $string);
+        }
+
+        return $filtered;
+    }
+
+    /**
+     * Filter Html
+     *
+     * @param   string  $html
+     *
+     * @return  string
+     * @since   1.0
+     * @throws  \CommonApi\Exception\UnexpectedValueException
+     */
+    protected function filterHtml($html)
+    {
+        $filtered = filter_var($this->mailer_only_deliver_to, FILTER_SANITIZE_SPECIAL_CHARS);
+
+        if ($filtered === false) {
+            throw new UnexpectedValueException ('Email Filter HTML Failed for: ' . $html);
+        }
+
+        return $filtered;
+    }
+
+    /**
+     * Filter Email Address
+     *
+     * @param   string  $email_address
+     *
+     * @return  string
+     * @since   1.0
+     * @throws  \CommonApi\Exception\UnexpectedValueException
+     */
+    protected function filterEmailAddress($email_address)
+    {
+        $filtered = filter_var($this->mailer_only_deliver_to, FILTER_SANITIZE_EMAIL);
+
+        if ($filtered === false) {
+            throw new UnexpectedValueException ('Email Filter Email Address Failed for: ' . $email_address);
+        }
+
+        return $filtered;
+    }
 }

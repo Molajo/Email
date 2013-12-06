@@ -22,14 +22,10 @@ $results = createClassMap($base . '/Service/Email', 'Molajo\\Service\\Email\\');
 $classmap = array_merge($classmap, $results);
 $results = createClassMap($base . '/vendor/commonapi/email', 'CommonApi\\Email\\');
 $classmap = array_merge($classmap, $results);
-$results = createClassMap($base . '/vendor/commonapi/model', 'CommonApi\\Model\\');
-$classmap = array_merge($classmap, $results);
 $results = createClassMap($base . '/vendor/commonapi/exception', 'CommonApi\\Exception\\');
 $classmap = array_merge($classmap, $results);
-$results = createClassMap($base . '/vendor/phpmailer/phpmailer', 'Phpmailer\\');
-$classmap = array_merge($classmap, $results);
 
-$classmap['Molajo\\Authorisation\\Email']   = $base . '/Adapter.php';
+$classmap['Molajo\\Email\\Adapter']   = $base . '/Adapter.php';
 ksort($classmap);
 
 spl_autoload_register(
@@ -39,3 +35,8 @@ spl_autoload_register(
         }
     }
 );
+
+$phpmailer_autoloader = $base . '/vendor/phpmailer/phpmailer/PHPMailerAutoload.php';
+if (file_exists($phpmailer_autoloader)) {
+    include $phpmailer_autoloader;
+}

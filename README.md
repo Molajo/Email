@@ -20,7 +20,7 @@ Email Services API for PHP applications enabling interaction with multiple Email
     $options                     = array();
     $options['mailer_transport'] = 'mail';
     $options['site_name']        = 'Sitename';
-    $options['Fieldhandler']    = new Fieldhandler();
+    $options['Fieldhandler']     = new Fieldhandler();
 
     $class   = 'Molajo\\Email\\Handler\\PhpMailer';
     $handler = new $class($options);

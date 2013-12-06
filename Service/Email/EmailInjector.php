@@ -55,7 +55,6 @@ class EmailInjector extends AbstractInjector implements ServiceHandlerInterface
 
         $options                            = array();
         $this->dependencies['Runtimedata']  = $options;
-        $this->dependencies['Fieldhandler'] = $options;
 
         return $this->dependencies;
     }
@@ -82,6 +81,7 @@ class EmailInjector extends AbstractInjector implements ServiceHandlerInterface
         $this->dependencies['smtpport']               = null;
         $this->dependencies['sendmail_path']          = null;
         $this->dependencies['mailer_disable_sending'] = null;
+        $this->dependencies['mailer_only_deliver_to'] = null;
         $this->dependencies['to']                     = null;
         $this->dependencies['from']                   = null;
         $this->dependencies['reply_to']               = null;
@@ -135,8 +135,8 @@ class EmailInjector extends AbstractInjector implements ServiceHandlerInterface
 //= $this->dependencies['Runtimedata']->application->parameters->email_handler;
         $this->dependencies['mailer_disable_sending']
             = $this->dependencies['Runtimedata']->application->parameters->mailer_disable_sending;
-        $this->dependencies['mailer_disable_sending']
-            = 1;
+        $this->dependencies['mailer_only_deliver_to']
+            = 'AmyStephen@gmail.com';
 
         return $dependency_instances;
     }
@@ -185,7 +185,6 @@ class EmailInjector extends AbstractInjector implements ServiceHandlerInterface
 
         try {
             return new $class(
-                $this->dependencies['Fieldhandler'],
                 $this->dependencies['mailer_transport'],
                 $this->dependencies['site_name'],
                 $this->dependencies['smtpauth'],
@@ -196,6 +195,7 @@ class EmailInjector extends AbstractInjector implements ServiceHandlerInterface
                 $this->dependencies['smtpport'],
                 $this->dependencies['sendmail_path'],
                 $this->dependencies['mailer_disable_sending'],
+                $this->dependencies['mailer_only_deliver_to'],
                 $this->dependencies['to'],
                 $this->dependencies['from'],
                 $this->dependencies['reply_to'],

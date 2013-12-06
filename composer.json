@@ -15,7 +15,6 @@
     "require": {
         "php": ">=5.3.10",
         "commonapi/email": "dev-master",
-        "commonapi/model": "dev-master",
         "phpMailer/phpMailer": "dev-master"
     },
 

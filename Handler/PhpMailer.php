@@ -1,6 +1,6 @@
 <?php
 /**
- * Abstract Email Class
+ * PhpMailer Email Class
  *
  * @package    Molajo
  * @copyright  2013 Amy Stephen. All rights reserved.
@@ -10,27 +10,24 @@ namespace Molajo\Email\Handler;
 
 use Exception;
 use PHPMailer as mailer;
-use Exception\Email\ConnectionException;
-use CommonApi\Model\FieldhandlerInterface;
 use CommonApi\Email\EmailInterface;
-use Exception\Email\EmailException;
+use CommonApi\Exception\RuntimeException;
+use CommonApi\Exception\UnexpectedValueException;
 
 /**
- * Adapter for Email
- *
  * Edits, filters input, and sends email
  *
- * Example usage:
+ * Inject via the constructor or use 'set' method, as follows:
  *
- * $adapter->set('to', 'person@example.com,Fname Lname');
- * $adapter->set('from', 'person@example.com,Fname Lname');
- * $adapter->set('reply_to', 'person@example.com,FName LName');
- * $adapter->set('cc', 'person@example.com,FName LName');
- * $adapter->set('bcc', 'person@example.com,FName LName');
+ * $adapter->set('to', 'person@example.com,Person Name');
+ * $adapter->set('from', 'person@example.com,Person Name');
+ * $adapter->set('reply_to', 'person@example.com,Person Name');
+ * $adapter->set('cc', 'person@example.com,Person Name');
+ * $adapter->set('bcc', 'person@example.com,Person Name');
  * $adapter->set('subject', 'Welcome to our Site');
- * $adapter->set('body', '<h2>Stuff goes here</h2>') ;
- * $adapter->set('mailer_html_or_text', 'html') ;
- * $adapter->set('attachment', SITE_MEDIA_FOLDER.'/molajo.sql') ;
+ * $adapter->set('body', '<h2>Stuff goes here</h2>');
+ * $adapter->set('mailer_html_or_text', 'html');
+ * $adapter->set('attachment', $path_to_file);
  *
  * $adapter->send();
  *
@@ -49,199 +46,172 @@ class PhpMailer extends AbstractHandler implements EmailInterface
     protected $email;
 
     /**
-     * Construct
-     *
-     * @param   FieldhandlerInterface $fieldhandler
-     * @param   string                $mailer_transport
-     * @param   string                $site_name
-     * @param   string                $smtpauth
-     * @param   string                $smtphost
-     * @param   string                $smtpuser
-     * @param   string                $smtppass
-     * @param   string                $smtpsecure
-     * @param   string                $smtpport
-     * @param   string                $sendmail_path
-     * @param   string                $mailer_disable_sending
-     * @param   string                $to
-     * @param   string                $from
-     * @param   string                $reply_to
-     * @param   string                $cc
-     * @param   string                $bcc
-     * @param   string                $subject
-     * @param   string                $body
-     * @param   string                $mailer_html_or_text
-     * @param   string                $attachment
-     *
-     * @since   1.0
-     */
-    public function __construct(
-        FieldhandlerInterface $fieldhandler,
-        $mailer_transport,
-        $site_name,
-        $smtpauth,
-        $smtphost,
-        $smtpuser,
-        $smtppass,
-        $smtpsecure,
-        $smtpport,
-        $sendmail_path,
-        $mailer_disable_sending,
-        $to,
-        $from,
-        $reply_to,
-        $cc,
-        $bcc,
-        $subject,
-        $body,
-        $mailer_html_or_text,
-        $attachment
-    ) {
-        $this->fieldhandler           = $fieldhandler;
-        $this->mailer_transport       = $mailer_transport;
-        $this->site_name              = $site_name;
-        $this->smtpauth               = $smtpauth;
-        $this->smtphost               = $smtphost;
-        $this->smtpuser               = $smtpuser;
-        $this->smtppass               = $smtppass;
-        $this->smtpsecure             = $smtpsecure;
-        $this->smtpport               = $smtpport;
-        $this->sendmail_path          = $sendmail_path;
-        $this->mailer_disable_sending = $mailer_disable_sending;
-        $this->to                     = $to;
-        $this->from                   = $from;
-        $this->reply_to               = $reply_to;
-        $this->cc                     = $cc;
-        $this->bcc                    = $bcc;
-        $this->subject                = $subject;
-        $this->body                   = $body;
-        $this->mailer_html_or_text    = $mailer_html_or_text;
-        $this->attachment             = $attachment;
-        $this->email                  = new mailer();
-    }
-
-    /**
-     * Set parameter value
-     *
-     * @param   string $key
-     * @param   mixed  $value
-     *
-     * @return  $this
-     * @since   1.0
-     * @throws  EmailException
-     */
-    public function set($key, $value = null)
-    {
-        return parent::set($key, $value);
-    }
-
-    /**
-     * Return value for a key
-     *
-     * @param   null|string $key
-     * @param   mixed       $default
-     *
-     * @return  mixed
-     * @since   1.0
-     * @throws  EmailException
-     */
-    public function get($key, $default = null)
-    {
-        return parent::get($key, $default);
-    }
-
-    /**
      * Send email
      *
      * @return  $this
      * @since   1.0
-     * @throws  EmailException
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function send()
     {
-        if ($this->get('mailer_disable_sending', 0) == 1) {
+        if ((int)$this->mailer_disable_sending == 1) {
             return $this;
         }
 
-        if (trim($this->get('mailer_only_deliver_to', '') == '')) {
+        if (trim($this->mailer_only_deliver_to) == '') {
         } else {
-            $this->mailer_only_deliver_to = 'AmyStephen@Molajo.org';
+            $filtered = $this->filterEmailAddress($this->mailer_only_deliver_to);
 
-            $this->set(
-                'reply_to',
-                $this->fieldhandler->validate('reply_to', $this->mailer_only_deliver_to, 'email')
-            );
-            $this->set('from', $this->fieldhandler->validate('from', $this->mailer_only_deliver_to, 'email'));
-            $this->set('to', $this->fieldhandler->validate('to', $this->mailer_only_deliver_to, 'email'));
-            $this->set('cc', '');
-            $this->set('bcc', '');
+            $this->reply_to = $filtered;
+            $this->from     = $filtered;
+            $this->to       = $filtered;
+            $this->cc       = '';
+            $this->bcc      = '';
         }
 
+        $this->instantiateEmail();
         $this->setSubject();
-
-        $this->processRecipient('reply_to');
-        $this->processRecipient('from');
-        $this->processRecipient('to');
-        $this->processRecipient('cc');
-        $this->processRecipient('bcc');
-
-        if ($this->get('mailer_html_or_text', 'text') == 'html') {
-            $mailer_html_or_text = 'text';
-        } else {
-            $mailer_html_or_text = 'char';
-        }
-        if ($mailer_html_or_text == 'html') {
-            $this->email->IsHTML(true);
-        }
-
-        $body = $this->get('body');
-//todo amy - $mailer_html_or_text
-        $this->email->set('Body', $this->fieldhandler->filter('subject', $body, 'string'));
-
-        $attachment = $this->get('attachment', '');
-        if ($attachment == '') {
-        } else {
-            $this->email->set(
-                'attachment',
-                $this->fieldhandler->filter('subject', $attachment, 'file')
-            );
-        }
-        if ($attachment === false || $attachment == '') {
-        } else {
-            $this->email->AddAttachment(
-                $attachment,
-                $name = 'Attachment',
-                $encoding = 'base64',
-                $type = 'application/octet-stream'
-            );
-        }
+        $this->setBody();
+        $this->setAttachment();
+        $this->setRecipient('reply_to');
+        $this->setRecipient('from');
+        $this->setRecipient('to');
+        $this->setRecipient('cc');
+        $this->setRecipient('bcc');
 
         try {
 
             $this->email->Send();
+
         } catch (Exception $e) {
 
-            throw new EmailException
+            throw new RuntimeException
             ('Email PhpMailer Handler: Caught Exception: ' . $e->getMessage());
         }
+
+        return $this;
+    }
+
+    /**
+     * Instantiate phpMailer Class
+     *
+     * @return  $this
+     * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException
+     */
+    protected function instantiateEmail()
+    {
+        try {
+
+            $this->email = new mailer();
+
+        } catch (Exception $e) {
+
+            throw new RuntimeException
+            ('Email PhpMailer Handler: Could not instantiate phpMailer');
+        }
+
         return $this;
     }
 
     /**
      * Set Subject
      *
-     * @return  object
+     * @return  $this
      * @since   1.0
-     * @throws  EmailException
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function setSubject()
     {
-        $value = (string)$this->get('subject', '');
+        $value = (string)$this->subject;
 
-        if ($value == '') {
+        if (trim($value) === '') {
             $value = $this->site_name;
         }
 
-        $this->email->set('Subject', $this->fieldhandler->validate('subject', $value, 'string'));
+        $this->subject = $this->filterString($value);
+
+        try {
+
+            $this->email->set('Subject', $this->subject);
+
+        } catch (Exception $e) {
+
+            throw new RuntimeException
+            ('Email PhpMailer Handler: Exception in setSubject: ' . $e->getMessage());
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set Body
+     *
+     * @return  $this
+     * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException
+     */
+    protected function setBody()
+    {
+        if ($this->mailer_html_or_text == 'html') {
+
+            try {
+                $this->email->set('Body', $this->filterHtml($this->body));
+                $this->email->IsHTML(true);
+
+            } catch (Exception $e) {
+
+                throw new RuntimeException
+                ('Email PhpMailer Handler: Exception in setBody (HTML): ' . $e->getMessage());
+            }
+        }
+
+        try {
+
+            $this->email->set('Body', $this->filterString($this->body));
+
+        } catch (Exception $e) {
+
+            throw new RuntimeException
+            ('Email PhpMailer Handler: Exception in setBody (text): ' . $e->getMessage());
+        }
+
+        return $this;
+    }
+
+    /**
+     * Process Email Attachment
+     *
+     * @return  $this
+     * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException
+     */
+    protected function setAttachment()
+    {
+        if ($this->attachment === '' || $this->attachment === null) {
+            return $this;
+        }
+
+        if (file_exists($this->attachment)) {
+        } else {
+            throw new RuntimeException
+            ('Email Attachment File does not exist: ' . $this->attachment);
+        }
+
+        try {
+
+            $this->email->AddAttachment(
+                $this->attachment,
+                $name = 'Attachment',
+                $encoding = 'base64',
+                $type = 'application/octet-stream'
+            );
+
+        } catch (Exception $e) {
+
+            throw new RuntimeException
+            ('Email PhpMailer Handler: Exception in setAttachment: ' . $e->getMessage());
+        }
 
         return $this;
     }
@@ -251,12 +221,13 @@ class PhpMailer extends AbstractHandler implements EmailInterface
      *
      * @param   string $field_name
      *
-     * @return  null
+     * @return  $this
      * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException
      */
-    protected function processRecipient($field_name)
+    protected function setRecipient($field_name)
     {
-        $x = explode(';', $this->get($field_name));
+        $x = explode(';', $this->$field_name);
 
         if (is_array($x)) {
             $y = $x;
@@ -265,7 +236,7 @@ class PhpMailer extends AbstractHandler implements EmailInterface
         }
 
         if (count($y) == 0) {
-            return;
+            return $this;
         }
 
         foreach ($y as $z) {
@@ -278,48 +249,50 @@ class PhpMailer extends AbstractHandler implements EmailInterface
             if ($z === false || $z == '') {
                 break;
             }
-            $z = $this->fieldhandler->filter('email', $extract[0], 'email');
+
+            $z = $this->filterEmailAddress($extract[0]);
             if ($z === false || $z == '') {
                 break;
             }
-            $useEmail = $z;
+            $use_email = $z;
 
-            $useName = '';
+            $use_name = '';
             if (count($extract) > 1) {
-                $z = $this->fieldhandler->filter($field_name, $extract[1], 'string');
+                $z = $this->filterString($extract[0]);
                 if ($z === false || $z == '') {
                 } else {
-                    $useName = $z;
+                    $use_name = $z;
                 }
             }
 
             if ($field_name == 'reply_to') {
-                $this->email->AddReplyTo(
-                    $this->fieldhandler->filter('reply to email', $useEmail, 'email'),
-                    $this->fieldhandler->filter('reply to name', $useName, 'string')
-                );
+                $method = 'AddReplyTo';
+
             } elseif ($field_name == 'from') {
-                $this->email->SetFrom(
-                    $this->fieldhandler->filter('from email', $useEmail, 'email'),
-                    $this->fieldhandler->filter('from name', $useName, 'string')
-                );
+                $method = 'setFrom';
+
             } elseif ($field_name == 'cc') {
-                $this->email->AddCC(
-                    $this->fieldhandler->filter('cc email', $useEmail, 'email'),
-                    $this->fieldhandler->filter('cc name', $useName, 'string')
-                );
+                $method = 'addCC';
+
             } elseif ($field_name == 'bcc') {
-                $this->email->AddBCC(
-                    $this->fieldhandler->filter('bcc email', $useEmail, 'email'),
-                    $this->fieldhandler->filter('bcc name', $useName, 'string')
-                );
+                $method = 'addBCC';
+
             } else {
-                $this->email->AddAddress(
-                    $this->fieldhandler->filter('bcc email', $useEmail, 'email'),
-                    $this->fieldhandler->filter('bcc name', $useName, 'string')
-                );
+                $method = 'addAddress';
+            }
+
+            try {
+
+                $this->email->$method($use_email, $use_name);
+
+            } catch (Exception $e) {
+
+                throw new RuntimeException
+                ('Email PhpMailer Handler: Exception in setAttachment: ' . $e->getMessage());
             }
         }
+
+        return $this;
     }
 
     /**
@@ -327,7 +300,6 @@ class PhpMailer extends AbstractHandler implements EmailInterface
      *
      * @return  $this
      * @since   1.0
-     * @throws  ConnectionException
      */
     public function close()
     {

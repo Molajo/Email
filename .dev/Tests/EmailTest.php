@@ -16,48 +16,63 @@ namespace Molajo\Email\Test;
  * @copyright  2013 Amy Stephen. All rights reserved.
  * @since      1.0
  */
-class Fieldhandler
-{
-    /**
-     * Facade: to mock up filtering and validation services
-     *
-     * @param   string $name
-     * @param   array  $arguments
-     */
-    public function __call($name, $arguments)
-    {
-        return $arguments[1];
-    }
-}
-
 class EmailTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var Email Object
      */
-    protected $adapter;
-
-    /**
-     * @var Email Object
-     */
-    protected $Email_folder;
+    protected $email;
 
     /**
      * Initialises Adapter
      */
     protected function setUp()
     {
+        $mailer_transport = "mail";
+        $site_name = 'Test Site';
+        $smtpauth = '';
+        $smtphost = '';
+        $smtpuser = '';
+        $smtppass = '';
+        $smtpsecure = '';
+        $smtpport = '';
+        $sendmail_path = '';
+        $mailer_disable_sending = 0;
+        $mailer_only_deliver_to = '';
+        $to = 'AmyStephen@gmail.com';
+        $from = 'AmyStephen@gmail.com';
+        $reply_to = 'AmyStephen@gmail.com';
+        $cc = 'AmyStephen@gmail.com';
+        $bcc = 'AmyStephen@gmail.com';
+        $subject = 'Test phpEmail';
+        $body = '<p>Message in here.</p>';
+        $mailer_html_or_text = 'text';
+        $attachment = '';
 
-        $options                     = array();
-        $options['mailer_transport'] = 'mail';
-        $options['site_name']        = 'Sitename';
-        $options['Fieldhandler']     = new Fieldhandler();
-
-        $class   = 'Molajo\\Email\\Handler\\PhpMailer';
-        $handler = new $class($options);
-
-        $class         = 'Molajo\\Email\\Adapter';
-        $this->adapter = new $class($handler);
+        $class                       = 'Molajo\\Email\\Handler\\PhpMailer';
+        $handler                     = new $class($mailer_transport,
+            $site_name,
+            $smtpauth,
+            $smtphost,
+            $smtpuser,
+            $smtppass,
+            $smtpsecure,
+            $smtpport,
+            $sendmail_path,
+            $mailer_disable_sending,
+            $mailer_only_deliver_to,
+            $to,
+            $from,
+            $reply_to,
+            $cc,
+            $bcc,
+            $subject,
+            $body,
+            $mailer_html_or_text,
+            $attachment
+        );
+        $class                       = 'Molajo\\Email\\Adapter';
+        $this->email                 = new $class($handler);
 
         return;
     }
@@ -69,16 +84,7 @@ class EmailTest extends \PHPUnit_Framework_TestCase
      */
     public function testSet()
     {
-        $this->adapter->set('to', 'AmyStephen@Molajo.org,Fname Lname');
-        $this->adapter->set('from', 'AmyStephen@Molajo.org,Fname Lname');
-        $this->adapter->set('reply_to', 'AmyStephen@Molajo.org,FName LName');
-        $this->adapter->set('cc', 'AmyStephen@Molajo.org,FName LName');
-        $this->adapter->set('bcc', 'AmyStephen@Molajo.org,FName LName');
-        $this->adapter->set('subject', 'Welcome to our Site');
-        $this->adapter->set('body', 'Stuff goes here');
-        $this->adapter->set('mailer_html_or_text', 'html');
-
-        $this->adapter->send();
+        $this->email->send();
     }
 
     /**
