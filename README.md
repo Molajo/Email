@@ -30,11 +30,11 @@ Email Services API for PHP applications enabling interaction with multiple Email
     $this->adapter = new $class($handler);
 
     // 3. Set email parameters
-    $this->adapter->set('to', 'AmyStephen@gmail.com,Fname Lname');
-    $this->adapter->set('from', 'AmyStephen@gmail.com,Fname Lname');
-    $this->adapter->set('reply_to', 'AmyStephen@gmail.com,FName LName');
-    $this->adapter->set('cc', 'AmyStephen@gmail.com,FName LName');
-    $this->adapter->set('bcc', 'AmyStephen@gmail.com,FName LName');
+    $this->adapter->set('to', 'AmyStephen@Molajo.org,Fname Lname');
+    $this->adapter->set('from', 'AmyStephen@Molajo.org,Fname Lname');
+    $this->adapter->set('reply_to', 'AmyStephen@Molajo.org,FName LName');
+    $this->adapter->set('cc', 'AmyStephen@Molajo.org,FName LName');
+    $this->adapter->set('bcc', 'AmyStephen@Molajo.org,FName LName');
     $this->adapter->set('subject', 'Welcome to our Site');
     $this->adapter->set('body', 'Stuff goes here');
     $this->adapter->set('mailer_html_or_text', 'text');

@@ -53,7 +53,6 @@ class Adapter implements EmailInterface
      *
      * @return  mixed
      * @since   1.0
-     * @throws  AdapterException
      */
     public function get($key, $default = null)
     {
@@ -68,7 +67,6 @@ class Adapter implements EmailInterface
      *
      * @return  $this
      * @since   1.0
-     * @throws  AdapterException
      */
     public function set($key, $value = null)
     {
@@ -82,7 +80,6 @@ class Adapter implements EmailInterface
      *
      * @return  mixed
      * @since   1.0
-     * @throws  AdapterException
      */
     public function send()
     {

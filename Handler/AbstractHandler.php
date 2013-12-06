@@ -10,8 +10,7 @@ namespace Molajo\Email\Handler;
 
 use CommonApi\Model\FieldhandlerInterface;
 use CommonApi\Email\EmailInterface;
-use Exception\Email\ConnectionException;
-use Exception\Email\EmailException;
+use CommonApi\Exception\RuntimeException;
 
 /**
  * Adapter for Email
@@ -299,7 +298,7 @@ abstract class AbstractHandler implements EmailInterface
      *
      * @return  $this
      * @since   1.0
-     * @throws  EmailException
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function set($key, $value = null)
     {
@@ -307,7 +306,7 @@ abstract class AbstractHandler implements EmailInterface
 
         if (in_array($key, $this->property_array)) {
         } else {
-            throw new EmailException ('Email Service Set: Unknown key: ' . $key);
+            throw new RuntimeException ('Email Service Set: Unknown key: ' . $key);
         }
 
         $this->$key = $value;
@@ -323,7 +322,7 @@ abstract class AbstractHandler implements EmailInterface
      *
      * @return  mixed
      * @since   1.0
-     * @throws  EmailException
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function get($key, $default = null)
     {
@@ -331,7 +330,7 @@ abstract class AbstractHandler implements EmailInterface
 
         if (in_array($key, $this->property_array)) {
         } else {
-            throw new EmailException
+            throw new RuntimeException
             ('Email Service: attempting to get value for unknown property: ' . $key);
         }
 
@@ -347,7 +346,7 @@ abstract class AbstractHandler implements EmailInterface
      *
      * @return  mixed
      * @since   1.0
-     * @throws  EmailException
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     abstract public function send();
 
@@ -356,7 +355,6 @@ abstract class AbstractHandler implements EmailInterface
      *
      * @return  $this
      * @since   1.0
-     * @throws  ConnectionException
      */
     abstract public function close();
 }

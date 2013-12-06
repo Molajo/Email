@@ -164,7 +164,7 @@ class PhpMailer extends AbstractHandler implements EmailInterface
 
         if (trim($this->get('mailer_only_deliver_to', '') == '')) {
         } else {
-            $this->mailer_only_deliver_to = 'AmyStephen@gmail.com';
+            $this->mailer_only_deliver_to = 'AmyStephen@Molajo.org';
 
             $this->set(
                 'reply_to',
