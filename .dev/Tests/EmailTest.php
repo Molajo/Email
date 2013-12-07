@@ -42,8 +42,8 @@ class EmailTest extends \PHPUnit_Framework_TestCase
         $to                     = 'AmyStephen@gmail.com';
         $from                   = 'AmyStephen@gmail.com';
         $reply_to               = 'AmyStephen@gmail.com,Amy Stephen';
-        $cc                     = 'AmyStephen@molajo.com,Amy Stephen';
-        $bcc                    = 'AmyStephen@example.com';
+        $cc                     = 'AmyStephen@gmail.com,Amy Stephen';
+        $bcc                    = 'AmyStephen@gmail.com';
         $subject                = 'Test phpEmail';
         $body                   = '<p>Message in here.</p>';
         $mailer_html_or_text    = 'text';

@@ -166,6 +166,7 @@ class PhpMailer extends AbstractHandler implements EmailInterface
             try {
 
                 $results = $this->filterHtml($this->body);
+
                 if ($results === false || trim($results) === '') {
                     throw new RuntimeException
                     ('Email PhpMailer Handler: No message body (HTML) sent in for email');
@@ -192,6 +193,7 @@ class PhpMailer extends AbstractHandler implements EmailInterface
             }
 
             $this->email->isHTML(false);
+
             $this->email->Body = $results;
 
         } catch (Exception $e) {
@@ -367,8 +369,7 @@ class PhpMailer extends AbstractHandler implements EmailInterface
             }
 
             if ($results === false) {
-                throw new RuntimeException
-                ('Email PhpMailer Handler: False return from phpMailer addCC');
+                // OK when the cc is in the other lists
             }
         }
 
@@ -403,8 +404,7 @@ class PhpMailer extends AbstractHandler implements EmailInterface
             }
 
             if ($results === false) {
-                throw new RuntimeException
-                ('Email PhpMailer Handler: False return from phpMailer addBCC');
+                // OK when the bcc is in the other lists
             }
         }
 
@@ -490,7 +490,7 @@ class PhpMailer extends AbstractHandler implements EmailInterface
      */
     public function extractName($name)
     {
-        $results = $this->filterEmailAddress($name);
+        $results = (string) $name;
 
         if ($results === false || trim($name) === '') {
             return false;
