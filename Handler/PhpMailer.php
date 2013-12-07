@@ -8,6 +8,7 @@
  */
 namespace Molajo\Email\Handler;
 
+use stdClass;
 use Exception;
 use PHPMailer as mailer;
 use CommonApi\Email\EmailInterface;
@@ -73,15 +74,20 @@ class PhpMailer extends AbstractHandler implements EmailInterface
         $this->setSubject();
         $this->setBody();
         $this->setAttachment();
-        $this->setRecipient('reply_to');
-        $this->setRecipient('from');
-        $this->setRecipient('to');
-        $this->setRecipient('cc');
-        $this->setRecipient('bcc');
+        $this->setReplyTo();
+        $this->setFrom();
+        $this->setTo();
+        $this->setCC();
+        $this->setBCC();
 
         try {
 
-            $this->email->Send();
+            $response = $this->email->send();
+
+            if ($response === false) {
+                throw new RuntimeException
+                ('Email PhpMailer Handler failed in send Method. Error: ' . $this->email->ErrorInfo);
+            }
 
         } catch (Exception $e) {
 
@@ -133,7 +139,7 @@ class PhpMailer extends AbstractHandler implements EmailInterface
 
         try {
 
-            $this->email->set('Subject', $this->subject);
+            $this->email->Subject = $this->subject;
 
         } catch (Exception $e) {
 
@@ -153,11 +159,21 @@ class PhpMailer extends AbstractHandler implements EmailInterface
      */
     protected function setBody()
     {
+        $this->email->WordWrap = 50;
+
         if ($this->mailer_html_or_text == 'html') {
 
             try {
-                $this->email->set('Body', $this->filterHtml($this->body));
-                $this->email->IsHTML(true);
+
+                $results = $this->filterHtml($this->body);
+                if ($results === false || trim($results) === '') {
+                    throw new RuntimeException
+                    ('Email PhpMailer Handler: No message body (HTML) sent in for email');
+                }
+
+                $this->email->isHTML(true);
+                $this->email->Body    = $results;
+                $this->email->AltBody = (string)$results;
 
             } catch (Exception $e) {
 
@@ -166,9 +182,17 @@ class PhpMailer extends AbstractHandler implements EmailInterface
             }
         }
 
-        try {
 
-            $this->email->set('Body', $this->filterString($this->body));
+        try {
+            $results = $this->filterString($this->body);
+
+            if ($results === false || trim($results) === '') {
+                throw new RuntimeException
+                ('Email PhpMailer Handler: No message body sent in for email');
+            }
+
+            $this->email->isHTML(false);
+            $this->email->Body = $results;
 
         } catch (Exception $e) {
 
@@ -199,13 +223,7 @@ class PhpMailer extends AbstractHandler implements EmailInterface
         }
 
         try {
-
-            $this->email->AddAttachment(
-                $this->attachment,
-                $name = 'Attachment',
-                $encoding = 'base64',
-                $type = 'application/octet-stream'
-            );
+            $results = $this->email->addAttachment($this->attachment);
 
         } catch (Exception $e) {
 
@@ -217,82 +235,268 @@ class PhpMailer extends AbstractHandler implements EmailInterface
     }
 
     /**
-     * Filter and send to phpMail email address and name values
-     *
-     * @param   string $field_name
+     * Set Reply To Recipient
      *
      * @return  $this
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
-    protected function setRecipient($field_name)
+    protected function setReplyTo()
     {
-        $x = explode(';', $this->$field_name);
+        $list = $this->setRecipient($this->reply_to);
 
-        if (is_array($x)) {
-            $y = $x;
+        if (is_array($list) && count($list) > 0) {
         } else {
-            $y = array($x);
-        }
-
-        if (count($y) == 0) {
             return $this;
         }
 
-        foreach ($y as $z) {
-
-            $extract = explode(',', $z);
-            if (count($extract) == 0) {
-                break;
-            }
-
-            if ($z === false || $z == '') {
-                break;
-            }
-
-            $z = $this->filterEmailAddress($extract[0]);
-            if ($z === false || $z == '') {
-                break;
-            }
-            $use_email = $z;
-
-            $use_name = '';
-            if (count($extract) > 1) {
-                $z = $this->filterString($extract[0]);
-                if ($z === false || $z == '') {
-                } else {
-                    $use_name = $z;
-                }
-            }
-
-            if ($field_name == 'reply_to') {
-                $method = 'AddReplyTo';
-
-            } elseif ($field_name == 'from') {
-                $method = 'setFrom';
-
-            } elseif ($field_name == 'cc') {
-                $method = 'addCC';
-
-            } elseif ($field_name == 'bcc') {
-                $method = 'addBCC';
-
-            } else {
-                $method = 'addAddress';
-            }
+        foreach ($list as $item) {
 
             try {
-
-                $this->email->$method($use_email, $use_name);
+                $results = $this->email->addReplyTo($item->email, $item->name);
 
             } catch (Exception $e) {
 
                 throw new RuntimeException
                 ('Email PhpMailer Handler: Exception in setAttachment: ' . $e->getMessage());
             }
+
+            if ($results === false) {
+                throw new RuntimeException
+                ('Email PhpMailer Handler: False return from phpMailer addReplyTo');
+            }
         }
 
         return $this;
+    }
+
+    /**
+     * Set From Recipient
+     *
+     * @return  $this
+     * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException
+     */
+    protected function setFrom()
+    {
+        $list = $this->setRecipient($this->from);
+
+        if (is_array($list)) {
+        } else {
+            return $this;
+        }
+
+        foreach ($list as $item) {
+
+            try {
+                $this->email->From     = $item->email;
+                $this->email->FromName = $item->name;
+
+            } catch (Exception $e) {
+
+                throw new RuntimeException
+                ('Email PhpMailer Handler: Exception in setRecipient setTo: ' . $e->getMessage());
+            }
+
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set To Recipient
+     *
+     * @return  $this
+     * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException
+     */
+    protected function setTo()
+    {
+        $list = $this->setRecipient($this->to);
+
+        if (is_array($list)) {
+        } else {
+            return $this;
+        }
+
+        foreach ($list as $item) {
+
+            try {
+                $results = $this->email->addAddress($item->email, $item->name);
+
+            } catch (Exception $e) {
+
+                throw new RuntimeException
+                ('Email PhpMailer Handler: Exception in setRecipient setTo: ' . $e->getMessage());
+            }
+
+            if ($results === false) {
+                throw new RuntimeException
+                ('Email PhpMailer Handler: False return from phpMailer setTo');
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set CC Recipient
+     *
+     * @return  $this
+     * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException
+     */
+    protected function setCC()
+    {
+        $list = $this->setRecipient($this->cc);
+
+        if (is_array($list) && count($list) > 0) {
+        } else {
+            return $this;
+        }
+
+        foreach ($list as $item) {
+
+            try {
+                $results = $this->email->addCC($item->email, $item->name);
+
+            } catch (Exception $e) {
+
+                throw new RuntimeException
+                ('Email PhpMailer Handler: Exception in setRecipient CC: ' . $e->getMessage());
+            }
+
+            if ($results === false) {
+                throw new RuntimeException
+                ('Email PhpMailer Handler: False return from phpMailer addCC');
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set BCC Recipient
+     *
+     * @return  $this
+     * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException
+     */
+    protected function setBCC()
+    {
+        $list = $this->setRecipient($this->bcc);
+
+        if (is_array($list)) {
+        } else {
+            return $this;
+        }
+
+        foreach ($list as $item) {
+
+            try {
+                $results = $this->email->addBCC($item->email, $item->name);
+
+            } catch (Exception $e) {
+
+                throw new RuntimeException
+                ('Email PhpMailer Handler: Exception in setRecipient BCC: ' . $e->getMessage());
+            }
+
+            if ($results === false) {
+                throw new RuntimeException
+                ('Email PhpMailer Handler: False return from phpMailer addBCC');
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Filter and send to phpMail email address and name values
+     *
+     * @param   string $list
+     *
+     * @return  array
+     * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException
+     */
+    protected function setRecipient($list)
+    {
+        $items = explode(';', $list);
+
+        if (count($items) > 0 && is_array($items)) {
+        } else {
+            return false;
+        }
+
+        $return_results = array();
+
+        foreach ($items as $split_this) {
+
+            $split = explode(',', $split_this);
+
+            if (is_array($split) && count($split) > 0) {
+            } else {
+                break;
+            }
+
+            $return_item = new stdClass();
+
+            $x = $this->extractEmailAddress($split[0]);
+
+            if ($x === false) {
+            } else {
+                $return_item->email = $x;
+                $return_item->name  = '';
+
+                if (isset($split[1])) {
+                    $x = $this->extractName($split[1]);
+                    if ($x === false) {
+                    } else {
+                        $return_item->name = $x;
+                    }
+                }
+
+                $return_results[] = $return_item;
+            }
+        }
+
+        return $return_results;
+    }
+
+    /**
+     * Get Email Address
+     *
+     * @return  $this
+     * @since   1.0
+     */
+    public function extractEmailAddress($email)
+    {
+        $results = $this->filterEmailAddress($email);
+
+        if ($results === false || trim($email) === '') {
+            return false;
+        }
+
+        return $email;
+    }
+
+
+    /**
+     * Get Email Address
+     *
+     * @return  $this
+     * @since   1.0
+     */
+    public function extractName($name)
+    {
+        $results = $this->filterEmailAddress($name);
+
+        if ($results === false || trim($name) === '') {
+            return false;
+        }
+
+        return $name;
     }
 
     /**

@@ -360,7 +360,7 @@ abstract class AbstractHandler implements EmailInterface
      */
     protected function filterString($string)
     {
-        $filtered = (string)$this->mailer_only_deliver_to;
+        $filtered = (string)$string;
 
         if ($filtered === false) {
             throw new UnexpectedValueException ('Email Filter String Failed for: ' . $string);
@@ -380,7 +380,7 @@ abstract class AbstractHandler implements EmailInterface
      */
     protected function filterHtml($html)
     {
-        $filtered = filter_var($this->mailer_only_deliver_to, FILTER_SANITIZE_SPECIAL_CHARS);
+        $filtered = filter_input($html, FILTER_SANITIZE_SPECIAL_CHARS);
 
         if ($filtered === false) {
             throw new UnexpectedValueException ('Email Filter HTML Failed for: ' . $html);
