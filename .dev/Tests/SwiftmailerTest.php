@@ -1,6 +1,6 @@
 <?php
 /**
- * Email Test
+ * Swiftmailer Test
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
@@ -9,14 +9,14 @@
 namespace Molajo\Email\Test;
 
 /**
- * Email Test
+ * Swiftmailer Test
  *
  * @author     Amy Stephen
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2013 Amy Stephen. All rights reserved.
  * @since      1.0
  */
-class EmailTest extends \PHPUnit_Framework_TestCase
+class SwiftmailerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var Email Object
@@ -45,11 +45,11 @@ class EmailTest extends \PHPUnit_Framework_TestCase
         $cc                     = 'AmyStephen@gmail.com,Amy Stephen';
         $bcc                    = 'AmyStephen@gmail.com';
         $subject                = 'Test phpEmail';
-        $body                   = '<p>Message in here.</p>';
+        $body                   = '<p>Swifttest Message in here.</p>';
         $mailer_html_or_text    = 'text';
         $attachment             = '';
 
-        $class       = 'Molajo\\Email\\Handler\\PhpMailer';
+        $class       = 'Molajo\\Email\\Handler\\Swiftmailer';
         $handler     = new $class($mailer_transport,
             $site_name,
             $smtpauth,

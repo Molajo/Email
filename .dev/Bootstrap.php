@@ -40,3 +40,8 @@ $phpmailer_autoloader = $base . '/vendor/phpmailer/phpmailer/PHPMailerAutoload.p
 if (file_exists($phpmailer_autoloader)) {
     include $phpmailer_autoloader;
 }
+
+$swift_required = $base . '/vendor/swiftmailer/swiftmailer/lib/swift_required.php';
+if (file_exists($swift_required)) {
+    include $swift_required;
+}
