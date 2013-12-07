@@ -8,6 +8,7 @@
  */
 namespace Molajo\Email\Handler;
 
+use stdClass;
 use CommonApi\Email\EmailInterface;
 use CommonApi\Exception\RuntimeException;
 use CommonApi\Exception\UnexpectedValueException;
@@ -347,12 +348,15 @@ abstract class AbstractHandler implements EmailInterface
      * @return  $this
      * @since   1.0
      */
-    abstract public function close();
+    public function close()
+    {
+        return $this;
+    }
 
     /**
      * Filter String
      *
-     * @param   string  $string
+     * @param   string $string
      *
      * @return  string
      * @since   1.0
@@ -372,7 +376,7 @@ abstract class AbstractHandler implements EmailInterface
     /**
      * Filter Html
      *
-     * @param   string  $html
+     * @param   string $html
      *
      * @return  string
      * @since   1.0
@@ -390,9 +394,62 @@ abstract class AbstractHandler implements EmailInterface
     }
 
     /**
+     * Filter and send to phpMail email address and name values
+     *
+     * @param   string $list
+     *
+     * @return  array
+     * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException
+     */
+    protected function setRecipient($list)
+    {
+        $items = explode(';', $list);
+
+        if (count($items) > 0 && is_array($items)) {
+        } else {
+            return false;
+        }
+
+        $return_results = array();
+
+        foreach ($items as $split_this) {
+
+            $split = explode(',', $split_this);
+
+            if (is_array($split) && count($split) > 0) {
+            } else {
+                break;
+            }
+
+            $return_item = new stdClass();
+
+            $x = $this->extractEmailAddress($split[0]);
+
+            if ($x === false) {
+            } else {
+                $return_item->email = $x;
+                $return_item->name  = '';
+
+                if (isset($split[1])) {
+                    $x = $this->extractName($split[1]);
+                    if ($x === false) {
+                    } else {
+                        $return_item->name = $x;
+                    }
+                }
+
+                $return_results[] = $return_item;
+            }
+        }
+
+        return $return_results;
+    }
+
+    /**
      * Filter Email Address
      *
-     * @param   string  $email_address
+     * @param   string $email_address
      *
      * @return  string
      * @since   1.0
@@ -407,5 +464,39 @@ abstract class AbstractHandler implements EmailInterface
         }
 
         return $filtered;
+    }
+
+    /**
+     * Get Email Address
+     *
+     * @return  $this
+     * @since   1.0
+     */
+    protected function extractEmailAddress($email)
+    {
+        $results = $this->filterEmailAddress($email);
+
+        if ($results === false || trim($email) === '') {
+            return false;
+        }
+
+        return $email;
+    }
+
+    /**
+     * Get Email Address
+     *
+     * @return  $this
+     * @since   1.0
+     */
+    protected function extractName($name)
+    {
+        $results = (string)$name;
+
+        if ($results === false || trim($name) === '') {
+            return false;
+        }
+
+        return $name;
     }
 }

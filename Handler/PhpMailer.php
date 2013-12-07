@@ -8,7 +8,6 @@
  */
 namespace Molajo\Email\Handler;
 
-use stdClass;
 use Exception;
 use PHPMailer as mailer;
 use CommonApi\Email\EmailInterface;
@@ -49,14 +48,14 @@ class PhpMailer extends AbstractHandler implements EmailInterface
     /**
      * Send email
      *
-     * @return  $this
+     * @return  bool
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function send()
     {
         if ((int)$this->mailer_disable_sending == 1) {
-            return $this;
+            return false;
         }
 
         if (trim($this->mailer_only_deliver_to) == '') {
@@ -95,7 +94,7 @@ class PhpMailer extends AbstractHandler implements EmailInterface
             ('Email PhpMailer Handler: Caught Exception: ' . $e->getMessage());
         }
 
-        return $this;
+        return true;
     }
 
     /**
@@ -108,7 +107,6 @@ class PhpMailer extends AbstractHandler implements EmailInterface
     protected function instantiateEmail()
     {
         try {
-
             $this->email = new mailer();
 
         } catch (Exception $e) {
@@ -138,7 +136,6 @@ class PhpMailer extends AbstractHandler implements EmailInterface
         $this->subject = $this->filterString($value);
 
         try {
-
             $this->email->Subject = $this->subject;
 
         } catch (Exception $e) {
@@ -161,46 +158,34 @@ class PhpMailer extends AbstractHandler implements EmailInterface
     {
         $this->email->WordWrap = 50;
 
-        if ($this->mailer_html_or_text == 'html') {
-
-            try {
-
-                $results = $this->filterHtml($this->body);
-
-                if ($results === false || trim($results) === '') {
-                    throw new RuntimeException
-                    ('Email PhpMailer Handler: No message body (HTML) sent in for email');
-                }
-
-                $this->email->isHTML(true);
-                $this->email->Body    = $results;
-                $this->email->AltBody = (string)$results;
-
-            } catch (Exception $e) {
-
-                throw new RuntimeException
-                ('Email PhpMailer Handler: Exception in setBody (HTML): ' . $e->getMessage());
-            }
-        }
-
-
         try {
-            $results = $this->filterString($this->body);
+
+            if ($this->mailer_html_or_text == 'html') {
+                $results = $this->filterHtml($this->body);
+            } else {
+                $results = $this->filterString($this->body);
+            }
 
             if ($results === false || trim($results) === '') {
                 throw new RuntimeException
-                ('Email PhpMailer Handler: No message body sent in for email');
+                ('Email PhpMailer Handler: No message body (HTML) sent in for email');
             }
 
-            $this->email->isHTML(false);
-
-            $this->email->Body = $results;
+            if ($this->mailer_html_or_text == 'html') {
+                $this->email->isHTML(true);
+                $this->email->Body    = $results;
+                $this->email->AltBody = (string)$results;
+            } else {
+                $this->email->isHTML(false);
+                $this->email->Body = $results;
+            }
 
         } catch (Exception $e) {
 
             throw new RuntimeException
-            ('Email PhpMailer Handler: Exception in setBody (text): ' . $e->getMessage());
+            ('Email PhpMailer Handler: Exception in setBody (HTML): ' . $e->getMessage());
         }
+
 
         return $this;
     }
@@ -408,105 +393,6 @@ class PhpMailer extends AbstractHandler implements EmailInterface
             }
         }
 
-        return $this;
-    }
-
-    /**
-     * Filter and send to phpMail email address and name values
-     *
-     * @param   string $list
-     *
-     * @return  array
-     * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException
-     */
-    protected function setRecipient($list)
-    {
-        $items = explode(';', $list);
-
-        if (count($items) > 0 && is_array($items)) {
-        } else {
-            return false;
-        }
-
-        $return_results = array();
-
-        foreach ($items as $split_this) {
-
-            $split = explode(',', $split_this);
-
-            if (is_array($split) && count($split) > 0) {
-            } else {
-                break;
-            }
-
-            $return_item = new stdClass();
-
-            $x = $this->extractEmailAddress($split[0]);
-
-            if ($x === false) {
-            } else {
-                $return_item->email = $x;
-                $return_item->name  = '';
-
-                if (isset($split[1])) {
-                    $x = $this->extractName($split[1]);
-                    if ($x === false) {
-                    } else {
-                        $return_item->name = $x;
-                    }
-                }
-
-                $return_results[] = $return_item;
-            }
-        }
-
-        return $return_results;
-    }
-
-    /**
-     * Get Email Address
-     *
-     * @return  $this
-     * @since   1.0
-     */
-    public function extractEmailAddress($email)
-    {
-        $results = $this->filterEmailAddress($email);
-
-        if ($results === false || trim($email) === '') {
-            return false;
-        }
-
-        return $email;
-    }
-
-
-    /**
-     * Get Email Address
-     *
-     * @return  $this
-     * @since   1.0
-     */
-    public function extractName($name)
-    {
-        $results = (string) $name;
-
-        if ($results === false || trim($name) === '') {
-            return false;
-        }
-
-        return $name;
-    }
-
-    /**
-     * Close the Connection
-     *
-     * @return  $this
-     * @since   1.0
-     */
-    public function close()
-    {
         return $this;
     }
 }
