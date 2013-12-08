@@ -1,6 +1,6 @@
 <?php
 /**
- * Email Dependency Injector
+ * Email Service Provider
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
@@ -9,19 +9,19 @@
 namespace Molajo\Service\Email;
 
 use Exception;
-use Molajo\IoC\Handler\AbstractInjector;
-use CommonApi\IoC\ServiceHandlerInterface;
+use Molajo\IoC\AbstractServiceProvider;
+use CommonApi\IoC\ServiceProviderInterface;
 use CommonApi\Exception\RuntimeException;
 
 /**
- * Email Dependency Injector
+ * Email Service Provider
  *
  * @author     Amy Stephen
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2013 Amy Stephen. All rights reserved.
  * @since      1.0
  */
-class EmailInjector extends AbstractInjector implements ServiceHandlerInterface
+class EmailServiceProvider extends AbstractServiceProvider implements ServiceProviderInterface
 {
     /**
      * Constructor
@@ -40,7 +40,7 @@ class EmailInjector extends AbstractInjector implements ServiceHandlerInterface
     }
 
     /**
-     * Instantiate a new handler and inject it into the Adapter for the ServiceHandlerInterface
+     * Instantiate a new handler and inject it into the Adapter for the ServiceProviderInterface
      * Retrieve a list of Interface dependencies and return the data ot the controller.
      *
      * @param   array $reflection
@@ -157,7 +157,7 @@ class EmailInjector extends AbstractInjector implements ServiceHandlerInterface
         } catch (Exception $e) {
 
             throw new RuntimeException
-            ('IoC: Injector Instance Failed for ' . $this->service_namespace
+            ('Email Service Provider Instance Failed for ' . $this->service_namespace
             . ' failed.' . $e->getMessage());
         }
 
