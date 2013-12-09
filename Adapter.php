@@ -8,7 +8,7 @@
  */
 namespace Molajo\Email;
 
-use Exception\Email\AdapterException;
+use CommonApi\Exception\RuntimeException;
 use CommonApi\Email\EmailInterface;
 
 /**
