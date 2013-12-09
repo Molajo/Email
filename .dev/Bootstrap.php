@@ -16,7 +16,7 @@ if (!defined('PHP_VERSION_ID')) {
 $base     = substr(__DIR__, 0, strlen(__DIR__) - 5);
 $classmap = array();
 
-$results = createClassMap($base . '/Handler', 'Molajo\\Email\\Handler\\');
+$results = createClassMap($base . '/Source/Handler', 'Molajo\\Email\\Handler\\');
 $classmap = array_merge($classmap, $results);
 $results = createClassMap($base . '/Service/Email', 'Molajo\\Service\\Email\\');
 $classmap = array_merge($classmap, $results);
@@ -25,7 +25,7 @@ $classmap = array_merge($classmap, $results);
 $results = createClassMap($base . '/vendor/commonapi/exception', 'CommonApi\\Exception\\');
 $classmap = array_merge($classmap, $results);
 
-$classmap['Molajo\\Email\\Adapter']   = $base . '/Adapter.php';
+$classmap['Molajo\\Email\\Adapter']   = $base . '/Source/Adapter.php';
 ksort($classmap);
 
 spl_autoload_register(
