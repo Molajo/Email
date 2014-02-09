@@ -27,5 +27,11 @@
         "psr-4": {
             "Molajo\\Email\\": "Source/"
         }
-    }
+    },
+
+    "archive": {
+        "exclude": ["/.dev"]
+    },
+
+    "minimum-stability": "dev"
 }
