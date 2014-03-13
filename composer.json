@@ -25,7 +25,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Molajo\\Email\\": "Source/"
+            "Molajo\\Email\\": "Source/",
+            "Molajo\\Factories\\": "Factories/"
         }
     },
 

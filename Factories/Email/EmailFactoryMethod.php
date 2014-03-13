@@ -1,27 +1,28 @@
 <?php
 /**
- * Email Service Provider
+ * Email Factory Method
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2014 Amy Stephen. All rights reserved.
  */
-namespace Molajo\Service\Email;
+namespace Molajo\Factories\Email;
 
 use Exception;
-use Molajo\IoC\AbstractServiceProvider;
-use CommonApi\IoC\ServiceProviderInterface;
 use CommonApi\Exception\RuntimeException;
+use CommonApi\IoC\FactoryMethodInterface;
+use CommonApi\IoC\FactoryMethodBatchSchedulingInterface;
+use Molajo\IoC\FactoryBase;
 
 /**
- * Email Service Provider
+ * Email Factory Method
  *
  * @author     Amy Stephen
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2014 Amy Stephen. All rights reserved.
  * @since      1.0
  */
-class EmailServiceProvider extends AbstractServiceProvider implements ServiceProviderInterface
+class EmailFactoryMethod extends FactoryBase implements FactoryMethodInterface, FactoryMethodBatchSchedulingInterface
 {
     /**
      * Constructor
@@ -32,15 +33,15 @@ class EmailServiceProvider extends AbstractServiceProvider implements ServicePro
      */
     public function __construct(array $options = array())
     {
-        $options['service_name']             = basename(__DIR__);
+        $options['product_name']             = basename(__DIR__);
         $options['store_instance_indicator'] = true;
-        $options['service_namespace']        = 'Molajo\\Email\\Adapter';
+        $options['product_namespace']        = 'Molajo\\Email\\Adapter';
 
         parent::__construct($options);
     }
 
     /**
-     * Instantiate a new handler and inject it into the Adapter for the ServiceProviderInterface
+     * Instantiate a new handler and inject it into the Adapter for the FactoryMethodInterface
      * Retrieve a list of Interface dependencies and return the data ot the controller.
      *
      * @param   array $reflection
@@ -148,16 +149,16 @@ class EmailServiceProvider extends AbstractServiceProvider implements ServicePro
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException;
      */
-    public function instantiateService()
+    public function instantiateClass()
     {
         try {
             $handler = $this->getHandler('PhpMailer');
 
-            $this->service_instance = $this->getAdapter($handler);
+            $this->product_result = $this->getAdapter($handler);
         } catch (Exception $e) {
 
             throw new RuntimeException
-            ('Email Service Provider Instance Failed for ' . $this->service_namespace
+            ('Email Factory Method Adapter Instance Failed for ' . $this->product_namespace
             . ' failed.' . $e->getMessage());
         }
 
@@ -224,7 +225,7 @@ class EmailServiceProvider extends AbstractServiceProvider implements ServicePro
      */
     protected function getAdapter($handler)
     {
-        $class = $this->service_namespace;
+        $class = $this->product_namespace;
 
         try {
             return new $class($handler);
@@ -241,15 +242,15 @@ class EmailServiceProvider extends AbstractServiceProvider implements ServicePro
     protected function testEmail()
     {
         /** Test */
-        $this->service_instance->set('to', 'AmyStephen@Molajo.org,Amy Stephen');
-        $this->service_instance->set('from', 'AmyStephen@Molajo.org,Amy Stephen');
-        $this->service_instance->set('reply_to', 'person@example.com,FName LName');
-        $this->service_instance->set('cc', 'person@example.com,FName LName');
-        $this->service_instance->set('bcc', 'person@example.com,FName LName');
-        $this->service_instance->set('subject', 'Welcome to our Site');
-        $this->service_instance->set('body', '<h2>Stuff goes here</h2>');
-        $this->service_instance->set('mailer_html_or_text', 'html');
+        $this->product_result->set('to', 'AmyStephen@Molajo.org,Amy Stephen');
+        $this->product_result->set('from', 'AmyStephen@Molajo.org,Amy Stephen');
+        $this->product_result->set('reply_to', 'person@example.com,FName LName');
+        $this->product_result->set('cc', 'person@example.com,FName LName');
+        $this->product_result->set('bcc', 'person@example.com,FName LName');
+        $this->product_result->set('subject', 'Welcome to our Site');
+        $this->product_result->set('body', '<h2>Stuff goes here</h2>');
+        $this->product_result->set('mailer_html_or_text', 'html');
 
-        $this->service_instance->send();
+        $this->product_result->send();
     }
 }

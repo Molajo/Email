@@ -18,7 +18,7 @@ $classmap = array();
 
 $results  = createClassMap($base . '/Source/Handler', 'Molajo\\Email\\Handler\\');
 $classmap = array_merge($classmap, $results);
-$results  = createClassMap($base . '/Service/Email', 'Molajo\\Service\\Email\\');
+$results  = createClassMap($base . '/Factories/Email', 'Molajo\\Factories\\Email\\');
 $classmap = array_merge($classmap, $results);
 $results  = createClassMap($base . '/vendor/commonapi/email', 'CommonApi\\Email\\');
 $classmap = array_merge($classmap, $results);
