@@ -6,7 +6,7 @@
  * @copyright  2014 Amy Stephen. All rights reserved.
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  */
-namespace Molajo\Email\Handler;
+namespace Molajo\Email\Adapter;
 
 use Exception;
 use PHPMailer as mailer;
@@ -35,7 +35,7 @@ use CommonApi\Exception\UnexpectedValueException;
  * @subpackage  Service
  * @since       1.0
  */
-class PhpMailer extends AbstractHandler implements EmailInterface
+class PhpMailer extends AbstractAdapter implements EmailInterface
 {
     /**
      * Email Instance
@@ -74,7 +74,7 @@ class PhpMailer extends AbstractHandler implements EmailInterface
         $this->setBody();
         $this->setAttachment();
         $this->setReplyTo();
-        $this->setFrom();
+        $this->from();
         $this->setTo();
         $this->setCC();
         $this->setBCC();
@@ -85,13 +85,13 @@ class PhpMailer extends AbstractHandler implements EmailInterface
 
             if ($response === false) {
                 throw new RuntimeException
-                ('Email PhpMailer Handler failed in send Method. Error: ' . $this->email->ErrorInfo);
+                ('Email PhpMailer Adapter failed in send Method. Error: ' . $this->email->ErrorInfo);
             }
 
         } catch (Exception $e) {
 
             throw new RuntimeException
-            ('Email PhpMailer Handler: Caught Exception: ' . $e->getMessage());
+            ('Email PhpMailer Adapter: Caught Exception: ' . $e->getMessage());
         }
 
         return true;
@@ -112,7 +112,7 @@ class PhpMailer extends AbstractHandler implements EmailInterface
         } catch (Exception $e) {
 
             throw new RuntimeException
-            ('Email PhpMailer Handler: Could not instantiate phpMailer');
+            ('Email PhpMailer Adapter: Could not instantiate phpMailer');
         }
 
         return $this;
@@ -141,7 +141,7 @@ class PhpMailer extends AbstractHandler implements EmailInterface
         } catch (Exception $e) {
 
             throw new RuntimeException
-            ('Email PhpMailer Handler: Exception in setSubject: ' . $e->getMessage());
+            ('Email PhpMailer Adapter: Exception in setSubject: ' . $e->getMessage());
         }
 
         return $this;
@@ -168,7 +168,7 @@ class PhpMailer extends AbstractHandler implements EmailInterface
 
             if ($results === false || trim($results) === '') {
                 throw new RuntimeException
-                ('Email PhpMailer Handler: No message body (HTML) sent in for email');
+                ('Email PhpMailer Adapter: No message body (HTML) sent in for email');
             }
 
             if ($this->mailer_html_or_text == 'html') {
@@ -183,7 +183,7 @@ class PhpMailer extends AbstractHandler implements EmailInterface
         } catch (Exception $e) {
 
             throw new RuntimeException
-            ('Email PhpMailer Handler: Exception in setBody (HTML): ' . $e->getMessage());
+            ('Email PhpMailer Adapter: Exception in setBody (HTML): ' . $e->getMessage());
         }
 
 
@@ -215,7 +215,7 @@ class PhpMailer extends AbstractHandler implements EmailInterface
         } catch (Exception $e) {
 
             throw new RuntimeException
-            ('Email PhpMailer Handler: Exception in setAttachment: ' . $e->getMessage());
+            ('Email PhpMailer Adapter: Exception in setAttachment: ' . $e->getMessage());
         }
 
         return $this;
@@ -245,12 +245,12 @@ class PhpMailer extends AbstractHandler implements EmailInterface
             } catch (Exception $e) {
 
                 throw new RuntimeException
-                ('Email PhpMailer Handler: Exception in setAttachment: ' . $e->getMessage());
+                ('Email PhpMailer Adapter: Exception in setAttachment: ' . $e->getMessage());
             }
 
             if ($results === false) {
                 throw new RuntimeException
-                ('Email PhpMailer Handler: False return from phpMailer addReplyTo');
+                ('Email PhpMailer Adapter: False return from phpMailer addReplyTo');
             }
         }
 
@@ -264,7 +264,7 @@ class PhpMailer extends AbstractHandler implements EmailInterface
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
-    protected function setFrom()
+    protected function from()
     {
         $list = $this->setRecipient($this->from);
 
@@ -282,7 +282,7 @@ class PhpMailer extends AbstractHandler implements EmailInterface
             } catch (Exception $e) {
 
                 throw new RuntimeException
-                ('Email PhpMailer Handler: Exception in setRecipient setTo: ' . $e->getMessage());
+                ('Email PhpMailer Adapter: Exception in setRecipient setTo: ' . $e->getMessage());
             }
 
         }
@@ -314,12 +314,12 @@ class PhpMailer extends AbstractHandler implements EmailInterface
             } catch (Exception $e) {
 
                 throw new RuntimeException
-                ('Email PhpMailer Handler: Exception in setRecipient setTo: ' . $e->getMessage());
+                ('Email PhpMailer Adapter: Exception in setRecipient setTo: ' . $e->getMessage());
             }
 
             if ($results === false) {
                 throw new RuntimeException
-                ('Email PhpMailer Handler: False return from phpMailer setTo');
+                ('Email PhpMailer Adapter: False return from phpMailer setTo');
             }
         }
 
@@ -350,7 +350,7 @@ class PhpMailer extends AbstractHandler implements EmailInterface
             } catch (Exception $e) {
 
                 throw new RuntimeException
-                ('Email PhpMailer Handler: Exception in setRecipient CC: ' . $e->getMessage());
+                ('Email PhpMailer Adapter: Exception in setRecipient CC: ' . $e->getMessage());
             }
 
             if ($results === false) {
@@ -385,7 +385,7 @@ class PhpMailer extends AbstractHandler implements EmailInterface
             } catch (Exception $e) {
 
                 throw new RuntimeException
-                ('Email PhpMailer Handler: Exception in setRecipient BCC: ' . $e->getMessage());
+                ('Email PhpMailer Adapter: Exception in setRecipient BCC: ' . $e->getMessage());
             }
 
             if ($results === false) {

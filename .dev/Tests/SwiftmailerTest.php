@@ -49,8 +49,8 @@ class SwiftmailerTest extends \PHPUnit_Framework_TestCase
         $mailer_html_or_text    = 'text';
         $attachment             = '';
 
-        $class       = 'Molajo\\Email\\Handler\\Swiftmailer';
-        $handler     = new $class($mailer_transport,
+        $class       = 'Molajo\\Email\\Adapter\\Swiftmailer';
+        $adapter     = new $class($mailer_transport,
             $site_name,
             $smtpauth,
             $smtphost,
@@ -72,7 +72,7 @@ class SwiftmailerTest extends \PHPUnit_Framework_TestCase
             $attachment
         );
         $class       = 'Molajo\\Email\\Adapter';
-        $this->email = new $class($handler);
+        $this->email = new $class($adapter);
 
         return;
     }
@@ -80,7 +80,7 @@ class SwiftmailerTest extends \PHPUnit_Framework_TestCase
     /**
      * Create a Email entry or set a parameter value
      *
-     * @covers Molajo\Email\Handler\FileEmail::set
+     * @covers Molajo\Email\Adapter\FileEmail::set
      */
     public function testSet()
     {

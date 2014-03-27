@@ -16,16 +16,15 @@ if (! defined('PHP_VERSION_ID')) {
 $base     = substr(__DIR__, 0, strlen(__DIR__) - 5);
 $classmap = array();
 
-$results  = createClassMap($base . '/Source/Handler', 'Molajo\\Email\\Handler\\');
+$results  = createClassMap($base . '/Source/', 'Molajo\\Email\\');
 $classmap = array_merge($classmap, $results);
-$results  = createClassMap($base . '/Factories/Email', 'Molajo\\Factories\\Email\\');
+$results  = createClassMap($base . '/Factories/Email/', 'Molajo\\Factories\\Email\\');
 $classmap = array_merge($classmap, $results);
-$results  = createClassMap($base . '/vendor/commonapi/email', 'CommonApi\\Email\\');
+$results  = createClassMap($base . '/vendor/commonapi/email/', 'CommonApi\\Email\\');
 $classmap = array_merge($classmap, $results);
-$results  = createClassMap($base . '/vendor/commonapi/exception', 'CommonApi\\Exception\\');
+$results  = createClassMap($base . '/vendor/commonapi/exception/', 'CommonApi\\Exception\\');
 $classmap = array_merge($classmap, $results);
 
-$classmap['Molajo\\Email\\Adapter'] = $base . '/Source/Adapter.php';
 ksort($classmap);
 
 spl_autoload_register(

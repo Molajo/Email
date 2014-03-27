@@ -8,7 +8,6 @@
  */
 namespace Molajo\Email;
 
-use CommonApi\Exception\RuntimeException;
 use CommonApi\Email\EmailInterface;
 
 /**
@@ -19,15 +18,15 @@ use CommonApi\Email\EmailInterface;
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @since      1.0
  */
-class Adapter implements EmailInterface
+class Driver implements EmailInterface
 {
     /**
-     * Email Adapter Handler
+     * Email Adapter Adapter
      *
      * @var     object
      * @since   1.0
      */
-    protected $handler;
+    protected $adapter;
 
     /**
      * Constructor
@@ -42,7 +41,7 @@ class Adapter implements EmailInterface
             date_default_timezone_set(@date_default_timezone_get());
         }
 
-        $this->handler = $email;
+        $this->adapter = $email;
     }
 
     /**
@@ -56,7 +55,7 @@ class Adapter implements EmailInterface
      */
     public function get($key, $default = null)
     {
-        return $this->handler->get($key, $default);
+        return $this->adapter->get($key, $default);
     }
 
     /**
@@ -70,7 +69,7 @@ class Adapter implements EmailInterface
      */
     public function set($key, $value = null)
     {
-        $this->handler->set($key, $value);
+        $this->adapter->set($key, $value);
 
         return $this;
     }
@@ -83,7 +82,7 @@ class Adapter implements EmailInterface
      */
     public function send()
     {
-        $this->handler->send();
+        $this->adapter->send();
 
         return $this;
     }

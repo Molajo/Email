@@ -6,7 +6,7 @@
  * @copyright  2014 Amy Stephen. All rights reserved.
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  */
-namespace Molajo\Email\Handler;
+namespace Molajo\Email\Adapter;
 
 use stdClass;
 use CommonApi\Email\EmailInterface;
@@ -21,7 +21,7 @@ use CommonApi\Exception\UnexpectedValueException;
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @since      1.0
  */
-abstract class AbstractHandler implements EmailInterface
+abstract class AbstractAdapter implements EmailInterface
 {
     /**
      * Mailer Transport - smtp, sendmail, ismail

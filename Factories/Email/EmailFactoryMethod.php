@@ -10,9 +10,9 @@ namespace Molajo\Factories\Email;
 
 use Exception;
 use CommonApi\Exception\RuntimeException;
-use CommonApi\IoC\FactoryMethodInterface;
-use CommonApi\IoC\FactoryMethodBatchSchedulingInterface;
-use Molajo\IoC\FactoryBase;
+use CommonApi\IoC\FactoryInterface;
+use CommonApi\IoC\FactoryBatchInterface;
+use Molajo\IoC\FactoryMethodBase;
 
 /**
  * Email Factory Method
@@ -22,7 +22,7 @@ use Molajo\IoC\FactoryBase;
  * @copyright  2014 Amy Stephen. All rights reserved.
  * @since      1.0
  */
-class EmailFactoryMethod extends FactoryBase implements FactoryMethodInterface, FactoryMethodBatchSchedulingInterface
+class EmailFactoryMethod extends FactoryMethodBase implements FactoryInterface, FactoryBatchInterface
 {
     /**
      * Constructor
@@ -35,14 +35,13 @@ class EmailFactoryMethod extends FactoryBase implements FactoryMethodInterface, 
     {
         $options['product_name']             = basename(__DIR__);
         $options['store_instance_indicator'] = true;
-        $options['product_namespace']        = 'Molajo\\Email\\Adapter';
+        $options['product_namespace']        = 'Molajo\\Email\\Driver';
 
         parent::__construct($options);
     }
 
     /**
-     * Instantiate a new handler and inject it into the Adapter for the FactoryMethodInterface
-     * Retrieve a list of Interface dependencies and return the data ot the controller.
+     * Instantiate a new adapter and inject it into the Adapter for the FactoryInterface     * Retrieve a list of Interface dependencies and return the data ot the controller.
      *
      * @param   array $reflection
      *
@@ -63,7 +62,7 @@ class EmailFactoryMethod extends FactoryBase implements FactoryMethodInterface, 
     /**
      * Set Dependency values
      *
-     * @param   array $dependency_values (ignored in Service Item Adapter, based in from handler)
+     * @param   array $dependency_values (ignored in Service Item Adapter, based in from adapter)
      *
      * @return  $this
      * @since   1.0
@@ -132,8 +131,8 @@ class EmailFactoryMethod extends FactoryBase implements FactoryMethodInterface, 
             = $this->dependencies['Runtimedata']->application->parameters->mailer_mail_from;
         $this->dependencies['reply_to']
                                              = $this->dependencies['Runtimedata']->application->parameters->mailer_mail_reply_to;
-        $this->dependencies['email_handler'] = 'phpMailer';
-//= $this->dependencies['Runtimedata']->application->parameters->email_handler;
+        $this->dependencies['email_adapter'] = 'phpMailer';
+//= $this->dependencies['Runtimedata']->application->parameters->email_adapter;
         $this->dependencies['mailer_disable_sending']
             = $this->dependencies['Runtimedata']->application->parameters->mailer_disable_sending;
         $this->dependencies['mailer_only_deliver_to']
@@ -152,9 +151,9 @@ class EmailFactoryMethod extends FactoryBase implements FactoryMethodInterface, 
     public function instantiateClass()
     {
         try {
-            $handler = $this->getHandler('PhpMailer');
+            $adapter = $this->getAdapter('PhpMailer');
 
-            $this->product_result = $this->getAdapter($handler);
+            $this->product_result = $this->getDriver($adapter);
         } catch (Exception $e) {
 
             throw new RuntimeException
@@ -168,21 +167,21 @@ class EmailFactoryMethod extends FactoryBase implements FactoryMethodInterface, 
     }
 
     /**
-     * Get the Email specific Adapter Handler
+     * Get the Email specific Adapter Adapter
      *
-     * @param   string $adapter_handler
+     * @param   string $adapter_adapter
      *
      * @return  object
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException;
      */
-    protected function getHandler($adapter_handler = '')
+    protected function getAdapter($adapter_adapter = '')
     {
-        if ($adapter_handler === '') {
-            $adapter_handler = 'PhpMailer';
+        if ($adapter_adapter === '') {
+            $adapter_adapter = 'PhpMailer';
         }
 
-        $class = 'Molajo\\Email\\Handler\\' . $adapter_handler;
+        $class = 'Molajo\\Email\\Adapter\\' . $adapter_adapter;
 
         try {
             return new $class(
@@ -210,29 +209,29 @@ class EmailFactoryMethod extends FactoryBase implements FactoryMethodInterface, 
         } catch (Exception $e) {
 
             throw new RuntimeException
-            ('Email: Could not instantiate Email Adapter Handler: ' . $adapter_handler);
+            ('Email: Could not instantiate Email Adapter Adapter: ' . $adapter_adapter);
         }
     }
 
     /**
-     * Get Email Adapter, inject with specific Email Adapter Handler
+     * Get Email Adapter, inject with specific Email Adapter Adapter
      *
-     * @param   object $handler
+     * @param   object $adapter
      *
      * @return  object
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException;
      */
-    protected function getAdapter($handler)
+    protected function getDriver($adapter)
     {
         $class = $this->product_namespace;
 
         try {
-            return new $class($handler);
+            return new $class($adapter);
         } catch (Exception $e) {
 
             throw new RuntimeException
-            ('Email: Could not instantiate Adapter for Email Type: ' . $handler);
+            ('Email: Could not instantiate Adapter for Email Type: ' . $adapter);
         }
     }
 
