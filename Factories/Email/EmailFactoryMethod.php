@@ -47,7 +47,7 @@ class EmailFactoryMethod extends FactoryMethodBase implements FactoryInterface, 
      *
      * @return  array
      * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException;
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function setDependencies(array $reflection = null)
     {
@@ -146,7 +146,7 @@ class EmailFactoryMethod extends FactoryMethodBase implements FactoryInterface, 
      *
      * @return  object
      * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException;
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function instantiateClass()
     {
@@ -173,7 +173,7 @@ class EmailFactoryMethod extends FactoryMethodBase implements FactoryInterface, 
      *
      * @return  object
      * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException;
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function getAdapter($adapter_adapter = '')
     {
@@ -220,7 +220,7 @@ class EmailFactoryMethod extends FactoryMethodBase implements FactoryInterface, 
      *
      * @return  object
      * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException;
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function getDriver($adapter)
     {
