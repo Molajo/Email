@@ -14,7 +14,7 @@ namespace Molajo\Email\Test;
  * @author     Amy Stephen
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2014 Amy Stephen. All rights reserved.
- * @since      1.0
+ * @since      1.0.0
  */
 class PHPmailerTest extends \PHPUnit_Framework_TestCase
 {
