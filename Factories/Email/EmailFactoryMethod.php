@@ -153,12 +153,21 @@ class EmailFactoryMethod extends FactoryMethodBase implements FactoryInterface, 
         try {
             $adapter = $this->getAdapter('PhpMailer');
 
-            $this->product_result = $this->getDriver($adapter);
         } catch (Exception $e) {
 
             throw new RuntimeException
             ('Email Factory Method Adapter Instance Failed for ' . $this->product_namespace
             . ' failed.' . $e->getMessage());
+        }
+
+        $class = $this->product_namespace;
+
+        try {
+            $this->product_result = new $class($adapter);
+        } catch (Exception $e) {
+
+            throw new RuntimeException
+            ('Email: Could not instantiate Adapter for Email Type: ' . $adapter);
         }
 
 //$this->testEmail();
@@ -185,6 +194,7 @@ class EmailFactoryMethod extends FactoryMethodBase implements FactoryInterface, 
 
         try {
             return new $class(
+                $this->instantiatePHPMailer(),
                 $this->dependencies['mailer_transport'],
                 $this->dependencies['site_name'],
                 $this->dependencies['smtpauth'],
@@ -214,25 +224,26 @@ class EmailFactoryMethod extends FactoryMethodBase implements FactoryInterface, 
     }
 
     /**
-     * Get Email Adapter, inject with specific Email Adapter Adapter
+     * Instantiate phpMailer Class
      *
-     * @param   object $adapter
-     *
-     * @return  object
+     * @return  $this
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
-    protected function getDriver($adapter)
+    protected function instantiatePHPMailer()
     {
-        $class = $this->product_namespace;
-
         try {
-            return new $class($adapter);
+            return new PHPMailer();
+
         } catch (Exception $e) {
 
             throw new RuntimeException
-            ('Email: Could not instantiate Adapter for Email Type: ' . $adapter);
+            (
+                'Email PhpMailer Adapter: Could not instantiate phpMailer'
+            );
         }
+
+        return $this;
     }
 
     /**

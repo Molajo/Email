@@ -14,9 +14,12 @@ if (! defined('PHP_VERSION_ID')) {
 }
 
 $base     = substr(__DIR__, 0, strlen(__DIR__) - 5);
+
 $classmap = array();
 
 $results  = createClassMap($base . '/Source/', 'Molajo\\Email\\');
+$classmap = array_merge($classmap, $results);
+$results  = createClassMap($base . '/Source/Adapter/', 'Molajo\\Email\\Adapter\\');
 $classmap = array_merge($classmap, $results);
 $results  = createClassMap($base . '/Factories/Email/', 'Molajo\\Factories\\Email\\');
 $classmap = array_merge($classmap, $results);
@@ -35,12 +38,3 @@ spl_autoload_register(
     }
 );
 
-$phpmailer_autoloader = $base . '/vendor/phpmailer/phpmailer/PHPMailerAutoload.php';
-if (file_exists($phpmailer_autoloader)) {
-    include $phpmailer_autoloader;
-}
-
-$swift_required = $base . '/vendor/swiftmailer/swiftmailer/lib/swift_required.php';
-if (file_exists($swift_required)) {
-    include $swift_required;
-}

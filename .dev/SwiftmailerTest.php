@@ -50,6 +50,7 @@ class SwiftmailerTest extends \PHPUnit_Framework_TestCase
         $attachment             = '';
 
         $class       = 'Molajo\\Email\\Adapter\\Swiftmailer';
+
         $adapter     = new $class($mailer_transport,
             $site_name,
             $smtpauth,
@@ -71,7 +72,8 @@ class SwiftmailerTest extends \PHPUnit_Framework_TestCase
             $mailer_html_or_text,
             $attachment
         );
-        $class       = 'Molajo\\Email\\Adapter';
+
+        $class       = 'Molajo\\Email\\Driver';
         $this->email = new $class($adapter);
 
         return;

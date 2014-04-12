@@ -8,10 +8,10 @@
  */
 namespace Molajo\Email\Adapter;
 
-use stdClass;
 use CommonApi\Email\EmailInterface;
 use CommonApi\Exception\RuntimeException;
 use CommonApi\Exception\UnexpectedValueException;
+use stdClass;
 
 /**
  * Adapter for Email
@@ -23,6 +23,14 @@ use CommonApi\Exception\UnexpectedValueException;
  */
 abstract class AbstractAdapter implements EmailInterface
 {
+    /**
+     * Email Instance
+     *
+     * @var     object
+     * @since   1.0
+     */
+    protected $email_instance;
+
     /**
      * Mailer Transport - smtp, sendmail, ismail
      *
@@ -42,7 +50,7 @@ abstract class AbstractAdapter implements EmailInterface
     /**
      * SMTP Authorisation
      *
-     * @var     EmailInterface
+     * @var     string
      * @since   1.0
      */
     protected $smtpauth;
@@ -50,7 +58,7 @@ abstract class AbstractAdapter implements EmailInterface
     /**
      * SMTP Host
      *
-     * @var     EmailInterface
+     * @var     string
      * @since   1.0
      */
     protected $smtphost;
@@ -58,7 +66,7 @@ abstract class AbstractAdapter implements EmailInterface
     /**
      * SMTP User
      *
-     * @var     EmailInterface
+     * @var     string
      * @since   1.0
      */
     protected $smtpuser;
@@ -66,7 +74,7 @@ abstract class AbstractAdapter implements EmailInterface
     /**
      * SMTP Password
      *
-     * @var     EmailInterface
+     * @var     string
      * @since   1.0
      */
     protected $smtppass;
@@ -74,7 +82,7 @@ abstract class AbstractAdapter implements EmailInterface
     /**
      * SMTP Secure
      *
-     * @var     EmailInterface
+     * @var     string
      * @since   1.0
      */
     protected $smtpsecure;
@@ -82,7 +90,7 @@ abstract class AbstractAdapter implements EmailInterface
     /**
      * SMTP Port
      *
-     * @var     EmailInterface
+     * @var     string
      * @since   1.0
      */
     protected $smtpport;
@@ -190,6 +198,7 @@ abstract class AbstractAdapter implements EmailInterface
      * @since  1.0
      */
     protected $property_array = array(
+        'email_instance',
         'mailer_transport',
         'site_name',
         'smtpauth',
@@ -215,6 +224,7 @@ abstract class AbstractAdapter implements EmailInterface
     /**
      * Construct
      *
+     * @param   object $email_instance
      * @param   string $mailer_transport
      * @param   string $site_name
      * @param   string $smtpauth
@@ -239,6 +249,7 @@ abstract class AbstractAdapter implements EmailInterface
      * @since   1.0
      */
     public function __construct(
+        $email_instance,
         $mailer_transport = '',
         $site_name = '',
         $smtpauth = '',
@@ -260,6 +271,7 @@ abstract class AbstractAdapter implements EmailInterface
         $mailer_html_or_text = '',
         $attachment = ''
     ) {
+        $this->email_instance         = $email_instance;
         $this->mailer_transport       = $mailer_transport;
         $this->site_name              = $site_name;
         $this->smtpauth               = $smtpauth;
@@ -299,7 +311,7 @@ abstract class AbstractAdapter implements EmailInterface
         if (in_array($key, $this->property_array)) {
         } else {
             throw new RuntimeException
-            ('Email: attempting to set value for unknown property: ' . $key);
+                ('Email: attempting to set value for unknown property: ' . $key);
         }
 
         $this->$key = $value;
@@ -364,7 +376,7 @@ abstract class AbstractAdapter implements EmailInterface
      */
     protected function filterString($string)
     {
-        $filtered = (string)$string;
+        $filtered = filter_var($string, FILTER_SANITIZE_STRING);
 
         if ($filtered === false) {
             throw new UnexpectedValueException ('Email Filter String Failed for: ' . $string);
@@ -384,7 +396,7 @@ abstract class AbstractAdapter implements EmailInterface
      */
     protected function filterHtml($html)
     {
-        $filtered = filter_input($html, FILTER_SANITIZE_SPECIAL_CHARS);
+        $filtered = htmlentities($html, ENT_QUOTES, 'UTF-8');
 
         if ($filtered === false) {
             throw new UnexpectedValueException ('Email Filter HTML Failed for: ' . $html);

@@ -12,6 +12,8 @@ use Exception;
 use CommonApi\Email\EmailInterface;
 use CommonApi\Exception\RuntimeException;
 use CommonApi\Exception\UnexpectedValueException;
+use Swift_MailTransport;
+use Swift_Message;
 
 /**
  * Edits, filters input, and sends email
@@ -91,7 +93,7 @@ class Swiftmailer extends AbstractAdapter implements EmailInterface
             $response = $this->mailer->send($this->message);
 
             if ($response === false) {
-                throw new RuntimeException
+                throw new UnexpectedValueException
                 ('Email Swiftmailer Adapter failed in send Method. Error: ' . $this->message->ErrorInfo);
             }
 
@@ -114,7 +116,7 @@ class Swiftmailer extends AbstractAdapter implements EmailInterface
     protected function instantiateEmail()
     {
         try {
-            $this->message = \Swift_Message::newInstance();
+            $this->message = Swift_Message::newInstance();
 
         } catch (Exception $e) {
 
@@ -123,7 +125,7 @@ class Swiftmailer extends AbstractAdapter implements EmailInterface
         }
 
         try {
-            $this->mailer = \Swift_MailTransport::newInstance();
+            $this->mailer = Swift_MailTransport::newInstance();
 
         } catch (Exception $e) {
 
@@ -184,7 +186,7 @@ class Swiftmailer extends AbstractAdapter implements EmailInterface
 
             if ($results === false || trim($results) === '') {
                 throw new RuntimeException
-                ('Email Swiftmailer Adapter: No message body (HTML) sent in for email');
+                    ('Email Swiftmailer Adapter: No message body (HTML) sent in for email');
             }
 
             if ($this->mailer_html_or_text == 'html') {
@@ -197,7 +199,7 @@ class Swiftmailer extends AbstractAdapter implements EmailInterface
         } catch (Exception $e) {
 
             throw new RuntimeException
-            ('Email Swiftmailer Adapter: Exception in setBody (HTML): ' . $e->getMessage());
+                ('Email Swiftmailer Adapter: Exception in setBody (HTML): ' . $e->getMessage());
         }
 
 
