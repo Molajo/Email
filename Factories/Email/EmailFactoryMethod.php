@@ -13,6 +13,8 @@ use CommonApi\Exception\RuntimeException;
 use CommonApi\IoC\FactoryInterface;
 use CommonApi\IoC\FactoryBatchInterface;
 use Molajo\IoC\FactoryMethodBase;
+use Swift_Message;
+use Swift_MailTransport;
 
 /**
  * Email Factory Method
@@ -156,8 +158,10 @@ class EmailFactoryMethod extends FactoryMethodBase implements FactoryInterface, 
         } catch (Exception $e) {
 
             throw new RuntimeException
-            ('Email Factory Method Adapter Instance Failed for ' . $this->product_namespace
-            . ' failed.' . $e->getMessage());
+            (
+                'Email Factory Method Adapter Instance Failed for ' . $this->product_namespace
+                . ' failed.' . $e->getMessage()
+            );
         }
 
         $class = $this->product_namespace;
@@ -167,7 +171,9 @@ class EmailFactoryMethod extends FactoryMethodBase implements FactoryInterface, 
         } catch (Exception $e) {
 
             throw new RuntimeException
-            ('Email: Could not instantiate Adapter for Email Type: ' . $adapter);
+            (
+                'Email: Could not instantiate Adapter for Email Type: ' . $adapter
+            );
         }
 
 //$this->testEmail();
@@ -176,21 +182,15 @@ class EmailFactoryMethod extends FactoryMethodBase implements FactoryInterface, 
     }
 
     /**
-     * Get the Email specific Adapter Adapter
-     *
-     * @param   string $adapter_adapter
+     * Get PhpMailer Email Adapter
      *
      * @return  object
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
-    protected function getAdapter($adapter_adapter = '')
+    protected function getPhpMailerAdapter()
     {
-        if ($adapter_adapter === '') {
-            $adapter_adapter = 'PhpMailer';
-        }
-
-        $class = 'Molajo\\Email\\Adapter\\' . $adapter_adapter;
+        $class = 'Molajo\\Email\\Adapter\\PhpMailer';
 
         try {
             return new $class(
@@ -219,8 +219,44 @@ class EmailFactoryMethod extends FactoryMethodBase implements FactoryInterface, 
         } catch (Exception $e) {
 
             throw new RuntimeException
-            ('Email: Could not instantiate Email Adapter Adapter: ' . $adapter_adapter);
+            (
+                'Email: Could not instantiate Email Adapter Adapter: ' . $adapter_adapter
+            );
         }
+    }
+
+    /**
+     * Instantiate phpMailer Class
+     *
+     * @return  $this
+     * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException
+     */
+    protected function getSwiftMailerAdapter()
+    {
+        try {
+            $this->message = Swift_Message::newInstance();
+
+        } catch (Exception $e) {
+
+            throw new RuntimeException
+            (
+                'Email Swiftmailer Adapter: Could not instantiate phpMailer'
+            );
+        }
+
+        try {
+            $this->mailer = Swift_MailTransport::newInstance();
+
+        } catch (Exception $e) {
+
+            throw new RuntimeException
+            (
+                'Email Swiftmailer Adapter: Could not instantiate phpMailer'
+            );
+        }
+
+        return $this;
     }
 
     /**

@@ -13,7 +13,7 @@ if (! defined('PHP_VERSION_ID')) {
     define('PHP_VERSION_ID', ($version[0] * 10000 + $version[1] * 100 + $version[2]));
 }
 
-$base     = substr(__DIR__, 0, strlen(__DIR__) - 5);
+$base = substr(__DIR__, 0, strlen(__DIR__) - 5);
 
 $classmap = array();
 

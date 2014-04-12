@@ -47,14 +47,6 @@ class Swiftmailer extends AbstractAdapter implements EmailInterface
     protected $message;
 
     /**
-     * Mailer Instance
-     *
-     * @var     object
-     * @since   1.0
-     */
-    protected $mailer;
-
-    /**
      * Send email
      *
      * @return  bool
@@ -78,7 +70,6 @@ class Swiftmailer extends AbstractAdapter implements EmailInterface
             $this->bcc      = '';
         }
 
-        $this->instantiateEmail();
         $this->setSubject();
         $this->setBody();
         $this->setAttachment();
@@ -94,46 +85,20 @@ class Swiftmailer extends AbstractAdapter implements EmailInterface
 
             if ($response === false) {
                 throw new UnexpectedValueException
-                ('Email Swiftmailer Adapter failed in send Method. Error: ' . $this->message->ErrorInfo);
+                (
+                    'Email Swiftmailer Adapter failed in send Method. Error: ' . $this->message->ErrorInfo
+                );
             }
 
         } catch (Exception $e) {
 
             throw new RuntimeException
-            ('Email Swiftmailer Adapter: Caught Exception: ' . $e->getMessage());
+            (
+                'Email Swiftmailer Adapter: Caught Exception: ' . $e->getMessage()
+            );
         }
 
         return true;
-    }
-
-    /**
-     * Instantiate phpMailer Class
-     *
-     * @return  $this
-     * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException
-     */
-    protected function instantiateEmail()
-    {
-        try {
-            $this->message = Swift_Message::newInstance();
-
-        } catch (Exception $e) {
-
-            throw new RuntimeException
-            ('Email Swiftmailer Adapter: Could not instantiate phpMailer');
-        }
-
-        try {
-            $this->mailer = Swift_MailTransport::newInstance();
-
-        } catch (Exception $e) {
-
-            throw new RuntimeException
-            ('Email Swiftmailer Adapter: Could not instantiate phpMailer');
-        }
-
-        return $this;
     }
 
     /**
@@ -159,7 +124,9 @@ class Swiftmailer extends AbstractAdapter implements EmailInterface
         } catch (Exception $e) {
 
             throw new RuntimeException
-            ('Email Swiftmailer Adapter: Exception in setSubject: ' . $e->getMessage());
+            (
+                'Email Swiftmailer Adapter: Exception in setSubject: ' . $e->getMessage()
+            );
         }
 
         return $this;
@@ -186,7 +153,9 @@ class Swiftmailer extends AbstractAdapter implements EmailInterface
 
             if ($results === false || trim($results) === '') {
                 throw new RuntimeException
-                    ('Email Swiftmailer Adapter: No message body (HTML) sent in for email');
+                (
+                    'Email Swiftmailer Adapter: No message body (HTML) sent in for email'
+                );
             }
 
             if ($this->mailer_html_or_text == 'html') {
@@ -199,7 +168,9 @@ class Swiftmailer extends AbstractAdapter implements EmailInterface
         } catch (Exception $e) {
 
             throw new RuntimeException
-                ('Email Swiftmailer Adapter: Exception in setBody (HTML): ' . $e->getMessage());
+            (
+                'Email Swiftmailer Adapter: Exception in setBody (HTML): ' . $e->getMessage()
+            );
         }
 
 
@@ -222,7 +193,9 @@ class Swiftmailer extends AbstractAdapter implements EmailInterface
         if (file_exists($this->attachment)) {
         } else {
             throw new RuntimeException
-            ('Email Attachment File does not exist: ' . $this->attachment);
+            (
+                'Email Attachment File does not exist: ' . $this->attachment
+            );
         }
 
         try {
@@ -231,7 +204,9 @@ class Swiftmailer extends AbstractAdapter implements EmailInterface
         } catch (Exception $e) {
 
             throw new RuntimeException
-            ('Email Swiftmailer Adapter: Exception in setAttachment: ' . $e->getMessage());
+            (
+                'Email Swiftmailer Adapter: Exception in setAttachment: ' . $e->getMessage()
+            );
         }
 
         return $this;
@@ -261,12 +236,16 @@ class Swiftmailer extends AbstractAdapter implements EmailInterface
             } catch (Exception $e) {
 
                 throw new RuntimeException
-                ('Email Swiftmailer Adapter: Exception in setAttachment: ' . $e->getMessage());
+                (
+                    'Email Swiftmailer Adapter: Exception in setAttachment: ' . $e->getMessage()
+                );
             }
 
             if ($results === false) {
                 throw new RuntimeException
-                ('Email Swiftmailer Adapter: False return from phpMailer addReplyTo');
+                (
+                    'Email Swiftmailer Adapter: False return from phpMailer addReplyTo'
+                );
             }
         }
 
@@ -300,7 +279,9 @@ class Swiftmailer extends AbstractAdapter implements EmailInterface
         } catch (Exception $e) {
 
             throw new RuntimeException
-            ('Email Swiftmailer Adapter: Exception in setRecipient setTo: ' . $e->getMessage());
+            (
+                'Email Swiftmailer Adapter: Exception in setRecipient setTo: ' . $e->getMessage()
+            );
         }
 
         return $this;
@@ -333,7 +314,9 @@ class Swiftmailer extends AbstractAdapter implements EmailInterface
         } catch (Exception $e) {
 
             throw new RuntimeException
-            ('Email Swiftmailer Adapter: Exception in setRecipient setTo: ' . $e->getMessage());
+            (
+                'Email Swiftmailer Adapter: Exception in setRecipient setTo: ' . $e->getMessage()
+            );
         }
 
         return $this;
@@ -369,7 +352,9 @@ class Swiftmailer extends AbstractAdapter implements EmailInterface
         } catch (Exception $e) {
 
             throw new RuntimeException
-            ('Email Swiftmailer Adapter: Exception in setRecipient cc: ' . $e->getMessage());
+            (
+                'Email Swiftmailer Adapter: Exception in setRecipient cc: ' . $e->getMessage()
+            );
         }
 
         return $this;
@@ -403,7 +388,9 @@ class Swiftmailer extends AbstractAdapter implements EmailInterface
         } catch (Exception $e) {
 
             throw new RuntimeException
-            ('Email Swiftmailer Adapter: Exception in setRecipient Bcc: ' . $e->getMessage());
+            (
+                'Email Swiftmailer Adapter: Exception in setRecipient Bcc: ' . $e->getMessage()
+            );
         }
 
         return $this;

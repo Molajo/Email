@@ -21,16 +21,21 @@ use stdClass;
 class PHPmailerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Email Object
+     * @var Email
      */
     protected $email;
+
+    /**
+     * @var Email Instance
+     */
+    protected $email_instance;
 
     /**
      * Initialises Adapter
      */
     protected function setUp()
     {
-        $email_instance         = new PHPMailer();
+        $this->email_instance   = new PHPMailer();
         $mailer_transport       = "mail";
         $site_name              = 'Test Site';
         $smtpauth               = '';
@@ -55,7 +60,7 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
         $class = 'Molajo\\Email\\Adapter\\PhpMailer';
 
         $adapter = new $class(
-            $email_instance,
+            $this->email_instance,
             $mailer_transport,
             $site_name,
             $smtpauth,
@@ -92,6 +97,8 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
     public function testDisableEmail()
     {
         $this->email->set('mailer_disable_sending', true);
+        $results = $this->email->get('mailer_disable_sending');
+        $this->assertEquals(true, $results);
     }
 
     /**
@@ -101,15 +108,17 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
      */
     public function testOnlyDeliverTo()
     {
-        $this->email->set('mailer_only_deliver_to', true);
+        $this->email->set('mailer_only_deliver_to', 'dog@example.com');
+        $results = $this->email->get('mailer_only_deliver_to');
+        $this->assertEquals('dog@example.com', $results);
     }
 
     /**
-     * Create a Email entry or set a parameter value
+     * Test all parameters sent in for an HTML email
      *
      * @covers Molajo\Email\Adapter\FileEmail::set
      */
-    public function testSendAll()
+    public function testSendHtml()
     {
         $file = __DIR__ . '/PHPmailerTest.php';
 
@@ -123,15 +132,55 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
         $this->email->set('mailer_html_or_text', 'html');
         $this->email->set('attachment', $file);
 
-        $results = $this->email->send();
+        $this->email->send();
 
-        $email_instance = $this->email->get('email_instance');
+        $results = $this->email->get('email_instance');
 
-        $results = $email_instance->get();
+        $this->assertEquals($results->to, array('person@example.com' => 'Person Name'));
+        $this->assertEquals($results->From, 'person@example.com');
+        $this->assertEquals($results->FromName, 'Person Name');
+        $this->assertEquals($results->reply_to, array('person@example.com' => 'Person Name'));
+        $this->assertEquals($results->cc, array('person@example.com' => 'Person Name'));
+        $this->assertEquals($results->bcc, array('person@example.com' => 'Person Name'));
+        $this->assertEquals($results->Subject, 'Welcome to our Site');
+        $this->assertEquals($results->Body, '&lt;h2&gt;Stuff goes here&lt;/h2&gt;');
+        $this->assertEquals($results->mailer_html_or_text, true);
+        $this->assertEquals($results->attachment, $file);
+    }
 
-        echo '<pre>';
-        var_dump($results);
-        die;
+    /**
+     * Test all parameters sent in for an HTML email
+     *
+     * @covers Molajo\Email\Adapter\FileEmail::set
+     */
+    public function testSendText()
+    {
+        $file = __DIR__ . '/PHPmailerTest.php';
+
+        $this->email->set('to', 'person@example.com,Person Name');
+        $this->email->set('from', 'person@example.com,Person Name');
+        $this->email->set('reply_to', 'person@example.com,Person Name');
+        $this->email->set('cc', 'person@example.com,Person Name');
+        $this->email->set('bcc', 'person@example.com,Person Name');
+        $this->email->set('subject', 'Welcome to our Site');
+        $this->email->set('body', '<h2>Stuff goes here</h2>');
+        $this->email->set('mailer_html_or_text', 'text');
+        $this->email->set('attachment', $file);
+
+        $this->email->send();
+
+        $results = $this->email->get('email_instance');
+
+        $this->assertEquals($results->to, array('person@example.com' => 'Person Name'));
+        $this->assertEquals($results->From, 'person@example.com');
+        $this->assertEquals($results->FromName, 'Person Name');
+        $this->assertEquals($results->reply_to, array('person@example.com' => 'Person Name'));
+        $this->assertEquals($results->cc, array('person@example.com' => 'Person Name'));
+        $this->assertEquals($results->bcc, array('person@example.com' => 'Person Name'));
+        $this->assertEquals($results->Subject, 'Welcome to our Site');
+        $this->assertEquals($results->Body, 'Stuff goes here');
+        $this->assertEquals($results->mailer_html_or_text, false);
+        $this->assertEquals($results->attachment, $file);
     }
 
     /**
@@ -143,27 +192,29 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
     }
 }
 
-class PHPMailer extends \PHPUnit_Framework_TestCase
+/**
+ * PHPMailer Mock
+ */
+class PHPMailer
 {
-    protected $mailer_transport;
+    public $mailer_transport;
 
-    protected $smtpauth;
-    protected $smtphost;
-    protected $smtpuser;
-    protected $smtppass;
-    protected $smtpsecure;
-    protected $smtpport;
+    public $smtpauth;
+    public $smtphost;
+    public $smtpuser;
+    public $smtppass;
+    public $smtpsecure;
+    public $smtpport;
 
-    protected $sendmail_path = 0;
+    public $sendmail_path = 0;
 
-    protected $mailer_disable_sending = 0;
-    protected $mailer_only_deliver_to = '';
+    public $mailer_disable_sending = 0;
+    public $mailer_only_deliver_to = '';
 
-    protected $to = array();
-    protected $from = array();
-    protected $reply_to = array();
-    protected $cc = array();
-    protected $bcc = array();
+    public $to = array();
+    public $reply_to = array();
+    public $cc = array();
+    public $bcc = array();
 
     public $Subject = '';
     public $From = '';
@@ -171,8 +222,8 @@ class PHPMailer extends \PHPUnit_Framework_TestCase
     public $Body = '';
     public $AltBody = '';
     public $WordWrap = '';
-    protected $mailer_html_or_text = '';
-    protected $attachment = '';
+    public $mailer_html_or_text = '';
+    public $attachment = '';
 
     /**
      * List of Properties
@@ -180,7 +231,7 @@ class PHPMailer extends \PHPUnit_Framework_TestCase
      * @var    object
      * @since  1.0
      */
-    protected $property_array = array(
+    public $property_array = array(
         'mailer_transport',
         'smtpauth',
         'smtphost',
@@ -205,38 +256,46 @@ class PHPMailer extends \PHPUnit_Framework_TestCase
         'mailer_html_or_text',
         'attachment'
     );
+
     public function isHTML($indicator)
     {
         $this->mailer_html_or_text = $indicator;
     }
+
     public function addAttachment($attachment)
     {
         $this->attachment = $attachment;
     }
+
     public function addReplyTo($email, $name)
     {
         $this->reply_to[$email] = $name;
     }
+
     public function addAddress($email, $name)
     {
         $this->to[$email] = $name;
     }
+
     public function addCC($email, $name)
     {
         $this->cc[$email] = $name;
     }
+
     public function addBCC($email, $name)
     {
         $this->bcc[$email] = $name;
     }
+
     public function send()
     {
     }
+
     public function get()
     {
         $row = new stdClass();
         foreach ($this->property_array as $item) {
-              $row->$item = $this->$item;
+            $row->$item = $this->$item;
         }
 
         return $row;
