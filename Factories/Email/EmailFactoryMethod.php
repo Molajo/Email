@@ -13,6 +13,7 @@ use CommonApi\Exception\RuntimeException;
 use CommonApi\IoC\FactoryInterface;
 use CommonApi\IoC\FactoryBatchInterface;
 use Molajo\IoC\FactoryMethodBase;
+use PHPMailer;
 use Swift_Message;
 use Swift_MailTransport;
 
@@ -153,7 +154,7 @@ class EmailFactoryMethod extends FactoryMethodBase implements FactoryInterface, 
     public function instantiateClass()
     {
         try {
-            $adapter = $this->getAdapter('PhpMailer');
+            $adapter = $this->getPhpMailerAdapter();
 
         } catch (Exception $e) {
 
@@ -220,7 +221,7 @@ class EmailFactoryMethod extends FactoryMethodBase implements FactoryInterface, 
 
             throw new RuntimeException
             (
-                'Email: Could not instantiate Email Adapter Adapter: ' . $adapter_adapter
+                'Email: Could not instantiate Email Adapter Adapter: ' . $class
             );
         }
     }
