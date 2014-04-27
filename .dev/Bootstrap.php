@@ -8,14 +8,17 @@
  */
 $base     = substr(__DIR__, 0, strlen(__DIR__) - 5);
 include_once $base . '/vendor/autoload.php';
-include_once __DIR__ . '/CreateClassMap.php';
+if (function_exists('CreateClassMap')) {
+} else {
+    include_once __DIR__ . '/CreateClassMap.php';
+}
 
 $classmap = array();
 
-$results  = createClassMap($base . '/Source/', 'Molajo\\Email\\');
-$classmap = array_merge($classmap, $results);
-$results  = createClassMap($base . '/Source/Adapter/', 'Molajo\\Email\\Adapter\\');
-$classmap = array_merge($classmap, $results);
+$classmap['Molajo\\Email\\Driver'] = $base . '/Source/Email/Driver.php';
+$classmap['Molajo\\Email\\Adapter\\PhpMailer'] = $base . '/Source/Email/Adapter/PhpMailer.php';
+$classmap['Molajo\\Email\\Adapter\\Swiftmailer'] = $base . '/Source/Email/Adapter/Swiftmailer.php';
+$classmap['Molajo\\Email\\Adapter\\AbstractAdapter'] = $base . '/Source/Email/Adapter/AbstractAdapter.php';
 
 ksort($classmap);
 
