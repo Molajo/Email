@@ -194,7 +194,7 @@ abstract class AbstractAdapter implements EmailInterface
     /**
      * List of Properties
      *
-     * @var    object
+     * @var    array
      * @since  1.0
      */
     protected $property_array = array(
@@ -310,10 +310,7 @@ abstract class AbstractAdapter implements EmailInterface
 
         if (in_array($key, $this->property_array)) {
         } else {
-            throw new RuntimeException
-            (
-                'Email: attempting to set value for unknown property: ' . $key
-            );
+            throw new RuntimeException('Email: attempting to set value for unknown property: ' . $key);
         }
 
         $this->$key = $value;
@@ -337,10 +334,7 @@ abstract class AbstractAdapter implements EmailInterface
 
         if (in_array($key, $this->property_array)) {
         } else {
-            throw new RuntimeException
-            (
-                'Email: attempting to get value for unknown property: ' . $key
-            );
+            throw new RuntimeException('Email: attempting to get value for unknown property: ' . $key);
         }
 
         if ($this->$key === null) {
@@ -476,7 +470,7 @@ abstract class AbstractAdapter implements EmailInterface
         $filtered = filter_var($this->mailer_only_deliver_to, FILTER_SANITIZE_EMAIL);
 
         if ($filtered === false) {
-            throw new UnexpectedValueException ('Email Filter Email Address Failed for: ' . $email_address);
+            throw new UnexpectedValueException('Email Filter Email Address Failed for: ' . $email_address);
         }
 
         return $filtered;

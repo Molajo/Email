@@ -73,16 +73,14 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
             $response = $this->email_instance->send();
 
             if ($response === false) {
-                throw new RuntimeException
-                (
+                throw new RuntimeException(
                     'Email PhpMailer Adapter failed in send Method. Error: ' . $this->email_instance->ErrorInfo
                 );
             }
 
         } catch (Exception $e) {
 
-            throw new RuntimeException
-            (
+            throw new RuntimeException(
                 'Email PhpMailer Adapter: Caught Exception: ' . $e->getMessage()
             );
         }
@@ -112,8 +110,7 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
 
         } catch (Exception $e) {
 
-            throw new RuntimeException
-            (
+            throw new RuntimeException(
                 'Email PhpMailer Adapter: Exception in setSubject: ' . $e->getMessage()
             );
         }
@@ -141,8 +138,7 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
             }
 
             if ($results === false || trim($results) === '') {
-                throw new RuntimeException
-                (
+                throw new RuntimeException(
                     'Email PhpMailer Adapter: No message body (HTML) sent in for email'
                 );
             }
@@ -158,8 +154,7 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
 
         } catch (Exception $e) {
 
-            throw new RuntimeException
-            (
+            throw new RuntimeException(
                 'Email PhpMailer Adapter: Exception in setBody (HTML): ' . $e->getMessage()
             );
         }
@@ -183,8 +178,7 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
 
         if (file_exists($this->attachment)) {
         } else {
-            throw new RuntimeException
-            (
+            throw new RuntimeException(
                 'Email Attachment File does not exist: ' . $this->attachment
             );
         }
@@ -194,8 +188,7 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
 
         } catch (Exception $e) {
 
-            throw new RuntimeException
-            (
+            throw new RuntimeException(
                 'Email PhpMailer Adapter: Exception in setAttachment: ' . $e->getMessage()
             );
         }
@@ -226,15 +219,13 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
 
             } catch (Exception $e) {
 
-                throw new RuntimeException
-                (
+                throw new RuntimeException(
                     'Email PhpMailer Adapter: Exception in setAttachment: ' . $e->getMessage()
                 );
             }
 
             if ($results === false) {
-                throw new RuntimeException
-                (
+                throw new RuntimeException(
                     'Email PhpMailer Adapter: False return from phpMailer addReplyTo'
                 );
             }
@@ -267,8 +258,7 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
 
             } catch (Exception $e) {
 
-                throw new RuntimeException
-                (
+                throw new RuntimeException(
                     'Email PhpMailer Adapter: Exception in setRecipient setTo: ' . $e->getMessage()
                 );
             }
@@ -301,15 +291,13 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
 
             } catch (Exception $e) {
 
-                throw new RuntimeException
-                (
+                throw new RuntimeException(
                     'Email PhpMailer Adapter: Exception in setRecipient setTo: ' . $e->getMessage()
                 );
             }
 
             if ($results === false) {
-                throw new RuntimeException
-                (
+                throw new RuntimeException(
                     'Email PhpMailer Adapter: False return from phpMailer setTo'
                 );
             }
@@ -341,8 +329,7 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
 
             } catch (Exception $e) {
 
-                throw new RuntimeException
-                (
+                throw new RuntimeException(
                     'Email PhpMailer Adapter: Exception in setRecipient CC: ' . $e->getMessage()
                 );
             }
@@ -378,8 +365,7 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
 
             } catch (Exception $e) {
 
-                throw new RuntimeException
-                (
+                throw new RuntimeException(
                     'Email PhpMailer Adapter: Exception in setRecipient BCC: ' . $e->getMessage()
                 );
             }
