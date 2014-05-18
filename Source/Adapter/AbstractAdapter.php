@@ -271,27 +271,9 @@ abstract class AbstractAdapter implements EmailInterface
         $mailer_html_or_text = '',
         $attachment = ''
     ) {
-        $this->email_instance         = $email_instance;
-        $this->mailer_transport       = $mailer_transport;
-        $this->site_name              = $site_name;
-        $this->smtpauth               = $smtpauth;
-        $this->smtphost               = $smtphost;
-        $this->smtpuser               = $smtpuser;
-        $this->smtppass               = $smtppass;
-        $this->smtpsecure             = $smtpsecure;
-        $this->smtpport               = $smtpport;
-        $this->sendmail_path          = $sendmail_path;
-        $this->mailer_disable_sending = $mailer_disable_sending;
-        $this->mailer_only_deliver_to = $mailer_only_deliver_to;
-        $this->to                     = $to;
-        $this->from                   = $from;
-        $this->reply_to               = $reply_to;
-        $this->cc                     = $cc;
-        $this->bcc                    = $bcc;
-        $this->subject                = $subject;
-        $this->body                   = $body;
-        $this->mailer_html_or_text    = $mailer_html_or_text;
-        $this->attachment             = $attachment;
+        foreach ($this->property_array as $key) {
+            $this->$key = $key;
+        }
     }
 
     /**
@@ -364,46 +346,6 @@ abstract class AbstractAdapter implements EmailInterface
     }
 
     /**
-     * Filter String
-     *
-     * @param   string $string
-     *
-     * @return  string
-     * @since   1.0
-     * @throws  \CommonApi\Exception\UnexpectedValueException
-     */
-    protected function filterString($string)
-    {
-        $filtered = strip_tags($string, '<p><a><b><i>');
-
-        if ($filtered === false) {
-            throw new UnexpectedValueException ('Email Filter String Failed for: ' . $string);
-        }
-
-        return $filtered;
-    }
-
-    /**
-     * Filter Html
-     *
-     * @param   string $html
-     *
-     * @return  string
-     * @since   1.0
-     * @throws  \CommonApi\Exception\UnexpectedValueException
-     */
-    protected function filterHtml($html)
-    {
-        $filtered = htmlentities($html, ENT_QUOTES, 'UTF-8');
-
-        if ($filtered === false) {
-            throw new UnexpectedValueException ('Email Filter HTML Failed for: ' . $html);
-        }
-
-        return $filtered;
-    }
-
-    /**
      * Filter and send to phpMail email address and name values
      *
      * @param   string $list
@@ -434,19 +376,16 @@ abstract class AbstractAdapter implements EmailInterface
 
             $return_item = new stdClass();
 
-            $x = $this->extractEmailAddress($split[0]);
+            $x = $this->filterEmailAddress($split[0]);
 
             if ($x === false) {
             } else {
                 $return_item->email = $x;
-                $return_item->name  = '';
 
                 if (isset($split[1])) {
-                    $x = $this->extractName($split[1]);
-                    if ($x === false) {
-                    } else {
-                        $return_item->name = $x;
-                    }
+                    $return_item->name = $this->filterString($split[1]);
+                } else {
+                    $return_item->name  = '';
                 }
 
                 $return_results[] = $return_item;
@@ -457,7 +396,7 @@ abstract class AbstractAdapter implements EmailInterface
     }
 
     /**
-     * Filter Email Address
+     * Validate Email Address
      *
      * @param   string $email_address
      *
@@ -467,46 +406,44 @@ abstract class AbstractAdapter implements EmailInterface
      */
     protected function filterEmailAddress($email_address)
     {
-        $filtered = filter_var($this->mailer_only_deliver_to, FILTER_SANITIZE_EMAIL);
+        if (filter_var($email_address, FILTER_VALIDATE_EMAIL)) {
+            return $email_address;
+        }
+
+        throw new UnexpectedValueException('Email Filter Email Address Failed for: ' . $email_address);
+    }
+
+    /**
+     * Filter String
+     *
+     * @param   string $string
+     *
+     * @return  string
+     * @since   1.0
+     * @throws  \CommonApi\Exception\UnexpectedValueException
+     */
+    protected function filterString($string)
+    {
+        return strip_tags($string, '<p><a><b><i>');
+    }
+
+    /**
+     * Filter Html
+     *
+     * @param   string $html
+     *
+     * @return  string
+     * @since   1.0
+     * @throws  \CommonApi\Exception\UnexpectedValueException
+     */
+    protected function filterHtml($html)
+    {
+        $filtered = htmlentities($html, ENT_QUOTES, 'UTF-8');
 
         if ($filtered === false) {
-            throw new UnexpectedValueException('Email Filter Email Address Failed for: ' . $email_address);
+            throw new UnexpectedValueException ('Email Filter HTML Failed for: ' . $html);
         }
 
         return $filtered;
-    }
-
-    /**
-     * Get Email Address
-     *
-     * @return  $this
-     * @since   1.0
-     */
-    protected function extractEmailAddress($email)
-    {
-        $results = $this->filterEmailAddress($email);
-
-        if ($results === false || trim($email) === '') {
-            return false;
-        }
-
-        return $email;
-    }
-
-    /**
-     * Get Email Address
-     *
-     * @return  $this
-     * @since   1.0
-     */
-    protected function extractName($name)
-    {
-        $results = (string)$name;
-
-        if ($results === false || trim($name) === '') {
-            return false;
-        }
-
-        return $name;
     }
 }

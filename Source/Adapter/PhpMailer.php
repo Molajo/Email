@@ -315,29 +315,7 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
      */
     protected function setCC()
     {
-        $list = $this->setRecipient($this->cc);
-
-        if (is_array($list) && count($list) > 0) {
-        } else {
-            return $this;
-        }
-
-        foreach ($list as $item) {
-
-            try {
-                $results = $this->email_instance->addCC($item->email, $item->name);
-
-            } catch (Exception $e) {
-
-                throw new RuntimeException(
-                    'Email PhpMailer Adapter: Exception in setRecipient CC: ' . $e->getMessage()
-                );
-            }
-
-            if ($results === false) {
-                // OK when the cc is in the other lists
-            }
-        }
+        $this->setCopyRecipient('cc');
 
         return $this;
     }
@@ -351,7 +329,23 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
      */
     protected function setBCC()
     {
-        $list = $this->setRecipient($this->bcc);
+        $this->setCopyRecipient('bcc');
+
+        return $this;
+    }
+
+    /**
+     * Set BCC Recipient
+     *
+     * @param   string  $type
+     *
+     * @return  $this
+     * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException
+     */
+    protected function setCopyRecipient($type)
+    {
+        $list = $this->setRecipient($this->$type);
 
         if (is_array($list)) {
         } else {
@@ -361,12 +355,13 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
         foreach ($list as $item) {
 
             try {
-                $results = $this->email_instance->addBCC($item->email, $item->name);
+                $model = 'add' . $type;
+                $results = $this->email_instance->$model($item->email, $item->name);
 
             } catch (Exception $e) {
 
                 throw new RuntimeException(
-                    'Email PhpMailer Adapter: Exception in setRecipient BCC: ' . $e->getMessage()
+                    'Email PhpMailer Adapter: Exception in setCopyRecipient ' . $type . ': ' . $e->getMessage()
                 );
             }
 
