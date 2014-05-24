@@ -120,6 +120,25 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
     {
         $this->email_instance->WordWrap = 50;
 
+        $filtered = $this->filterBody();
+
+        $this->email_instance->Body    = $filtered;
+
+        if ($this->mailer_html_or_text === 'html') {
+            $this->email_instance->AltBody = (string)$filtered;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Filter Body
+     *
+     * @return  string
+     * @since   1.0.0
+     */
+    protected function filterBody()
+    {
         if ($this->mailer_html_or_text == 'html') {
             $filtered = $this->filterHtml($this->body);
             $this->email_instance->isHTML(true);
@@ -134,13 +153,7 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
             );
         }
 
-        $this->email_instance->Body    = $filtered;
-
-        if ($this->mailer_html_or_text === 'html') {
-            $this->email_instance->AltBody = (string)$filtered;
-        }
-
-        return $this;
+        return $filtered;
     }
 
     /**
@@ -179,7 +192,6 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
      *
      * @return  $this
      * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function addEmailByType($type, $method)
     {
@@ -187,21 +199,36 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
 
         if (count($list) > 0) {
             foreach ($list as $item) {
-
-                try {
-                    if ($type === 'from') {
-                        $this->email_instance->From     = $item->email;
-                        $this->email_instance->FromName = $item->name;
-                    } else {
-                        $this->email_instance->$method($item->email, $item->name);
-                    }
-
-                } catch (Exception $e) {
-                    throw new RuntimeException(
-                        'Email PhpMailer Adapter: Exception in phpMailer: ' . $method . ' ' . $e->getMessage()
-                    );
-                }
+                $this->addEmailByTypeItem($type, $method, $item);
             }
+        }
+    }
+
+    /**
+     * Add Email By Type -- single Item
+     *
+     * @param   string $type
+     * @param   string $method
+     * @param   object $item
+     *
+     * @return  $this
+     * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException
+     */
+    protected function addEmailByTypeItem($type, $method, $item)
+    {
+        try {
+            if ($type === 'from') {
+                $this->email_instance->From     = $item->email;
+                $this->email_instance->FromName = $item->name;
+            } else {
+                $this->email_instance->$method($item->email, $item->name);
+            }
+
+        } catch (Exception $e) {
+            throw new RuntimeException(
+                'Email PhpMailer Adapter: Exception in phpMailer: ' . $method . ' ' . $e->getMessage()
+            );
         }
     }
 
