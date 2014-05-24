@@ -100,7 +100,7 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
     {
         $filtered = $this->filterString($this->subject);
 
-        if(trim($filtered) === '') {
+        if (trim($filtered) === '') {
             $filtered = $this->filterString($this->site_name);
         }
 
@@ -187,8 +187,6 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
 
         if (count($list) > 0) {
             foreach ($list as $item) {
-
-                $results = true;
 
                 try {
                     if ($type === 'from') {

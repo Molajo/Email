@@ -375,14 +375,14 @@ abstract class AbstractAdapter implements EmailInterface
      */
     protected function setRecipient($list)
     {
+        $return_results = array();
+
         $items = explode(';', $list);
 
         if (count($items) > 0) {
         } else {
-            return false;
+            return $return_results;
         }
-
-        $return_results = array();
 
         foreach ($items as $item) {
             $return_item = $this->extractSingleEmailName($item);
@@ -469,7 +469,7 @@ abstract class AbstractAdapter implements EmailInterface
         $filtered = htmlentities($html, ENT_QUOTES, 'UTF-8');
 
         if ($filtered === false) {
-            throw new UnexpectedValueException ('Email Filter HTML Failed for: ' . $html);
+            throw new UnexpectedValueException('Email Filter HTML Failed for: ' . $html);
         }
 
         return $filtered;
