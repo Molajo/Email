@@ -38,14 +38,12 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
      *
      * @covers Molajo\Email\Adapter\PhpMailer::__construct
      * @covers Molajo\Email\Adapter\PhpMailer::send
-     * @covers Molajo\Email\Adapter\PhpMailer::setSubject
+     * @covers Molajo\Email\Adapter\PhpMailer::setOnlyDeliverTo
      * @covers Molajo\Email\Adapter\PhpMailer::setBody
      * @covers Molajo\Email\Adapter\PhpMailer::setAttachment
-     * @covers Molajo\Email\Adapter\PhpMailer::setReplyTo
-     * @covers Molajo\Email\Adapter\PhpMailer::from
-     * @covers Molajo\Email\Adapter\PhpMailer::setTo
-     * @covers Molajo\Email\Adapter\PhpMailer::setCC
-     * @covers Molajo\Email\Adapter\PhpMailer::setBCC
+     * @covers Molajo\Email\Adapter\PhpMailer::setMailerProperty
+     * @covers Molajo\Email\Adapter\PhpMailer::addEmailByType
+     * @covers Molajo\Email\Adapter\PhpMailer::sendMail
      *
      * @covers Molajo\Email\Adapter\AbstractAdapter::__construct
      * @covers Molajo\Email\Adapter\AbstractAdapter::set
@@ -123,14 +121,12 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
      *
      * @covers Molajo\Email\Adapter\PhpMailer::__construct
      * @covers Molajo\Email\Adapter\PhpMailer::send
-     * @covers Molajo\Email\Adapter\PhpMailer::setSubject
+     * @covers Molajo\Email\Adapter\PhpMailer::setOnlyDeliverTo
      * @covers Molajo\Email\Adapter\PhpMailer::setBody
      * @covers Molajo\Email\Adapter\PhpMailer::setAttachment
-     * @covers Molajo\Email\Adapter\PhpMailer::setReplyTo
-     * @covers Molajo\Email\Adapter\PhpMailer::from
-     * @covers Molajo\Email\Adapter\PhpMailer::setTo
-     * @covers Molajo\Email\Adapter\PhpMailer::setCC
-     * @covers Molajo\Email\Adapter\PhpMailer::setBCC
+     * @covers Molajo\Email\Adapter\PhpMailer::setMailerProperty
+     * @covers Molajo\Email\Adapter\PhpMailer::addEmailByType
+     * @covers Molajo\Email\Adapter\PhpMailer::sendMail
      *
      * @covers Molajo\Email\Adapter\AbstractAdapter::__construct
      * @covers Molajo\Email\Adapter\AbstractAdapter::set
@@ -159,14 +155,12 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
      *
      * @covers Molajo\Email\Adapter\PhpMailer::__construct
      * @covers Molajo\Email\Adapter\PhpMailer::send
-     * @covers Molajo\Email\Adapter\PhpMailer::setSubject
+     * @covers Molajo\Email\Adapter\PhpMailer::setOnlyDeliverTo
      * @covers Molajo\Email\Adapter\PhpMailer::setBody
      * @covers Molajo\Email\Adapter\PhpMailer::setAttachment
-     * @covers Molajo\Email\Adapter\PhpMailer::setReplyTo
-     * @covers Molajo\Email\Adapter\PhpMailer::from
-     * @covers Molajo\Email\Adapter\PhpMailer::setTo
-     * @covers Molajo\Email\Adapter\PhpMailer::setCC
-     * @covers Molajo\Email\Adapter\PhpMailer::setBCC
+     * @covers Molajo\Email\Adapter\PhpMailer::setMailerProperty
+     * @covers Molajo\Email\Adapter\PhpMailer::addEmailByType
+     * @covers Molajo\Email\Adapter\PhpMailer::sendMail
      *
      * @covers Molajo\Email\Adapter\AbstractAdapter::__construct
      * @covers Molajo\Email\Adapter\AbstractAdapter::set
@@ -195,14 +189,12 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
      *
      * @covers Molajo\Email\Adapter\PhpMailer::__construct
      * @covers Molajo\Email\Adapter\PhpMailer::send
-     * @covers Molajo\Email\Adapter\PhpMailer::setSubject
+     * @covers Molajo\Email\Adapter\PhpMailer::setOnlyDeliverTo
      * @covers Molajo\Email\Adapter\PhpMailer::setBody
      * @covers Molajo\Email\Adapter\PhpMailer::setAttachment
-     * @covers Molajo\Email\Adapter\PhpMailer::setReplyTo
-     * @covers Molajo\Email\Adapter\PhpMailer::from
-     * @covers Molajo\Email\Adapter\PhpMailer::setTo
-     * @covers Molajo\Email\Adapter\PhpMailer::setCC
-     * @covers Molajo\Email\Adapter\PhpMailer::setBCC
+     * @covers Molajo\Email\Adapter\PhpMailer::setMailerProperty
+     * @covers Molajo\Email\Adapter\PhpMailer::addEmailByType
+     * @covers Molajo\Email\Adapter\PhpMailer::sendMail
      *
      * @covers Molajo\Email\Adapter\AbstractAdapter::__construct
      * @covers Molajo\Email\Adapter\AbstractAdapter::set
@@ -227,7 +219,7 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
         $this->email->set('body', '<h2>Stuff goes here</h2>');
         $this->email->set('mailer_html_or_text', 'html');
         $this->email->set('attachment', $file);
-        /**
+
         $this->email->send();
 
         $results = $this->email->get('email_instance');
@@ -242,7 +234,6 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($results->Body, '&lt;h2&gt;Stuff goes here&lt;/h2&gt;');
         $this->assertEquals($results->mailer_html_or_text, true);
         $this->assertEquals($results->attachment, $file);
- */
     }
 
     /**
@@ -255,14 +246,12 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
      *
      * @covers Molajo\Email\Adapter\PhpMailer::__construct
      * @covers Molajo\Email\Adapter\PhpMailer::send
-     * @covers Molajo\Email\Adapter\PhpMailer::setSubject
+     * @covers Molajo\Email\Adapter\PhpMailer::setOnlyDeliverTo
      * @covers Molajo\Email\Adapter\PhpMailer::setBody
      * @covers Molajo\Email\Adapter\PhpMailer::setAttachment
-     * @covers Molajo\Email\Adapter\PhpMailer::setReplyTo
-     * @covers Molajo\Email\Adapter\PhpMailer::from
-     * @covers Molajo\Email\Adapter\PhpMailer::setTo
-     * @covers Molajo\Email\Adapter\PhpMailer::setCC
-     * @covers Molajo\Email\Adapter\PhpMailer::setBCC
+     * @covers Molajo\Email\Adapter\PhpMailer::setMailerProperty
+     * @covers Molajo\Email\Adapter\PhpMailer::addEmailByType
+     * @covers Molajo\Email\Adapter\PhpMailer::sendMail
      *
      * @covers Molajo\Email\Adapter\AbstractAdapter::__construct
      * @covers Molajo\Email\Adapter\AbstractAdapter::set
@@ -288,7 +277,7 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
         $this->email->set('mailer_html_or_text', 'text');
         $this->email->set('attachment', $file);
 
-/**        $this->email->send();
+        $this->email->send();
 
         $results = $this->email->get('email_instance');
 
@@ -302,7 +291,7 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($results->Body, 'Stuff goes here');
         $this->assertEquals($results->mailer_html_or_text, false);
         $this->assertEquals($results->attachment, $file);
- */
+
     }
 }
 
@@ -345,31 +334,32 @@ class PHPMailer
      * @var    object
      * @since  1.0
      */
-    public $property_array = array(
-        'mailer_transport',
-        'smtpauth',
-        'smtphost',
-        'smtpuser',
-        'smtppass',
-        'smtpsecure',
-        'smtpport',
-        'sendmail_path',
-        'mailer_disable_sending',
-        'mailer_only_deliver_to',
-        'to',
-        'from',
-        'reply_to',
-        'cc',
-        'bcc',
-        'Subject',
-        'From',
-        'FromName',
-        'Body',
-        'AltBody',
-        'WordWrap',
-        'mailer_html_or_text',
-        'attachment'
-    );
+    public $property_array
+        = array(
+            'mailer_transport',
+            'smtpauth',
+            'smtphost',
+            'smtpuser',
+            'smtppass',
+            'smtpsecure',
+            'smtpport',
+            'sendmail_path',
+            'mailer_disable_sending',
+            'mailer_only_deliver_to',
+            'to',
+            'from',
+            'reply_to',
+            'cc',
+            'bcc',
+            'Subject',
+            'From',
+            'FromName',
+            'Body',
+            'AltBody',
+            'WordWrap',
+            'mailer_html_or_text',
+            'attachment'
+        );
 
     public function isHTML($indicator)
     {

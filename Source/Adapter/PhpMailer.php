@@ -8,9 +8,9 @@
  */
 namespace Molajo\Email\Adapter;
 
-use Exception;
 use CommonApi\Email\EmailInterface;
 use CommonApi\Exception\RuntimeException;
+use Exception;
 
 /**
  * Edits, filters input, and sends email
@@ -48,70 +48,69 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
             return false;
         }
 
-        if (trim($this->mailer_only_deliver_to) == '') {
-        } else {
-            $filtered = $this->filterEmailAddress($this->mailer_only_deliver_to);
+        $this->setOnlyDeliverTo();
 
-            $this->reply_to = $filtered;
-            $this->from     = $filtered;
-            $this->to       = $filtered;
-            $this->cc       = '';
-            $this->bcc      = '';
-        }
-
-        $this->setSubject();
+        $this->setMailerProperty('subject', 'Subject', 'filterString');
         $this->setBody();
         $this->setAttachment();
-        $this->setReplyTo();
-        $this->from();
-        $this->setTo();
-        $this->setCC();
-        $this->setBCC();
 
-        try {
+        $this->addEmailByType('from', '');
+        $this->addEmailByType('reply_to', 'addReplyTo');
+        $this->addEmailByType('to', 'addAddress');
+        $this->addEmailByType('cc', 'addcc');
+        $this->addEmailByType('bcc', 'addbcc');
 
-            $response = $this->email_instance->send();
-
-            if ($response === false) {
-                throw new RuntimeException(
-                    'Email PhpMailer Adapter failed in send Method. Error: ' . $this->email_instance->ErrorInfo
-                );
-            }
-
-        } catch (Exception $e) {
-
-            throw new RuntimeException(
-                'Email PhpMailer Adapter: Caught Exception: ' . $e->getMessage()
-            );
-        }
+        $this->sendMail();
 
         return true;
     }
 
     /**
-     * Set Subject
+     * Only Deliver To
      *
      * @return  $this
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
-    protected function setSubject()
+    protected function setOnlyDeliverTo()
     {
-        $value = (string)$this->subject;
-
-        if (trim($value) === '') {
-            $value = $this->site_name;
+        if ($this->mailer_only_deliver_to === '') {
+            return $this;
         }
 
-        $this->subject = $this->filterString($value);
+        $filtered = $this->filterEmailAddress($this->mailer_only_deliver_to);
+
+        $this->reply_to = $filtered;
+        $this->from     = $filtered;
+        $this->to       = $filtered;
+        $this->cc       = '';
+        $this->bcc      = '';
+
+        return $this;
+    }
+
+    /**
+     * Set Mailer Property - for crying out loud...
+     *
+     * @param   string $field_name
+     * @param   string $target_field_name
+     * @param   string $filter
+     *
+     * @return  $this
+     * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException
+     */
+    protected function setMailerProperty($field_name, $target_field_name, $filter)
+    {
+        $filtered = $this->$filter($this->$field_name);
 
         try {
-            $this->email_instance->Subject = $this->subject;
+            $this->email_instance->$target_field_name = $filtered;
 
         } catch (Exception $e) {
 
             throw new RuntimeException(
-                'Email PhpMailer Adapter: Exception in setSubject: ' . $e->getMessage()
+                'Email Adapter: Exception in setMailerField for field: ' . $field_name . ' ' . $e->getMessage()
             );
         }
 
@@ -129,36 +128,26 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
     {
         $this->email_instance->WordWrap = 50;
 
-        try {
+        if ($this->mailer_html_or_text == 'html') {
+            $filtered = $this->filterHtml($this->body);
+        } else {
+            $filtered = $this->filterString($this->body);
+        }
 
-            if ($this->mailer_html_or_text == 'html') {
-                $results = $this->filterHtml($this->body);
-            } else {
-                $results = $this->filterString($this->body);
-            }
-
-            if ($results === false || trim($results) === '') {
-                throw new RuntimeException(
-                    'Email PhpMailer Adapter: No message body (HTML) sent in for email'
-                );
-            }
-
-            if ($this->mailer_html_or_text == 'html') {
-                $this->email_instance->isHTML(true);
-                $this->email_instance->Body    = $results;
-                $this->email_instance->AltBody = (string)$results;
-            } else {
-                $this->email_instance->isHTML(false);
-                $this->email_instance->Body = $results;
-            }
-
-        } catch (Exception $e) {
-
+        if ($filtered === false || trim($filtered) === '') {
             throw new RuntimeException(
-                'Email PhpMailer Adapter: Exception in setBody (HTML): ' . $e->getMessage()
+                'Email PhpMailer Adapter: No message body for email.'
             );
         }
 
+        if ($this->mailer_html_or_text === 'html') {
+            $this->email_instance->isHTML(true);
+            $this->email_instance->Body    = $filtered;
+            $this->email_instance->AltBody = (string)$filtered;
+        } else {
+            $this->email_instance->isHTML(false);
+            $this->email_instance->Body = $filtered;
+        }
 
         return $this;
     }
@@ -172,15 +161,9 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
      */
     protected function setAttachment()
     {
-        if ($this->attachment === '' || $this->attachment === null) {
-            return $this;
-        }
-
         if (file_exists($this->attachment)) {
         } else {
-            throw new RuntimeException(
-                'Email Attachment File does not exist: ' . $this->attachment
-            );
+            return $this;
         }
 
         try {
@@ -197,153 +180,17 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
     }
 
     /**
-     * Set Reply To Recipient
+     * Add email address to phpMailer
+     *
+     * @param   string $type
+     * @param   string $method
+     * @param   string $type
      *
      * @return  $this
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
-    protected function setReplyTo()
-    {
-        $list = $this->setRecipient($this->reply_to);
-
-        if (is_array($list) && count($list) > 0) {
-        } else {
-            return $this;
-        }
-
-        foreach ($list as $item) {
-
-            try {
-                $results = $this->email_instance->addReplyTo($item->email, $item->name);
-
-            } catch (Exception $e) {
-
-                throw new RuntimeException(
-                    'Email PhpMailer Adapter: Exception in setAttachment: ' . $e->getMessage()
-                );
-            }
-
-            if ($results === false) {
-                throw new RuntimeException(
-                    'Email PhpMailer Adapter: False return from phpMailer addReplyTo'
-                );
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * Set From Recipient
-     *
-     * @return  $this
-     * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException
-     */
-    protected function from()
-    {
-        $list = $this->setRecipient($this->from);
-
-        if (is_array($list)) {
-        } else {
-            return $this;
-        }
-
-        foreach ($list as $item) {
-
-            try {
-                $this->email_instance->From     = $item->email;
-                $this->email_instance->FromName = $item->name;
-
-            } catch (Exception $e) {
-
-                throw new RuntimeException(
-                    'Email PhpMailer Adapter: Exception in setRecipient setTo: ' . $e->getMessage()
-                );
-            }
-
-        }
-
-        return $this;
-    }
-
-    /**
-     * Set To Recipient
-     *
-     * @return  $this
-     * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException
-     */
-    protected function setTo()
-    {
-        $list = $this->setRecipient($this->to);
-
-        if (is_array($list)) {
-        } else {
-            return $this;
-        }
-
-        foreach ($list as $item) {
-
-            try {
-                $results = $this->email_instance->addAddress($item->email, $item->name);
-
-            } catch (Exception $e) {
-
-                throw new RuntimeException(
-                    'Email PhpMailer Adapter: Exception in setRecipient setTo: ' . $e->getMessage()
-                );
-            }
-
-            if ($results === false) {
-                throw new RuntimeException(
-                    'Email PhpMailer Adapter: False return from phpMailer setTo'
-                );
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * Set CC Recipient
-     *
-     * @return  $this
-     * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException
-     */
-    protected function setCC()
-    {
-        $this->setCopyRecipient('cc');
-
-        return $this;
-    }
-
-    /**
-     * Set BCC Recipient
-     *
-     * @return  $this
-     * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException
-     */
-    protected function setBCC()
-    {
-        $this->setCopyRecipient('bcc');
-
-        return $this;
-    }
-
-    /**
-     * Set BCC Recipient
-     *
-     * @param   string  $type
-     *
-     * @return  $this
-     * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException
-     */
-    protected function setCopyRecipient($type)
+    protected function addEmailByType($type, $method)
     {
         $list = $this->setRecipient($this->$type);
 
@@ -354,22 +201,55 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
 
         foreach ($list as $item) {
 
+            $results = true;
+
             try {
-                $model = 'add' . $type;
-                $results = $this->email_instance->$model($item->email, $item->name);
+                if ($type === 'from') {
+                    $this->email_instance->From     = $item->email;
+                    $this->email_instance->FromName = $item->name;
+                } else {
+                    $results = $this->email_instance->$method($item->email, $item->name);
+                }
 
             } catch (Exception $e) {
 
                 throw new RuntimeException(
-                    'Email PhpMailer Adapter: Exception in setCopyRecipient ' . $type . ': ' . $e->getMessage()
+                    'Email PhpMailer Adapter: Exception in phpMailer: ' . $method . ' ' . $e->getMessage()
                 );
             }
 
             if ($results === false) {
-                // OK when the bcc is in the other lists
+                throw new RuntimeException(
+                    'Email PhpMailer Adapter: Exception in phpMailer: ' . $method
+                );
             }
         }
+    }
 
-        return $this;
+    /**
+     * All fields processed, send email
+     *
+     * @return  $this
+     * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException
+     */
+    protected function sendMail()
+    {
+        try {
+
+            $response = $this->email_instance->send();
+
+            if ($response === false) {
+                throw new RuntimeException(
+                    'Email PhpMailer Adapter failed in send Method. Error: ' . $this->email_instance->ErrorInfo
+                );
+            }
+
+        } catch (Exception $e) {
+
+            throw new RuntimeException(
+                'Email PhpMailer Adapter: Caught Exception: ' . $e->getMessage()
+            );
+        }
     }
 }

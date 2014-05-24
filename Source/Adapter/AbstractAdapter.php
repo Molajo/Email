@@ -197,29 +197,30 @@ abstract class AbstractAdapter implements EmailInterface
      * @var    array
      * @since  1.0
      */
-    protected $property_array = array(
-        'email_instance',
-        'mailer_transport',
-        'site_name',
-        'smtpauth',
-        'smtphost',
-        'smtpuser',
-        'smtppass',
-        'smtpsecure',
-        'smtpport',
-        'sendmail_path',
-        'mailer_disable_sending',
-        'mailer_only_deliver_to',
-        'to',
-        'from',
-        'reply_to',
-        'cc',
-        'bcc',
-        'subject',
-        'body',
-        'mailer_html_or_text',
-        'attachment'
-    );
+    protected $property_array
+        = array(
+            'email_instance',
+            'mailer_transport',
+            'site_name',
+            'smtpauth',
+            'smtphost',
+            'smtpuser',
+            'smtppass',
+            'smtpsecure',
+            'smtpport',
+            'sendmail_path',
+            'mailer_disable_sending',
+            'mailer_only_deliver_to',
+            'to',
+            'from',
+            'reply_to',
+            'cc',
+            'bcc',
+            'subject',
+            'body',
+            'mailer_html_or_text',
+            'attachment'
+        );
 
     /**
      * Construct
@@ -271,9 +272,27 @@ abstract class AbstractAdapter implements EmailInterface
         $mailer_html_or_text = '',
         $attachment = ''
     ) {
-        foreach ($this->property_array as $key) {
-            $this->$key = $key;
-        }
+        $this->email_instance         = $email_instance;
+        $this->mailer_transport       = $mailer_transport;
+        $this->site_name              = $site_name;
+        $this->smtpauth               = $smtpauth;
+        $this->smtphost               = $smtphost;
+        $this->smtpuser               = $smtpuser;
+        $this->smtppass               = $smtppass;
+        $this->smtpsecure             = $smtpsecure;
+        $this->smtpport               = $smtpport;
+        $this->sendmail_path          = $sendmail_path;
+        $this->mailer_disable_sending = $mailer_disable_sending;
+        $this->mailer_only_deliver_to = $mailer_only_deliver_to;
+        $this->to                     = $to;
+        $this->from                   = $from;
+        $this->reply_to               = $reply_to;
+        $this->cc                     = $cc;
+        $this->bcc                    = $bcc;
+        $this->subject                = $subject;
+        $this->body                   = $body;
+        $this->mailer_html_or_text    = $mailer_html_or_text;
+        $this->attachment             = $attachment;
     }
 
     /**
@@ -385,7 +404,7 @@ abstract class AbstractAdapter implements EmailInterface
                 if (isset($split[1])) {
                     $return_item->name = $this->filterString($split[1]);
                 } else {
-                    $return_item->name  = '';
+                    $return_item->name = '';
                 }
 
                 $return_results[] = $return_item;
