@@ -39,10 +39,12 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
      * @covers Molajo\Email\Adapter\PhpMailer::__construct
      * @covers Molajo\Email\Adapter\PhpMailer::send
      * @covers Molajo\Email\Adapter\PhpMailer::setOnlyDeliverTo
-     * @covers Molajo\Email\Adapter\PhpMailer::setBody
-     * @covers Molajo\Email\Adapter\PhpMailer::setAttachment
      * @covers Molajo\Email\Adapter\PhpMailer::setSubject
+     * @covers Molajo\Email\Adapter\PhpMailer::setBody
+     * @covers Molajo\Email\Adapter\PhpMailer::filterBody
+     * @covers Molajo\Email\Adapter\PhpMailer::setAttachment
      * @covers Molajo\Email\Adapter\PhpMailer::addEmailByType
+     * @covers Molajo\Email\Adapter\PhpMailer::addEmailByTypeItem
      * @covers Molajo\Email\Adapter\PhpMailer::sendMail
      *
      * @covers Molajo\Email\Adapter\AbstractAdapter::__construct
@@ -122,10 +124,12 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
      * @covers Molajo\Email\Adapter\PhpMailer::__construct
      * @covers Molajo\Email\Adapter\PhpMailer::send
      * @covers Molajo\Email\Adapter\PhpMailer::setOnlyDeliverTo
-     * @covers Molajo\Email\Adapter\PhpMailer::setBody
-     * @covers Molajo\Email\Adapter\PhpMailer::setAttachment
      * @covers Molajo\Email\Adapter\PhpMailer::setSubject
+     * @covers Molajo\Email\Adapter\PhpMailer::setBody
+     * @covers Molajo\Email\Adapter\PhpMailer::filterBody
+     * @covers Molajo\Email\Adapter\PhpMailer::setAttachment
      * @covers Molajo\Email\Adapter\PhpMailer::addEmailByType
+     * @covers Molajo\Email\Adapter\PhpMailer::addEmailByTypeItem
      * @covers Molajo\Email\Adapter\PhpMailer::sendMail
      *
      * @covers Molajo\Email\Adapter\AbstractAdapter::__construct
@@ -156,10 +160,12 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
      * @covers Molajo\Email\Adapter\PhpMailer::__construct
      * @covers Molajo\Email\Adapter\PhpMailer::send
      * @covers Molajo\Email\Adapter\PhpMailer::setOnlyDeliverTo
-     * @covers Molajo\Email\Adapter\PhpMailer::setBody
-     * @covers Molajo\Email\Adapter\PhpMailer::setAttachment
      * @covers Molajo\Email\Adapter\PhpMailer::setSubject
+     * @covers Molajo\Email\Adapter\PhpMailer::setBody
+     * @covers Molajo\Email\Adapter\PhpMailer::filterBody
+     * @covers Molajo\Email\Adapter\PhpMailer::setAttachment
      * @covers Molajo\Email\Adapter\PhpMailer::addEmailByType
+     * @covers Molajo\Email\Adapter\PhpMailer::addEmailByTypeItem
      * @covers Molajo\Email\Adapter\PhpMailer::sendMail
      *
      * @covers Molajo\Email\Adapter\AbstractAdapter::__construct
@@ -190,10 +196,12 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
      * @covers Molajo\Email\Adapter\PhpMailer::__construct
      * @covers Molajo\Email\Adapter\PhpMailer::send
      * @covers Molajo\Email\Adapter\PhpMailer::setOnlyDeliverTo
-     * @covers Molajo\Email\Adapter\PhpMailer::setBody
-     * @covers Molajo\Email\Adapter\PhpMailer::setAttachment
      * @covers Molajo\Email\Adapter\PhpMailer::setSubject
+     * @covers Molajo\Email\Adapter\PhpMailer::setBody
+     * @covers Molajo\Email\Adapter\PhpMailer::filterBody
+     * @covers Molajo\Email\Adapter\PhpMailer::setAttachment
      * @covers Molajo\Email\Adapter\PhpMailer::addEmailByType
+     * @covers Molajo\Email\Adapter\PhpMailer::addEmailByTypeItem
      * @covers Molajo\Email\Adapter\PhpMailer::sendMail
      *
      * @covers Molajo\Email\Adapter\AbstractAdapter::__construct
@@ -247,10 +255,12 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
      * @covers Molajo\Email\Adapter\PhpMailer::__construct
      * @covers Molajo\Email\Adapter\PhpMailer::send
      * @covers Molajo\Email\Adapter\PhpMailer::setOnlyDeliverTo
-     * @covers Molajo\Email\Adapter\PhpMailer::setBody
-     * @covers Molajo\Email\Adapter\PhpMailer::setAttachment
      * @covers Molajo\Email\Adapter\PhpMailer::setSubject
+     * @covers Molajo\Email\Adapter\PhpMailer::setBody
+     * @covers Molajo\Email\Adapter\PhpMailer::filterBody
+     * @covers Molajo\Email\Adapter\PhpMailer::setAttachment
      * @covers Molajo\Email\Adapter\PhpMailer::addEmailByType
+     * @covers Molajo\Email\Adapter\PhpMailer::addEmailByTypeItem
      * @covers Molajo\Email\Adapter\PhpMailer::sendMail
      *
      * @covers Molajo\Email\Adapter\AbstractAdapter::__construct
