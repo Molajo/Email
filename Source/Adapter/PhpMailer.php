@@ -122,7 +122,7 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
 
         $filtered = $this->filterBody();
 
-        $this->email_instance->Body    = $filtered;
+        $this->email_instance->Body = $filtered;
 
         if ($this->mailer_html_or_text === 'html') {
             $this->email_instance->AltBody = (string)$filtered;

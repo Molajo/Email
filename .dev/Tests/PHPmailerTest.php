@@ -70,16 +70,6 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
         $smtpport               = '';
         $sendmail_path          = '';
         $mailer_disable_sending = 0;
-        $mailer_only_deliver_to = '';
-        $to                     = 'AmyStephen@gmail.com';
-        $from                   = 'AmyStephen@gmail.com';
-        $reply_to               = 'AmyStephen@gmail.com,Amy Stephen';
-        $cc                     = 'AmyStephen@gmail.com,Amy Stephen';
-        $bcc                    = 'AmyStephen@gmail.com';
-        $subject                = 'Test phpEmail';
-        $body                   = '<p>Message in here.</p>';
-        $mailer_html_or_text    = 'text';
-        $attachment             = '';
 
         $class = 'Molajo\\Email\\Adapter\\PhpMailer';
 
@@ -94,17 +84,7 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
             $smtpsecure,
             $smtpport,
             $sendmail_path,
-            $mailer_disable_sending,
-            $mailer_only_deliver_to,
-            $to,
-            $from,
-            $reply_to,
-            $cc,
-            $bcc,
-            $subject,
-            $body,
-            $mailer_html_or_text,
-            $attachment
+            $mailer_disable_sending
         );
 
         $class       = 'Molajo\\Email\\Driver';
@@ -277,6 +257,7 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
     {
         $file = __DIR__ . '/PHPmailerTest.php';
 
+        $this->email->set('mailer_only_deliver_to', '');
         $this->email->set('to', 'person@example.com,Person Name');
         $this->email->set('from', 'person@example.com,Person Name');
         $this->email->set('reply_to', 'person@example.com,Person Name');

@@ -200,16 +200,6 @@ abstract class AbstractAdapter implements EmailInterface
     protected $property_array
         = array(
             'email_instance',
-            'mailer_transport',
-            'site_name',
-            'smtpauth',
-            'smtphost',
-            'smtpuser',
-            'smtppass',
-            'smtpsecure',
-            'smtpport',
-            'sendmail_path',
-            'mailer_disable_sending',
             'mailer_only_deliver_to',
             'to',
             'from',
@@ -219,7 +209,8 @@ abstract class AbstractAdapter implements EmailInterface
             'subject',
             'body',
             'mailer_html_or_text',
-            'attachment'
+            'attachment',
+            'mailer_disable_sending'
         );
 
     /**
@@ -236,16 +227,6 @@ abstract class AbstractAdapter implements EmailInterface
      * @param   string $smtpport
      * @param   string $sendmail_path
      * @param   string $mailer_disable_sending
-     * @param   string $mailer_only_deliver_to
-     * @param   string $to
-     * @param   string $from
-     * @param   string $reply_to
-     * @param   string $cc
-     * @param   string $bcc
-     * @param   string $subject
-     * @param   string $body
-     * @param   string $mailer_html_or_text
-     * @param   string $attachment
      *
      * @since   1.0
      */
@@ -260,17 +241,7 @@ abstract class AbstractAdapter implements EmailInterface
         $smtpsecure = '',
         $smtpport = '',
         $sendmail_path = '',
-        $mailer_disable_sending = '',
-        $mailer_only_deliver_to = '',
-        $to = '',
-        $from = '',
-        $reply_to = '',
-        $cc = '',
-        $bcc = '',
-        $subject = '',
-        $body = '',
-        $mailer_html_or_text = '',
-        $attachment = ''
+        $mailer_disable_sending = ''
     ) {
         $this->email_instance         = $email_instance;
         $this->mailer_transport       = $mailer_transport;
@@ -283,16 +254,6 @@ abstract class AbstractAdapter implements EmailInterface
         $this->smtpport               = $smtpport;
         $this->sendmail_path          = $sendmail_path;
         $this->mailer_disable_sending = $mailer_disable_sending;
-        $this->mailer_only_deliver_to = $mailer_only_deliver_to;
-        $this->to                     = $to;
-        $this->from                   = $from;
-        $this->reply_to               = $reply_to;
-        $this->cc                     = $cc;
-        $this->bcc                    = $bcc;
-        $this->subject                = $subject;
-        $this->body                   = $body;
-        $this->mailer_html_or_text    = $mailer_html_or_text;
-        $this->attachment             = $attachment;
     }
 
     /**
