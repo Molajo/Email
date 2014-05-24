@@ -50,7 +50,7 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
 
         $this->setOnlyDeliverTo();
 
-        $this->setMailerProperty('subject', 'Subject', 'filterString');
+        $this->setSubject();
         $this->setBody();
         $this->setAttachment();
 
@@ -90,29 +90,21 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
     }
 
     /**
-     * Set Mailer Property - for crying out loud...
-     *
-     * @param   string $field_name
-     * @param   string $target_field_name
-     * @param   string $filter
+     * Set Subject
      *
      * @return  $this
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
-    protected function setMailerProperty($field_name, $target_field_name, $filter)
+    protected function setSubject()
     {
-        $filtered = $this->$filter($this->$field_name);
+        $filtered = $this->filterString($this->subject);
 
-        try {
-            $this->email_instance->$target_field_name = $filtered;
-
-        } catch (Exception $e) {
-
-            throw new RuntimeException(
-                'Email Adapter: Exception in setMailerField for field: ' . $field_name . ' ' . $e->getMessage()
-            );
+        if(trim($filtered) === '') {
+            $filtered = $this->filterString($this->site_name);
         }
+
+        $this->email_instance->Subject = $filtered;
 
         return $this;
     }
@@ -130,23 +122,22 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
 
         if ($this->mailer_html_or_text == 'html') {
             $filtered = $this->filterHtml($this->body);
+            $this->email_instance->isHTML(true);
         } else {
             $filtered = $this->filterString($this->body);
+            $this->email_instance->isHTML(false);
         }
 
-        if ($filtered === false || trim($filtered) === '') {
+        if (strlen($filtered) < 5) {
             throw new RuntimeException(
                 'Email PhpMailer Adapter: No message body for email.'
             );
         }
 
+        $this->email_instance->Body    = $filtered;
+
         if ($this->mailer_html_or_text === 'html') {
-            $this->email_instance->isHTML(true);
-            $this->email_instance->Body    = $filtered;
             $this->email_instance->AltBody = (string)$filtered;
-        } else {
-            $this->email_instance->isHTML(false);
-            $this->email_instance->Body = $filtered;
         }
 
         return $this;
@@ -194,34 +185,24 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
     {
         $list = $this->setRecipient($this->$type);
 
-        if (is_array($list)) {
-        } else {
-            return $this;
-        }
+        if (count($list) > 0) {
+            foreach ($list as $item) {
 
-        foreach ($list as $item) {
+                $results = true;
 
-            $results = true;
+                try {
+                    if ($type === 'from') {
+                        $this->email_instance->From     = $item->email;
+                        $this->email_instance->FromName = $item->name;
+                    } else {
+                        $this->email_instance->$method($item->email, $item->name);
+                    }
 
-            try {
-                if ($type === 'from') {
-                    $this->email_instance->From     = $item->email;
-                    $this->email_instance->FromName = $item->name;
-                } else {
-                    $results = $this->email_instance->$method($item->email, $item->name);
+                } catch (Exception $e) {
+                    throw new RuntimeException(
+                        'Email PhpMailer Adapter: Exception in phpMailer: ' . $method . ' ' . $e->getMessage()
+                    );
                 }
-
-            } catch (Exception $e) {
-
-                throw new RuntimeException(
-                    'Email PhpMailer Adapter: Exception in phpMailer: ' . $method . ' ' . $e->getMessage()
-                );
-            }
-
-            if ($results === false) {
-                throw new RuntimeException(
-                    'Email PhpMailer Adapter: Exception in phpMailer: ' . $method
-                );
             }
         }
     }

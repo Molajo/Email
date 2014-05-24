@@ -365,7 +365,7 @@ abstract class AbstractAdapter implements EmailInterface
     }
 
     /**
-     * Filter and send to phpMail email address and name values
+     * Filter and send to email address and name values
      *
      * @param   string $list
      *
@@ -377,41 +377,50 @@ abstract class AbstractAdapter implements EmailInterface
     {
         $items = explode(';', $list);
 
-        if (count($items) > 0 && is_array($items)) {
+        if (count($items) > 0) {
         } else {
             return false;
         }
 
         $return_results = array();
 
-        foreach ($items as $split_this) {
-
-            $split = explode(',', $split_this);
-
-            if (is_array($split) && count($split) > 0) {
+        foreach ($items as $item) {
+            $return_item = $this->extractSingleEmailName($item);
+            if ($return_item === false) {
             } else {
-                break;
-            }
-
-            $return_item = new stdClass();
-
-            $x = $this->filterEmailAddress($split[0]);
-
-            if ($x === false) {
-            } else {
-                $return_item->email = $x;
-
-                if (isset($split[1])) {
-                    $return_item->name = $this->filterString($split[1]);
-                } else {
-                    $return_item->name = '';
-                }
-
                 $return_results[] = $return_item;
             }
         }
 
         return $return_results;
+    }
+
+    /**
+     * Extract an email address and name
+     *
+     * @param   string $item
+     *
+     * @return  stdClass
+     * @since   1.0
+     */
+    protected function extractSingleEmailName($item)
+    {
+        $split = explode(',', $item);
+
+        if (count($split) === 0) {
+            return false;
+        }
+
+        $return_item        = new stdClass();
+        $return_item->email = $this->filterEmailAddress($split[0]);
+
+        if (count($split) > 1) {
+            $return_item->name = $this->filterString($split[1]);
+        } else {
+            $return_item->name = '';
+        }
+
+        return $return_item;
     }
 
     /**

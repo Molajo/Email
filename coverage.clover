@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1400970851">
-  <project timestamp="1400970851">
+<coverage generated="1400972072">
+  <project timestamp="1400972072">
     <file name="/Users/amystephen/Sites/Molajo/Email/.dev/Bootstrap.php">
       <line num="27" type="stmt" count="0"/>
       <line num="28" type="stmt" count="0"/>
@@ -37,7 +37,7 @@
     <package name="Molajo\Email\Adapter">
       <file name="/Users/amystephen/Sites/Molajo/Email/Source/Adapter/AbstractAdapter.php">
         <class name="AbstractAdapter" namespace="Molajo\Email\Adapter" fullPackage="Molajo" package="Molajo">
-          <metrics methods="9" coveredmethods="7" conditionals="0" coveredconditionals="0" statements="67" coveredstatements="56" elements="76" coveredelements="63"/>
+          <metrics methods="10" coveredmethods="7" conditionals="0" coveredconditionals="0" statements="67" coveredstatements="48" elements="77" coveredelements="55"/>
         </class>
         <line num="252" type="method" name="__construct" crap="1" count="4"/>
         <line num="275" type="stmt" count="4"/>
@@ -81,46 +81,47 @@
         <line num="354" type="method" name="send" crap="1" count="0"/>
         <line num="362" type="method" name="close" crap="2" count="0"/>
         <line num="364" type="stmt" count="0"/>
-        <line num="376" type="method" name="setRecipient" crap="8.38" count="2"/>
+        <line num="376" type="method" name="setRecipient" crap="4.07" count="2"/>
         <line num="378" type="stmt" count="2"/>
         <line num="380" type="stmt" count="2"/>
         <line num="381" type="stmt" count="2"/>
         <line num="382" type="stmt" count="0"/>
         <line num="385" type="stmt" count="2"/>
         <line num="387" type="stmt" count="2"/>
+        <line num="388" type="stmt" count="2"/>
         <line num="389" type="stmt" count="2"/>
+        <line num="390" type="stmt" count="0"/>
         <line num="391" type="stmt" count="2"/>
-        <line num="392" type="stmt" count="2"/>
-        <line num="393" type="stmt" count="0"/>
-        <line num="396" type="stmt" count="2"/>
-        <line num="398" type="stmt" count="2"/>
-        <line num="400" type="stmt" count="2"/>
-        <line num="401" type="stmt" count="0"/>
-        <line num="402" type="stmt" count="2"/>
-        <line num="404" type="stmt" count="2"/>
-        <line num="405" type="stmt" count="2"/>
-        <line num="406" type="stmt" count="2"/>
-        <line num="407" type="stmt" count="0"/>
-        <line num="410" type="stmt" count="2"/>
-        <line num="412" type="stmt" count="2"/>
-        <line num="414" type="stmt" count="2"/>
-        <line num="426" type="method" name="filterEmailAddress" crap="2.15" count="2"/>
-        <line num="428" type="stmt" count="2"/>
-        <line num="429" type="stmt" count="2"/>
-        <line num="432" type="stmt" count="0"/>
-        <line num="444" type="method" name="filterString" crap="1" count="2"/>
-        <line num="446" type="stmt" count="2"/>
-        <line num="458" type="method" name="filterHtml" crap="2.06" count="1"/>
-        <line num="460" type="stmt" count="1"/>
-        <line num="462" type="stmt" count="1"/>
-        <line num="463" type="stmt" count="0"/>
-        <line num="466" type="stmt" count="1"/>
-        <line num="469" type="stmt" count="0"/>
-        <metrics loc="468" ncloc="226" classes="1" methods="8" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="67" coveredstatements="56" elements="75" coveredelements="58"/>
+        <line num="393" type="stmt" count="2"/>
+        <line num="395" type="stmt" count="2"/>
+        <line num="406" type="method" name="extractSingleEmailName" crap="12" count="0"/>
+        <line num="408" type="stmt" count="0"/>
+        <line num="410" type="stmt" count="0"/>
+        <line num="411" type="stmt" count="0"/>
+        <line num="414" type="stmt" count="0"/>
+        <line num="415" type="stmt" count="0"/>
+        <line num="417" type="stmt" count="0"/>
+        <line num="418" type="stmt" count="0"/>
+        <line num="419" type="stmt" count="0"/>
+        <line num="420" type="stmt" count="0"/>
+        <line num="423" type="stmt" count="0"/>
+        <line num="435" type="method" name="filterEmailAddress" crap="2.15" count="2"/>
+        <line num="437" type="stmt" count="2"/>
+        <line num="438" type="stmt" count="2"/>
+        <line num="441" type="stmt" count="0"/>
+        <line num="453" type="method" name="filterString" crap="1" count="2"/>
+        <line num="455" type="stmt" count="2"/>
+        <line num="467" type="method" name="filterHtml" crap="2.06" count="1"/>
+        <line num="469" type="stmt" count="1"/>
+        <line num="471" type="stmt" count="1"/>
+        <line num="472" type="stmt" count="0"/>
+        <line num="475" type="stmt" count="1"/>
+        <line num="478" type="stmt" count="0"/>
+        <metrics loc="477" ncloc="227" classes="1" methods="9" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="67" coveredstatements="48" elements="76" coveredelements="50"/>
       </file>
       <file name="/Users/amystephen/Sites/Molajo/Email/Source/Adapter/PhpMailer.php">
         <class name="PhpMailer" namespace="Molajo\Email\Adapter" fullPackage="Molajo.Service" package="Molajo" subpackage="Service">
-          <metrics methods="7" coveredmethods="7" conditionals="0" coveredconditionals="0" statements="84" coveredstatements="55" elements="91" coveredelements="62"/>
+          <metrics methods="7" coveredmethods="7" conditionals="0" coveredconditionals="0" statements="78" coveredstatements="53" elements="85" coveredelements="60"/>
         </class>
         <line num="45" type="method" name="send" crap="2.00" count="2"/>
         <line num="47" type="stmt" count="2"/>
@@ -146,75 +147,69 @@
         <line num="86" type="stmt" count="0"/>
         <line num="87" type="stmt" count="0"/>
         <line num="89" type="stmt" count="0"/>
-        <line num="103" type="method" name="setMailerProperty" crap="2.31" count="2"/>
-        <line num="105" type="stmt" count="2"/>
-        <line num="108" type="stmt" count="2"/>
-        <line num="110" type="stmt" count="2"/>
-        <line num="112" type="stmt" count="0"/>
-        <line num="113" type="stmt" count="0"/>
-        <line num="114" type="stmt" count="0"/>
-        <line num="117" type="stmt" count="2"/>
-        <line num="127" type="method" name="setBody" crap="5.05" count="2"/>
-        <line num="129" type="stmt" count="2"/>
+        <line num="99" type="method" name="setSubject" crap="2.15" count="2"/>
+        <line num="101" type="stmt" count="2"/>
+        <line num="103" type="stmt" count="2"/>
+        <line num="104" type="stmt" count="0"/>
+        <line num="105" type="stmt" count="0"/>
+        <line num="107" type="stmt" count="2"/>
+        <line num="109" type="stmt" count="2"/>
+        <line num="119" type="method" name="setBody" crap="4.04" count="2"/>
+        <line num="121" type="stmt" count="2"/>
+        <line num="123" type="stmt" count="2"/>
+        <line num="124" type="stmt" count="1"/>
+        <line num="125" type="stmt" count="1"/>
+        <line num="126" type="stmt" count="1"/>
+        <line num="127" type="stmt" count="1"/>
+        <line num="128" type="stmt" count="1"/>
         <line num="131" type="stmt" count="2"/>
-        <line num="132" type="stmt" count="1"/>
-        <line num="133" type="stmt" count="1"/>
-        <line num="134" type="stmt" count="1"/>
+        <line num="132" type="stmt" count="0"/>
+        <line num="134" type="stmt" count="0"/>
         <line num="137" type="stmt" count="2"/>
-        <line num="138" type="stmt" count="0"/>
-        <line num="140" type="stmt" count="0"/>
+        <line num="139" type="stmt" count="2"/>
+        <line num="140" type="stmt" count="1"/>
+        <line num="141" type="stmt" count="1"/>
         <line num="143" type="stmt" count="2"/>
-        <line num="144" type="stmt" count="1"/>
-        <line num="145" type="stmt" count="1"/>
-        <line num="146" type="stmt" count="1"/>
-        <line num="147" type="stmt" count="1"/>
-        <line num="148" type="stmt" count="1"/>
-        <line num="149" type="stmt" count="1"/>
-        <line num="152" type="stmt" count="2"/>
-        <line num="162" type="method" name="setAttachment" crap="3.79" count="2"/>
-        <line num="164" type="stmt" count="2"/>
-        <line num="165" type="stmt" count="2"/>
+        <line num="153" type="method" name="setAttachment" crap="3.79" count="2"/>
+        <line num="155" type="stmt" count="2"/>
+        <line num="156" type="stmt" count="2"/>
+        <line num="157" type="stmt" count="0"/>
+        <line num="161" type="stmt" count="2"/>
+        <line num="163" type="stmt" count="2"/>
+        <line num="165" type="stmt" count="0"/>
         <line num="166" type="stmt" count="0"/>
+        <line num="167" type="stmt" count="0"/>
         <line num="170" type="stmt" count="2"/>
-        <line num="172" type="stmt" count="2"/>
-        <line num="174" type="stmt" count="0"/>
-        <line num="175" type="stmt" count="0"/>
-        <line num="176" type="stmt" count="0"/>
-        <line num="179" type="stmt" count="2"/>
-        <line num="193" type="method" name="addEmailByType" crap="6.97" count="2"/>
+        <line num="184" type="method" name="addEmailByType" crap="5.16" count="2"/>
+        <line num="186" type="stmt" count="2"/>
+        <line num="188" type="stmt" count="2"/>
+        <line num="189" type="stmt" count="2"/>
+        <line num="191" type="stmt" count="2"/>
+        <line num="194" type="stmt" count="2"/>
         <line num="195" type="stmt" count="2"/>
+        <line num="196" type="stmt" count="2"/>
         <line num="197" type="stmt" count="2"/>
         <line num="198" type="stmt" count="2"/>
-        <line num="199" type="stmt" count="0"/>
-        <line num="202" type="stmt" count="2"/>
-        <line num="204" type="stmt" count="2"/>
+        <line num="201" type="stmt" count="2"/>
+        <line num="202" type="stmt" count="0"/>
+        <line num="203" type="stmt" count="0"/>
+        <line num="204" type="stmt" count="0"/>
+        <line num="206" type="stmt" count="2"/>
         <line num="207" type="stmt" count="2"/>
         <line num="208" type="stmt" count="2"/>
-        <line num="209" type="stmt" count="2"/>
-        <line num="210" type="stmt" count="2"/>
-        <line num="211" type="stmt" count="2"/>
-        <line num="214" type="stmt" count="2"/>
-        <line num="216" type="stmt" count="0"/>
-        <line num="217" type="stmt" count="0"/>
-        <line num="218" type="stmt" count="0"/>
+        <line num="217" type="method" name="sendMail" crap="4.94" count="2"/>
         <line num="221" type="stmt" count="2"/>
-        <line num="222" type="stmt" count="0"/>
+        <line num="223" type="stmt" count="2"/>
         <line num="224" type="stmt" count="0"/>
-        <line num="226" type="stmt" count="2"/>
-        <line num="227" type="stmt" count="2"/>
-        <line num="236" type="method" name="sendMail" crap="4.94" count="2"/>
-        <line num="240" type="stmt" count="2"/>
-        <line num="242" type="stmt" count="2"/>
-        <line num="243" type="stmt" count="0"/>
-        <line num="244" type="stmt" count="0"/>
-        <line num="245" type="stmt" count="0"/>
-        <line num="248" type="stmt" count="2"/>
-        <line num="250" type="stmt" count="0"/>
-        <line num="251" type="stmt" count="0"/>
-        <line num="252" type="stmt" count="0"/>
-        <line num="254" type="stmt" count="2"/>
-        <line num="256" type="stmt" count="0"/>
-        <metrics loc="255" ncloc="170" classes="1" methods="7" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="84" coveredstatements="55" elements="91" coveredelements="55"/>
+        <line num="225" type="stmt" count="0"/>
+        <line num="226" type="stmt" count="0"/>
+        <line num="229" type="stmt" count="2"/>
+        <line num="231" type="stmt" count="0"/>
+        <line num="232" type="stmt" count="0"/>
+        <line num="233" type="stmt" count="0"/>
+        <line num="235" type="stmt" count="2"/>
+        <line num="237" type="stmt" count="0"/>
+        <metrics loc="236" ncloc="155" classes="1" methods="7" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="78" coveredstatements="53" elements="85" coveredelements="53"/>
       </file>
     </package>
     <package name="Molajo\Email">
@@ -481,6 +476,6 @@
       <line num="26" type="stmt" count="0"/>
       <metrics loc="30" ncloc="16" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="0" elements="2" coveredelements="0"/>
     </file>
-    <metrics files="10" loc="1486" ncloc="860" classes="6" methods="41" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="379" coveredstatements="121" elements="420" coveredelements="127"/>
+    <metrics files="10" loc="1476" ncloc="846" classes="6" methods="42" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="373" coveredstatements="111" elements="415" coveredelements="117"/>
   </project>
 </coverage>
