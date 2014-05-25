@@ -258,4 +258,16 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
             );
         }
     }
+
+    /**
+     * All fields processed, send email
+     *
+     * @return  $this
+     * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException
+     */
+    public function close()
+    {
+        return $this;
+    }
 }

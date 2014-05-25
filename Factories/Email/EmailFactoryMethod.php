@@ -84,16 +84,6 @@ class EmailFactoryMethod extends FactoryMethodBase implements FactoryInterface, 
         $this->dependencies['smtpport']               = null;
         $this->dependencies['sendmail_path']          = null;
         $this->dependencies['mailer_disable_sending'] = null;
-        $this->dependencies['mailer_only_deliver_to'] = null;
-        $this->dependencies['to']                     = null;
-        $this->dependencies['from']                   = null;
-        $this->dependencies['reply_to']               = null;
-        $this->dependencies['cc']                     = null;
-        $this->dependencies['bcc']                    = null;
-        $this->dependencies['subject']                = null;
-        $this->dependencies['body']                   = null;
-        $this->dependencies['mailer_html_or_text']    = null;
-        $this->dependencies['attachment']             = null;
 
         $this->dependencies['mailer_transport']
             = $this->dependencies['Runtimedata']->application->parameters->mailer_transport;
@@ -205,17 +195,7 @@ class EmailFactoryMethod extends FactoryMethodBase implements FactoryInterface, 
                 $this->dependencies['smtpsecure'],
                 $this->dependencies['smtpport'],
                 $this->dependencies['sendmail_path'],
-                $this->dependencies['mailer_disable_sending'],
-                $this->dependencies['mailer_only_deliver_to'],
-                $this->dependencies['to'],
-                $this->dependencies['from'],
-                $this->dependencies['reply_to'],
-                $this->dependencies['cc'],
-                $this->dependencies['bcc'],
-                $this->dependencies['subject'],
-                $this->dependencies['body'],
-                $this->dependencies['mailer_html_or_text'],
-                $this->dependencies['attachment']
+                $this->dependencies['mailer_disable_sending']
             );
         } catch (Exception $e) {
 

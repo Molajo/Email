@@ -53,6 +53,7 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
      * @covers Molajo\Email\Adapter\AbstractAdapter::send
      * @covers Molajo\Email\Adapter\AbstractAdapter::close
      * @covers Molajo\Email\Adapter\AbstractAdapter::setRecipient
+     * @covers Molajo\Email\Adapter\AbstractAdapter::extractSingleEmailName
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterEmailAddress
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterString
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterHtml
@@ -118,6 +119,7 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
      * @covers Molajo\Email\Adapter\AbstractAdapter::send
      * @covers Molajo\Email\Adapter\AbstractAdapter::close
      * @covers Molajo\Email\Adapter\AbstractAdapter::setRecipient
+     * @covers Molajo\Email\Adapter\AbstractAdapter::extractSingleEmailName
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterEmailAddress
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterString
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterHtml
@@ -154,6 +156,7 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
      * @covers Molajo\Email\Adapter\AbstractAdapter::send
      * @covers Molajo\Email\Adapter\AbstractAdapter::close
      * @covers Molajo\Email\Adapter\AbstractAdapter::setRecipient
+     * @covers Molajo\Email\Adapter\AbstractAdapter::extractSingleEmailName
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterEmailAddress
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterString
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterHtml
@@ -190,6 +193,7 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
      * @covers Molajo\Email\Adapter\AbstractAdapter::send
      * @covers Molajo\Email\Adapter\AbstractAdapter::close
      * @covers Molajo\Email\Adapter\AbstractAdapter::setRecipient
+     * @covers Molajo\Email\Adapter\AbstractAdapter::extractSingleEmailName
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterEmailAddress
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterString
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterHtml
@@ -249,6 +253,7 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
      * @covers Molajo\Email\Adapter\AbstractAdapter::send
      * @covers Molajo\Email\Adapter\AbstractAdapter::close
      * @covers Molajo\Email\Adapter\AbstractAdapter::setRecipient
+     * @covers Molajo\Email\Adapter\AbstractAdapter::extractSingleEmailName
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterEmailAddress
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterString
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterHtml
@@ -309,6 +314,7 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
      * @covers Molajo\Email\Adapter\AbstractAdapter::send
      * @covers Molajo\Email\Adapter\AbstractAdapter::close
      * @covers Molajo\Email\Adapter\AbstractAdapter::setRecipient
+     * @covers Molajo\Email\Adapter\AbstractAdapter::extractSingleEmailName
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterEmailAddress
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterString
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterHtml
@@ -361,6 +367,7 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
      * @covers Molajo\Email\Adapter\AbstractAdapter::send
      * @covers Molajo\Email\Adapter\AbstractAdapter::close
      * @covers Molajo\Email\Adapter\AbstractAdapter::setRecipient
+     * @covers Molajo\Email\Adapter\AbstractAdapter::extractSingleEmailName
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterEmailAddress
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterString
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterHtml
@@ -395,6 +402,7 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($results->mailer_html_or_text, false);
         $this->assertEquals($results->attachment, $file);
     }
+
     /**
      * Test all parameters sent in for an HTML email
      *
@@ -420,6 +428,7 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
      * @covers Molajo\Email\Adapter\AbstractAdapter::send
      * @covers Molajo\Email\Adapter\AbstractAdapter::close
      * @covers Molajo\Email\Adapter\AbstractAdapter::setRecipient
+     * @covers Molajo\Email\Adapter\AbstractAdapter::extractSingleEmailName
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterEmailAddress
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterString
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterHtml
@@ -452,6 +461,132 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($results->Body, 'Stuff goes here');
         $this->assertEquals($results->mailer_html_or_text, false);
         $this->assertEquals($results->attachment, $file);
+    }
+
+    /**
+     * Test all parameters sent in for an HTML email
+     *
+     * @covers                   Molajo\Email\Driver::__construct
+     * @covers                   Molajo\Email\Driver::get
+     * @covers                   Molajo\Email\Driver::set
+     * @covers                   Molajo\Email\Driver::send
+     *
+     * @covers                   Molajo\Email\Adapter\PhpMailer::__construct
+     * @covers                   Molajo\Email\Adapter\PhpMailer::send
+     * @covers                   Molajo\Email\Adapter\PhpMailer::setOnlyDeliverTo
+     * @covers                   Molajo\Email\Adapter\PhpMailer::setSubject
+     * @covers                   Molajo\Email\Adapter\PhpMailer::setBody
+     * @covers                   Molajo\Email\Adapter\PhpMailer::filterBody
+     * @covers                   Molajo\Email\Adapter\PhpMailer::setAttachment
+     * @covers                   Molajo\Email\Adapter\PhpMailer::addEmailByType
+     * @covers                   Molajo\Email\Adapter\PhpMailer::addEmailByTypeItem
+     * @covers                   Molajo\Email\Adapter\PhpMailer::sendMail
+     *
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::__construct
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::set
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::get
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::send
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::close
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::setRecipient
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::extractSingleEmailName
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::filterEmailAddress
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::filterString
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::filterHtml
+     *
+     * @expectedException \CommonApi\Exception\RuntimeException
+     * @expectedExceptionMessage Email: attempting to set value for unknown property: nope
+     */
+    public function testInvalidSet()
+    {
+        $this->email->set('nope', '');
+    }
+
+    /**
+     * Test all parameters sent in for an HTML email
+     *
+     * @covers                   Molajo\Email\Driver::__construct
+     * @covers                   Molajo\Email\Driver::get
+     * @covers                   Molajo\Email\Driver::set
+     * @covers                   Molajo\Email\Driver::send
+     *
+     * @covers                   Molajo\Email\Adapter\PhpMailer::__construct
+     * @covers                   Molajo\Email\Adapter\PhpMailer::send
+     * @covers                   Molajo\Email\Adapter\PhpMailer::setOnlyDeliverTo
+     * @covers                   Molajo\Email\Adapter\PhpMailer::setSubject
+     * @covers                   Molajo\Email\Adapter\PhpMailer::setBody
+     * @covers                   Molajo\Email\Adapter\PhpMailer::filterBody
+     * @covers                   Molajo\Email\Adapter\PhpMailer::setAttachment
+     * @covers                   Molajo\Email\Adapter\PhpMailer::addEmailByType
+     * @covers                   Molajo\Email\Adapter\PhpMailer::addEmailByTypeItem
+     * @covers                   Molajo\Email\Adapter\PhpMailer::sendMail
+     *
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::__construct
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::set
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::get
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::send
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::close
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::setRecipient
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::extractSingleEmailName
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::filterEmailAddress
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::filterString
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::filterHtml
+     *
+     * @expectedException \CommonApi\Exception\RuntimeException
+     * @expectedExceptionMessage Email: attempting to get value for unknown property: nope
+     */
+    public function testInvalidGet()
+    {
+        $this->email->get('nope', '');
+    }
+
+    /**
+     * Test all parameters sent in for an HTML email
+     *
+     * @covers                   Molajo\Email\Driver::__construct
+     * @covers                   Molajo\Email\Driver::get
+     * @covers                   Molajo\Email\Driver::set
+     * @covers                   Molajo\Email\Driver::send
+     *
+     * @covers                   Molajo\Email\Adapter\PhpMailer::__construct
+     * @covers                   Molajo\Email\Adapter\PhpMailer::send
+     * @covers                   Molajo\Email\Adapter\PhpMailer::setOnlyDeliverTo
+     * @covers                   Molajo\Email\Adapter\PhpMailer::setSubject
+     * @covers                   Molajo\Email\Adapter\PhpMailer::setBody
+     * @covers                   Molajo\Email\Adapter\PhpMailer::filterBody
+     * @covers                   Molajo\Email\Adapter\PhpMailer::setAttachment
+     * @covers                   Molajo\Email\Adapter\PhpMailer::addEmailByType
+     * @covers                   Molajo\Email\Adapter\PhpMailer::addEmailByTypeItem
+     * @covers                   Molajo\Email\Adapter\PhpMailer::sendMail
+     *
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::__construct
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::set
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::get
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::send
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::close
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::setRecipient
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::extractSingleEmailName
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::extractSingleEmailName
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::filterEmailAddress
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::filterString
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::filterHtml
+     *
+     * @expectedException \CommonApi\Exception\UnexpectedValueException
+     * @expectedExceptionMessage Email Filter Email Address Failed
+     */
+    public function testInvalidEmailAddress()
+    {
+        $file = __DIR__ . '/test.txt';
+        $this->email->set('mailer_only_deliver_to', '');
+        $this->email->set('to', 'dogfood,Person Name');
+        $this->email->set('from', 'person@example.com,Person Name');
+        $this->email->set('reply_to', 'person@example.com,Person Name');
+        $this->email->set('cc', 'person@example.com,Person Name');
+        $this->email->set('bcc', 'person@example.com,Person Name');
+        $this->email->set('body', '<h2>Stuff goes here</h2>');
+        $this->email->set('mailer_html_or_text', 'text');
+        $this->email->set('attachment', $file);
+
+        $this->email->send();
     }
 }
 

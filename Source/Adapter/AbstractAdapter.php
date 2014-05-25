@@ -240,8 +240,7 @@ abstract class AbstractAdapter implements EmailInterface
         $smtppass = '',
         $smtpsecure = '',
         $smtpport = '',
-        $sendmail_path = '',
-        $mailer_disable_sending = ''
+        $sendmail_path = ''
     ) {
         $this->email_instance         = $email_instance;
         $this->mailer_transport       = $mailer_transport;
@@ -253,7 +252,6 @@ abstract class AbstractAdapter implements EmailInterface
         $this->smtpsecure             = $smtpsecure;
         $this->smtpport               = $smtpport;
         $this->sendmail_path          = $sendmail_path;
-        $this->mailer_disable_sending = $mailer_disable_sending;
     }
 
     /**
@@ -320,10 +318,7 @@ abstract class AbstractAdapter implements EmailInterface
      * @return  $this
      * @since   1.0
      */
-    public function close()
-    {
-        return $this;
-    }
+    abstract public function close();
 
     /**
      * Filter and send to email address and name values
@@ -346,7 +341,12 @@ abstract class AbstractAdapter implements EmailInterface
         }
 
         foreach ($items as $item) {
-            $return_item = $this->extractSingleEmailName($item);
+            if ($item === '') {
+                $return_item = false;
+            } else {
+                $return_item = $this->extractSingleEmailName($item);
+            }
+
             if ($return_item === false) {
             } else {
                 $return_results[] = $return_item;
@@ -366,10 +366,6 @@ abstract class AbstractAdapter implements EmailInterface
      */
     protected function extractSingleEmailName($item)
     {
-        if ($item === '') {
-            return false;
-        }
-
         $split = explode(',', $item);
 
         if (count($split) === 0) {
@@ -378,7 +374,6 @@ abstract class AbstractAdapter implements EmailInterface
 
         $return_item        = new stdClass();
         $return_item->email = $this->filterEmailAddress($split[0]);
-
 
         if (count($split) > 1) {
             $return_item->name = $this->filterString($split[1]);
@@ -404,7 +399,7 @@ abstract class AbstractAdapter implements EmailInterface
             return $email_address;
         }
 
-        throw new UnexpectedValueException('Email Filter Email Address Failed for: ' . $email_address);
+        throw new UnexpectedValueException('Email Filter Email Address Failed');
     }
 
     /**
@@ -435,7 +430,7 @@ abstract class AbstractAdapter implements EmailInterface
         $filtered = htmlentities($html, ENT_QUOTES, 'UTF-8');
 
         if ($filtered === false) {
-            throw new UnexpectedValueException('Email Filter HTML Failed for: ' . $html);
+            throw new UnexpectedValueException('Email Filter HTML Failed');
         }
 
         return $filtered;
