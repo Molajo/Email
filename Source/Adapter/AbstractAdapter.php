@@ -352,7 +352,7 @@ abstract class AbstractAdapter implements EmailInterface
     /**
      * Extract an email address and name
      *
-     * @param   array $item
+     * @param   string $item
      * @param   array $return_results
      *
      * @return  $return_results
