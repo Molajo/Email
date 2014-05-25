@@ -366,6 +366,10 @@ abstract class AbstractAdapter implements EmailInterface
      */
     protected function extractSingleEmailName($item)
     {
+        if ($item === '') {
+            return false;
+        }
+
         $split = explode(',', $item);
 
         if (count($split) === 0) {
@@ -374,6 +378,7 @@ abstract class AbstractAdapter implements EmailInterface
 
         $return_item        = new stdClass();
         $return_item->email = $this->filterEmailAddress($split[0]);
+
 
         if (count($split) > 1) {
             $return_item->name = $this->filterString($split[1]);

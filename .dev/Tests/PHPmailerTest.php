@@ -283,6 +283,176 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($results->mailer_html_or_text, false);
         $this->assertEquals($results->attachment, $file);
     }
+
+    /**
+     * Test all parameters sent in for an HTML email
+     *
+     * @covers Molajo\Email\Driver::__construct
+     * @covers Molajo\Email\Driver::get
+     * @covers Molajo\Email\Driver::set
+     * @covers Molajo\Email\Driver::send
+     *
+     * @covers Molajo\Email\Adapter\PhpMailer::__construct
+     * @covers Molajo\Email\Adapter\PhpMailer::send
+     * @covers Molajo\Email\Adapter\PhpMailer::setOnlyDeliverTo
+     * @covers Molajo\Email\Adapter\PhpMailer::setSubject
+     * @covers Molajo\Email\Adapter\PhpMailer::setBody
+     * @covers Molajo\Email\Adapter\PhpMailer::filterBody
+     * @covers Molajo\Email\Adapter\PhpMailer::setAttachment
+     * @covers Molajo\Email\Adapter\PhpMailer::addEmailByType
+     * @covers Molajo\Email\Adapter\PhpMailer::addEmailByTypeItem
+     * @covers Molajo\Email\Adapter\PhpMailer::sendMail
+     *
+     * @covers Molajo\Email\Adapter\AbstractAdapter::__construct
+     * @covers Molajo\Email\Adapter\AbstractAdapter::set
+     * @covers Molajo\Email\Adapter\AbstractAdapter::get
+     * @covers Molajo\Email\Adapter\AbstractAdapter::send
+     * @covers Molajo\Email\Adapter\AbstractAdapter::close
+     * @covers Molajo\Email\Adapter\AbstractAdapter::setRecipient
+     * @covers Molajo\Email\Adapter\AbstractAdapter::filterEmailAddress
+     * @covers Molajo\Email\Adapter\AbstractAdapter::filterString
+     * @covers Molajo\Email\Adapter\AbstractAdapter::filterHtml
+     */
+    public function testDisableSending()
+    {
+        $file = __DIR__ . '/PHPmailerTest.php';
+
+        $this->email->set('mailer_disable_sending', 1);
+        $this->email->set('to', 'person@example.com,Person Name');
+        $this->email->set('from', 'person@example.com,Person Name');
+        $this->email->set('reply_to', 'person@example.com,Person Name');
+        $this->email->set('cc', 'person@example.com,Person Name');
+        $this->email->set('bcc', 'person@example.com,Person Name');
+        $this->email->set('subject', 'Welcome to our Site');
+        $this->email->set('body', '<h2>Stuff goes here</h2>');
+        $this->email->set('mailer_html_or_text', 'text');
+        $this->email->set('attachment', $file);
+
+        $this->email->send();
+
+        $results = $this->email->get('email_instance');
+
+        $this->assertEquals($results->to, array());
+        $this->assertEquals($results->From, '');
+    }
+
+    /**
+     * Test all parameters sent in for an HTML email
+     *
+     * @covers Molajo\Email\Driver::__construct
+     * @covers Molajo\Email\Driver::get
+     * @covers Molajo\Email\Driver::set
+     * @covers Molajo\Email\Driver::send
+     *
+     * @covers Molajo\Email\Adapter\PhpMailer::__construct
+     * @covers Molajo\Email\Adapter\PhpMailer::send
+     * @covers Molajo\Email\Adapter\PhpMailer::setOnlyDeliverTo
+     * @covers Molajo\Email\Adapter\PhpMailer::setSubject
+     * @covers Molajo\Email\Adapter\PhpMailer::setBody
+     * @covers Molajo\Email\Adapter\PhpMailer::filterBody
+     * @covers Molajo\Email\Adapter\PhpMailer::setAttachment
+     * @covers Molajo\Email\Adapter\PhpMailer::addEmailByType
+     * @covers Molajo\Email\Adapter\PhpMailer::addEmailByTypeItem
+     * @covers Molajo\Email\Adapter\PhpMailer::sendMail
+     *
+     * @covers Molajo\Email\Adapter\AbstractAdapter::__construct
+     * @covers Molajo\Email\Adapter\AbstractAdapter::set
+     * @covers Molajo\Email\Adapter\AbstractAdapter::get
+     * @covers Molajo\Email\Adapter\AbstractAdapter::send
+     * @covers Molajo\Email\Adapter\AbstractAdapter::close
+     * @covers Molajo\Email\Adapter\AbstractAdapter::setRecipient
+     * @covers Molajo\Email\Adapter\AbstractAdapter::filterEmailAddress
+     * @covers Molajo\Email\Adapter\AbstractAdapter::filterString
+     * @covers Molajo\Email\Adapter\AbstractAdapter::filterHtml
+     */
+    public function testOnlyDeliverToAndSend()
+    {
+        $file = __DIR__ . '/PHPmailerTest.php';
+
+        $this->email->set('mailer_only_deliver_to', 'AmyStephen@gmail.com');
+        $this->email->set('to', 'person@example.com,Person Name');
+        $this->email->set('from', 'person@example.com,Person Name');
+        $this->email->set('reply_to', 'person@example.com,Person Name');
+        $this->email->set('cc', 'person@example.com,Person Name');
+        $this->email->set('bcc', 'person@example.com,Person Name');
+        $this->email->set('subject', 'Welcome to our Site');
+        $this->email->set('body', '<h2>Stuff goes here</h2>');
+        $this->email->set('mailer_html_or_text', 'text');
+        $this->email->set('attachment', $file);
+
+        $this->email->send();
+
+        $results = $this->email->get('email_instance');
+
+        $this->assertEquals($results->to, array('AmyStephen@gmail.com' => ''));
+        $this->assertEquals($results->From, 'AmyStephen@gmail.com');
+        $this->assertEquals($results->FromName, '');
+        $this->assertEquals($results->reply_to, array('AmyStephen@gmail.com' => ''));
+        $this->assertEquals($results->cc, array());
+        $this->assertEquals($results->bcc, array());
+        $this->assertEquals($results->Subject, 'Welcome to our Site');
+        $this->assertEquals($results->Body, 'Stuff goes here');
+        $this->assertEquals($results->mailer_html_or_text, false);
+        $this->assertEquals($results->attachment, $file);
+    }
+    /**
+     * Test all parameters sent in for an HTML email
+     *
+     * @covers Molajo\Email\Driver::__construct
+     * @covers Molajo\Email\Driver::get
+     * @covers Molajo\Email\Driver::set
+     * @covers Molajo\Email\Driver::send
+     *
+     * @covers Molajo\Email\Adapter\PhpMailer::__construct
+     * @covers Molajo\Email\Adapter\PhpMailer::send
+     * @covers Molajo\Email\Adapter\PhpMailer::setOnlyDeliverTo
+     * @covers Molajo\Email\Adapter\PhpMailer::setSubject
+     * @covers Molajo\Email\Adapter\PhpMailer::setBody
+     * @covers Molajo\Email\Adapter\PhpMailer::filterBody
+     * @covers Molajo\Email\Adapter\PhpMailer::setAttachment
+     * @covers Molajo\Email\Adapter\PhpMailer::addEmailByType
+     * @covers Molajo\Email\Adapter\PhpMailer::addEmailByTypeItem
+     * @covers Molajo\Email\Adapter\PhpMailer::sendMail
+     *
+     * @covers Molajo\Email\Adapter\AbstractAdapter::__construct
+     * @covers Molajo\Email\Adapter\AbstractAdapter::set
+     * @covers Molajo\Email\Adapter\AbstractAdapter::get
+     * @covers Molajo\Email\Adapter\AbstractAdapter::send
+     * @covers Molajo\Email\Adapter\AbstractAdapter::close
+     * @covers Molajo\Email\Adapter\AbstractAdapter::setRecipient
+     * @covers Molajo\Email\Adapter\AbstractAdapter::filterEmailAddress
+     * @covers Molajo\Email\Adapter\AbstractAdapter::filterString
+     * @covers Molajo\Email\Adapter\AbstractAdapter::filterHtml
+     */
+    public function testNoSubject()
+    {
+        $file = __DIR__ . '/test.txt';
+
+        $this->email->set('mailer_only_deliver_to', '');
+        $this->email->set('to', 'person@example.com,Person Name');
+        $this->email->set('from', 'person@example.com,Person Name');
+        $this->email->set('reply_to', 'person@example.com,Person Name');
+        $this->email->set('cc', 'person@example.com,Person Name');
+        $this->email->set('bcc', 'person@example.com,Person Name');
+        $this->email->set('body', '<h2>Stuff goes here</h2>');
+        $this->email->set('mailer_html_or_text', 'text');
+        $this->email->set('attachment', $file);
+
+        $this->email->send();
+
+        $results = $this->email->get('email_instance');
+
+        $this->assertEquals($results->to, array('person@example.com' => 'Person Name'));
+        $this->assertEquals($results->From, 'person@example.com');
+        $this->assertEquals($results->FromName, 'Person Name');
+        $this->assertEquals($results->reply_to, array('person@example.com' => 'Person Name'));
+        $this->assertEquals($results->cc, array('person@example.com' => 'Person Name'));
+        $this->assertEquals($results->bcc, array('person@example.com' => 'Person Name'));
+        $this->assertEquals($results->Subject, 'Test Site');
+        $this->assertEquals($results->Body, 'Stuff goes here');
+        $this->assertEquals($results->mailer_html_or_text, false);
+        $this->assertEquals($results->attachment, $file);
+    }
 }
 
 /**
