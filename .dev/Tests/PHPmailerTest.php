@@ -53,6 +53,7 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
      * @covers Molajo\Email\Adapter\AbstractAdapter::send
      * @covers Molajo\Email\Adapter\AbstractAdapter::close
      * @covers Molajo\Email\Adapter\AbstractAdapter::setRecipient
+     * @covers Molajo\Email\Adapter\AbstractAdapter::setRecipientItem
      * @covers Molajo\Email\Adapter\AbstractAdapter::extractSingleEmailName
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterEmailAddress
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterString
@@ -119,6 +120,7 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
      * @covers Molajo\Email\Adapter\AbstractAdapter::send
      * @covers Molajo\Email\Adapter\AbstractAdapter::close
      * @covers Molajo\Email\Adapter\AbstractAdapter::setRecipient
+     * @covers Molajo\Email\Adapter\AbstractAdapter::setRecipientItem
      * @covers Molajo\Email\Adapter\AbstractAdapter::extractSingleEmailName
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterEmailAddress
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterString
@@ -156,6 +158,7 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
      * @covers Molajo\Email\Adapter\AbstractAdapter::send
      * @covers Molajo\Email\Adapter\AbstractAdapter::close
      * @covers Molajo\Email\Adapter\AbstractAdapter::setRecipient
+     * @covers Molajo\Email\Adapter\AbstractAdapter::setRecipientItem
      * @covers Molajo\Email\Adapter\AbstractAdapter::extractSingleEmailName
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterEmailAddress
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterString
@@ -193,6 +196,7 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
      * @covers Molajo\Email\Adapter\AbstractAdapter::send
      * @covers Molajo\Email\Adapter\AbstractAdapter::close
      * @covers Molajo\Email\Adapter\AbstractAdapter::setRecipient
+     * @covers Molajo\Email\Adapter\AbstractAdapter::setRecipientItem
      * @covers Molajo\Email\Adapter\AbstractAdapter::extractSingleEmailName
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterEmailAddress
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterString
@@ -253,6 +257,7 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
      * @covers Molajo\Email\Adapter\AbstractAdapter::send
      * @covers Molajo\Email\Adapter\AbstractAdapter::close
      * @covers Molajo\Email\Adapter\AbstractAdapter::setRecipient
+     * @covers Molajo\Email\Adapter\AbstractAdapter::setRecipientItem
      * @covers Molajo\Email\Adapter\AbstractAdapter::extractSingleEmailName
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterEmailAddress
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterString
@@ -314,6 +319,7 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
      * @covers Molajo\Email\Adapter\AbstractAdapter::send
      * @covers Molajo\Email\Adapter\AbstractAdapter::close
      * @covers Molajo\Email\Adapter\AbstractAdapter::setRecipient
+     * @covers Molajo\Email\Adapter\AbstractAdapter::setRecipientItem
      * @covers Molajo\Email\Adapter\AbstractAdapter::extractSingleEmailName
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterEmailAddress
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterString
@@ -367,6 +373,7 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
      * @covers Molajo\Email\Adapter\AbstractAdapter::send
      * @covers Molajo\Email\Adapter\AbstractAdapter::close
      * @covers Molajo\Email\Adapter\AbstractAdapter::setRecipient
+     * @covers Molajo\Email\Adapter\AbstractAdapter::setRecipientItem
      * @covers Molajo\Email\Adapter\AbstractAdapter::extractSingleEmailName
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterEmailAddress
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterString
@@ -428,6 +435,7 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
      * @covers Molajo\Email\Adapter\AbstractAdapter::send
      * @covers Molajo\Email\Adapter\AbstractAdapter::close
      * @covers Molajo\Email\Adapter\AbstractAdapter::setRecipient
+     * @covers Molajo\Email\Adapter\AbstractAdapter::setRecipientItem
      * @covers Molajo\Email\Adapter\AbstractAdapter::extractSingleEmailName
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterEmailAddress
      * @covers Molajo\Email\Adapter\AbstractAdapter::filterString
@@ -488,6 +496,7 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
      * @covers                   Molajo\Email\Adapter\AbstractAdapter::send
      * @covers                   Molajo\Email\Adapter\AbstractAdapter::close
      * @covers                   Molajo\Email\Adapter\AbstractAdapter::setRecipient
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::setRecipientItem
      * @covers                   Molajo\Email\Adapter\AbstractAdapter::extractSingleEmailName
      * @covers                   Molajo\Email\Adapter\AbstractAdapter::filterEmailAddress
      * @covers                   Molajo\Email\Adapter\AbstractAdapter::filterString
@@ -526,6 +535,7 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
      * @covers                   Molajo\Email\Adapter\AbstractAdapter::send
      * @covers                   Molajo\Email\Adapter\AbstractAdapter::close
      * @covers                   Molajo\Email\Adapter\AbstractAdapter::setRecipient
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::setRecipientItem
      * @covers                   Molajo\Email\Adapter\AbstractAdapter::extractSingleEmailName
      * @covers                   Molajo\Email\Adapter\AbstractAdapter::filterEmailAddress
      * @covers                   Molajo\Email\Adapter\AbstractAdapter::filterString
@@ -564,7 +574,7 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
      * @covers                   Molajo\Email\Adapter\AbstractAdapter::send
      * @covers                   Molajo\Email\Adapter\AbstractAdapter::close
      * @covers                   Molajo\Email\Adapter\AbstractAdapter::setRecipient
-     * @covers                   Molajo\Email\Adapter\AbstractAdapter::extractSingleEmailName
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::setRecipientItem
      * @covers                   Molajo\Email\Adapter\AbstractAdapter::extractSingleEmailName
      * @covers                   Molajo\Email\Adapter\AbstractAdapter::filterEmailAddress
      * @covers                   Molajo\Email\Adapter\AbstractAdapter::filterString
@@ -614,6 +624,7 @@ class PHPmailerTest extends \PHPUnit_Framework_TestCase
      * @covers                   Molajo\Email\Adapter\AbstractAdapter::send
      * @covers                   Molajo\Email\Adapter\AbstractAdapter::close
      * @covers                   Molajo\Email\Adapter\AbstractAdapter::setRecipient
+     * @covers                   Molajo\Email\Adapter\AbstractAdapter::setRecipientItem
      * @covers                   Molajo\Email\Adapter\AbstractAdapter::extractSingleEmailName
      * @covers                   Molajo\Email\Adapter\AbstractAdapter::extractSingleEmailName
      * @covers                   Molajo\Email\Adapter\AbstractAdapter::filterEmailAddress

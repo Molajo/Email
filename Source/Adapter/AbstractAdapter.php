@@ -342,13 +342,29 @@ abstract class AbstractAdapter implements EmailInterface
         foreach ($items as $item) {
             if ($item === '') {
             } else {
-                $return_item = $this->extractSingleEmailName($item);
-
-                if ($return_item === false) {
-                } else {
-                    $return_results[] = $return_item;
-                }
+                $return_results = $this->setRecipientItem($item, $return_results);
             }
+        }
+
+        return $return_results;
+    }
+
+    /**
+     * Extract an email address and name
+     *
+     * @param   array $item
+     * @param   array $return_results
+     *
+     * @return  $return_results
+     * @since   1.0
+     */
+    protected function setRecipientItem($item, $return_results)
+    {
+        $return_item = $this->extractSingleEmailName($item);
+
+        if ($return_item === false) {
+        } else {
+            $return_results[] = $return_item;
         }
 
         return $return_results;

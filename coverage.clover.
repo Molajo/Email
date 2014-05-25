@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1400978458">
-  <project timestamp="1400978458">
+<coverage generated="1400979003">
+  <project timestamp="1400979003">
     <file name="/Users/amystephen/Sites/Molajo/Email/.dev/Bootstrap.php">
       <line num="27" type="stmt" count="0"/>
       <line num="28" type="stmt" count="0"/>
@@ -37,7 +37,7 @@
     <package name="Molajo\Email\Adapter">
       <file name="/Users/amystephen/Sites/Molajo/Email/Source/Adapter/AbstractAdapter.php">
         <class name="AbstractAdapter" namespace="Molajo\Email\Adapter" fullPackage="Molajo" package="Molajo">
-          <metrics methods="10" coveredmethods="8" conditionals="0" coveredconditionals="0" statements="57" coveredstatements="51" elements="67" coveredelements="59"/>
+          <metrics methods="11" coveredmethods="9" conditionals="0" coveredconditionals="0" statements="59" coveredstatements="53" elements="70" coveredelements="62"/>
         </class>
         <line num="232" type="method" name="__construct" crap="1" count="11"/>
         <line num="244" type="stmt" count="11"/>
@@ -69,7 +69,7 @@
         <line num="303" type="stmt" count="7"/>
         <line num="312" type="method" name="send" crap="1" count="0"/>
         <line num="320" type="method" name="close" crap="1" count="0"/>
-        <line num="331" type="method" name="setRecipient" crap="5.07" count="5"/>
+        <line num="331" type="method" name="setRecipient" crap="4.01" count="5"/>
         <line num="333" type="stmt" count="5"/>
         <line num="335" type="stmt" count="5"/>
         <line num="337" type="stmt" count="5"/>
@@ -80,34 +80,37 @@
         <line num="344" type="stmt" count="1"/>
         <line num="345" type="stmt" count="5"/>
         <line num="347" type="stmt" count="5"/>
-        <line num="348" type="stmt" count="0"/>
         <line num="349" type="stmt" count="5"/>
-        <line num="352" type="stmt" count="5"/>
-        <line num="354" type="stmt" count="5"/>
-        <line num="365" type="method" name="extractSingleEmailName" crap="3.01" count="5"/>
+        <line num="361" type="method" name="setRecipientItem" crap="2.03" count="5"/>
+        <line num="363" type="stmt" count="5"/>
+        <line num="365" type="stmt" count="5"/>
+        <line num="366" type="stmt" count="0"/>
         <line num="367" type="stmt" count="5"/>
-        <line num="369" type="stmt" count="5"/>
-        <line num="370" type="stmt" count="0"/>
-        <line num="373" type="stmt" count="5"/>
-        <line num="374" type="stmt" count="5"/>
-        <line num="376" type="stmt" count="5"/>
-        <line num="377" type="stmt" count="4"/>
-        <line num="378" type="stmt" count="4"/>
-        <line num="379" type="stmt" count="1"/>
-        <line num="382" type="stmt" count="5"/>
-        <line num="394" type="method" name="filterEmailAddress" crap="2" count="5"/>
-        <line num="396" type="stmt" count="5"/>
-        <line num="397" type="stmt" count="5"/>
-        <line num="400" type="stmt" count="1"/>
-        <line num="412" type="method" name="filterString" crap="1" count="6"/>
-        <line num="414" type="stmt" count="6"/>
-        <line num="426" type="method" name="filterHtml" crap="2.06" count="1"/>
-        <line num="428" type="stmt" count="1"/>
-        <line num="430" type="stmt" count="1"/>
-        <line num="431" type="stmt" count="0"/>
-        <line num="434" type="stmt" count="1"/>
-        <line num="437" type="stmt" count="0"/>
-        <metrics loc="436" ncloc="197" classes="1" methods="8" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="57" coveredstatements="51" elements="65" coveredelements="55"/>
+        <line num="370" type="stmt" count="5"/>
+        <line num="381" type="method" name="extractSingleEmailName" crap="3.01" count="5"/>
+        <line num="383" type="stmt" count="5"/>
+        <line num="385" type="stmt" count="5"/>
+        <line num="386" type="stmt" count="0"/>
+        <line num="389" type="stmt" count="5"/>
+        <line num="390" type="stmt" count="5"/>
+        <line num="392" type="stmt" count="5"/>
+        <line num="393" type="stmt" count="4"/>
+        <line num="394" type="stmt" count="4"/>
+        <line num="395" type="stmt" count="1"/>
+        <line num="398" type="stmt" count="5"/>
+        <line num="410" type="method" name="filterEmailAddress" crap="2" count="5"/>
+        <line num="412" type="stmt" count="5"/>
+        <line num="413" type="stmt" count="5"/>
+        <line num="416" type="stmt" count="1"/>
+        <line num="428" type="method" name="filterString" crap="1" count="6"/>
+        <line num="430" type="stmt" count="6"/>
+        <line num="442" type="method" name="filterHtml" crap="2.06" count="1"/>
+        <line num="444" type="stmt" count="1"/>
+        <line num="446" type="stmt" count="1"/>
+        <line num="447" type="stmt" count="0"/>
+        <line num="450" type="stmt" count="1"/>
+        <line num="453" type="stmt" count="0"/>
+        <metrics loc="452" ncloc="204" classes="1" methods="9" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="59" coveredstatements="53" elements="68" coveredelements="57"/>
       </file>
       <file name="/Users/amystephen/Sites/Molajo/Email/Source/Adapter/PhpMailer.php">
         <class name="PhpMailer" namespace="Molajo\Email\Adapter" fullPackage="Molajo.Service" package="Molajo" subpackage="Service">
@@ -503,6 +506,6 @@
       <line num="26" type="stmt" count="0"/>
       <metrics loc="30" ncloc="16" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="0" elements="2" coveredelements="0"/>
     </file>
-    <metrics files="13" loc="1592" ncloc="873" classes="8" methods="48" coveredmethods="14" conditionals="0" coveredconditionals="0" statements="373" coveredstatements="129" elements="421" coveredelements="143"/>
+    <metrics files="13" loc="1608" ncloc="880" classes="8" methods="49" coveredmethods="14" conditionals="0" coveredconditionals="0" statements="375" coveredstatements="131" elements="424" coveredelements="145"/>
   </project>
 </coverage>
