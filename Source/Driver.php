@@ -77,7 +77,7 @@ class Driver implements EmailInterface
     /**
      * Send Email
      *
-     * @return  mixed
+     * @return  Driver
      * @since   1.0
      */
     public function send()

@@ -226,7 +226,6 @@ abstract class AbstractAdapter implements EmailInterface
      * @param   string $smtpsecure
      * @param   string $smtpport
      * @param   string $sendmail_path
-     * @param   string $mailer_disable_sending
      *
      * @since   1.0
      */
@@ -342,14 +341,13 @@ abstract class AbstractAdapter implements EmailInterface
 
         foreach ($items as $item) {
             if ($item === '') {
-                $return_item = false;
             } else {
                 $return_item = $this->extractSingleEmailName($item);
-            }
 
-            if ($return_item === false) {
-            } else {
-                $return_results[] = $return_item;
+                if ($return_item === false) {
+                } else {
+                    $return_results[] = $return_item;
+                }
             }
         }
 
