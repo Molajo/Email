@@ -243,7 +243,7 @@ class EmailFactoryMethod extends FactoryMethodBase implements FactoryInterface, 
     /**
      * Instantiate phpMailer Class
      *
-     * @return  $this
+     * @return  object
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
@@ -259,8 +259,6 @@ class EmailFactoryMethod extends FactoryMethodBase implements FactoryInterface, 
                 'Email PhpMailer Adapter: Could not instantiate phpMailer'
             );
         }
-
-        return $this;
     }
 
     /**
