@@ -110,7 +110,8 @@ class EmailFactoryMethod extends FactoryMethodBase implements FactoryInterface, 
                 break;
 
             case 'sendmail':
-                $this->dependencies['sendmail_path'] = $this->dependencies['Runtimedata']->application->parameters->mailer_send_mail;
+                $this->dependencies['sendmail_path']
+                    = $this->dependencies['Runtimedata']->application->parameters->mailer_send_mail;
 
                 break;
 

@@ -6,7 +6,7 @@
  * @copyright  2014 Amy Stephen. All rights reserved.
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  */
-$base     = substr(__DIR__, 0, strlen(__DIR__) - 5);
+$base = substr(__DIR__, 0, strlen(__DIR__) - 5);
 include_once $base . '/vendor/autoload.php';
 if (function_exists('CreateClassMap')) {
 } else {
@@ -15,9 +15,9 @@ if (function_exists('CreateClassMap')) {
 
 $classmap = array();
 
-$classmap['Molajo\\Email\\Driver'] = $base . '/Source/Email/Driver.php';
-$classmap['Molajo\\Email\\Adapter\\PhpMailer'] = $base . '/Source/Email/Adapter/PhpMailer.php';
-$classmap['Molajo\\Email\\Adapter\\Swiftmailer'] = $base . '/Source/Email/Adapter/Swiftmailer.php';
+$classmap['Molajo\\Email\\Driver']                   = $base . '/Source/Email/Driver.php';
+$classmap['Molajo\\Email\\Adapter\\PhpMailer']       = $base . '/Source/Email/Adapter/PhpMailer.php';
+$classmap['Molajo\\Email\\Adapter\\Swiftmailer']     = $base . '/Source/Email/Adapter/Swiftmailer.php';
 $classmap['Molajo\\Email\\Adapter\\AbstractAdapter'] = $base . '/Source/Email/Adapter/AbstractAdapter.php';
 
 ksort($classmap);

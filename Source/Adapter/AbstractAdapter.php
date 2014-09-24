@@ -241,16 +241,16 @@ abstract class AbstractAdapter implements EmailInterface
         $smtpport = '',
         $sendmail_path = ''
     ) {
-        $this->email_instance         = $email_instance;
-        $this->mailer_transport       = $mailer_transport;
-        $this->site_name              = $site_name;
-        $this->smtpauth               = $smtpauth;
-        $this->smtphost               = $smtphost;
-        $this->smtpuser               = $smtpuser;
-        $this->smtppass               = $smtppass;
-        $this->smtpsecure             = $smtpsecure;
-        $this->smtpport               = $smtpport;
-        $this->sendmail_path          = $sendmail_path;
+        $this->email_instance   = $email_instance;
+        $this->mailer_transport = $mailer_transport;
+        $this->site_name        = $site_name;
+        $this->smtpauth         = $smtpauth;
+        $this->smtphost         = $smtphost;
+        $this->smtpuser         = $smtpuser;
+        $this->smtppass         = $smtppass;
+        $this->smtpsecure       = $smtpsecure;
+        $this->smtpport         = $smtpport;
+        $this->sendmail_path    = $sendmail_path;
     }
 
     /**
@@ -353,7 +353,7 @@ abstract class AbstractAdapter implements EmailInterface
      * Extract an email address and name
      *
      * @param   string $item
-     * @param   array $return_results
+     * @param   array  $return_results
      *
      * @return  $return_results
      * @since   1.0

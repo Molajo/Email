@@ -361,31 +361,32 @@ class Swift_Message
      * @var    object
      * @since  1.0
      */
-    public $property_array = array(
-        'mailer_transport',
-        'smtpauth',
-        'smtphost',
-        'smtpuser',
-        'smtppass',
-        'smtpsecure',
-        'smtpport',
-        'sendmail_path',
-        'mailer_disable_sending',
-        'mailer_only_deliver_to',
-        'to',
-        'from',
-        'reply_to',
-        'cc',
-        'bcc',
-        'Subject',
-        'From',
-        'FromName',
-        'Body',
-        'AltBody',
-        'WordWrap',
-        'mailer_html_or_text',
-        'attachment'
-    );
+    public $property_array
+        = array(
+            'mailer_transport',
+            'smtpauth',
+            'smtphost',
+            'smtpuser',
+            'smtppass',
+            'smtpsecure',
+            'smtpport',
+            'sendmail_path',
+            'mailer_disable_sending',
+            'mailer_only_deliver_to',
+            'to',
+            'from',
+            'reply_to',
+            'cc',
+            'bcc',
+            'Subject',
+            'From',
+            'FromName',
+            'Body',
+            'AltBody',
+            'WordWrap',
+            'mailer_html_or_text',
+            'attachment'
+        );
 
     public function isHTML($indicator)
     {
