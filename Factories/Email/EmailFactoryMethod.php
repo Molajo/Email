@@ -4,7 +4,7 @@
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
- * @copyright  2014 Amy Stephen. All rights reserved.
+ * @copyright  2014-2015 Amy Stephen. All rights reserved.
  */
 namespace Molajo\Factories\Email;
 
@@ -22,7 +22,7 @@ use Swift_MailTransport;
  *
  * @author     Amy Stephen
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
- * @copyright  2014 Amy Stephen. All rights reserved.
+ * @copyright  2014-2015 Amy Stephen. All rights reserved.
  * @since      1.0.0
  */
 class EmailFactoryMethod extends FactoryMethodBase implements FactoryInterface, FactoryBatchInterface
@@ -49,7 +49,7 @@ class EmailFactoryMethod extends FactoryMethodBase implements FactoryInterface, 
      * @param   array $reflection
      *
      * @return  array
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function setDependencies(array $reflection = array())
@@ -68,7 +68,7 @@ class EmailFactoryMethod extends FactoryMethodBase implements FactoryInterface, 
      * @param   array $dependency_values (ignored in Service Item Adapter, based in from adapter)
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     public function onBeforeInstantiation(array $dependency_values = null)
     {
@@ -139,7 +139,7 @@ class EmailFactoryMethod extends FactoryMethodBase implements FactoryInterface, 
      * Instantiate Class
      *
      * @return  object
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function instantiateClass()
@@ -177,7 +177,7 @@ class EmailFactoryMethod extends FactoryMethodBase implements FactoryInterface, 
      * Get PhpMailer Email Adapter
      *
      * @return  object
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function getPhpMailerAdapter()
@@ -211,7 +211,7 @@ class EmailFactoryMethod extends FactoryMethodBase implements FactoryInterface, 
      * Instantiate phpMailer Class
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function getSwiftMailerAdapter()
@@ -245,7 +245,7 @@ class EmailFactoryMethod extends FactoryMethodBase implements FactoryInterface, 
      * Instantiate phpMailer Class
      *
      * @return  object
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function instantiatePHPMailer()

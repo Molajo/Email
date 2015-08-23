@@ -3,7 +3,7 @@
  * Swiftmailer Email Class
  *
  * @package    Molajo
- * @copyright  2014 Amy Stephen. All rights reserved.
+ * @copyright  2014-2015 Amy Stephen. All rights reserved.
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  */
 namespace Molajo\Email\Adapter;
@@ -42,7 +42,7 @@ class Swiftmailer extends AbstractAdapter implements EmailInterface
      * Message Instance
      *
      * @var     object
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $message;
 
@@ -50,7 +50,7 @@ class Swiftmailer extends AbstractAdapter implements EmailInterface
      * Send email
      *
      * @return  bool
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function send()
@@ -103,7 +103,7 @@ class Swiftmailer extends AbstractAdapter implements EmailInterface
      * Set Subject
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function setSubject()
@@ -133,7 +133,7 @@ class Swiftmailer extends AbstractAdapter implements EmailInterface
      * Set Body
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function setBody()
@@ -176,7 +176,7 @@ class Swiftmailer extends AbstractAdapter implements EmailInterface
      * Process Email Attachment
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function setAttachment()
@@ -209,7 +209,7 @@ class Swiftmailer extends AbstractAdapter implements EmailInterface
      * Set Reply To Recipient
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function setReplyTo()
@@ -247,7 +247,7 @@ class Swiftmailer extends AbstractAdapter implements EmailInterface
      * Set From Recipient
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function from()
@@ -281,7 +281,7 @@ class Swiftmailer extends AbstractAdapter implements EmailInterface
      * Set To Recipient
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function setTo()
@@ -315,7 +315,7 @@ class Swiftmailer extends AbstractAdapter implements EmailInterface
      * Set CC Recipient
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function setCC()
@@ -352,7 +352,7 @@ class Swiftmailer extends AbstractAdapter implements EmailInterface
      * Set BCC Recipient
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function setBCC()

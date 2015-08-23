@@ -3,7 +3,7 @@
  * Abstract Email Class
  *
  * @package    Molajo
- * @copyright  2014 Amy Stephen. All rights reserved.
+ * @copyright  2014-2015 Amy Stephen. All rights reserved.
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  */
 namespace Molajo\Email\Adapter;
@@ -17,7 +17,7 @@ use stdClass;
  * Adapter for Email
  *
  * @package    Molajo
- * @copyright  2014 Amy Stephen. All rights reserved.
+ * @copyright  2014-2015 Amy Stephen. All rights reserved.
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @since      1.0.0
  */
@@ -27,7 +27,7 @@ abstract class AbstractAdapter implements EmailInterface
      * Email Instance
      *
      * @var     object
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $email_instance;
 
@@ -35,7 +35,7 @@ abstract class AbstractAdapter implements EmailInterface
      * Mailer Transport - smtp, sendmail, ismail
      *
      * @var     string
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $mailer_transport;
 
@@ -43,7 +43,7 @@ abstract class AbstractAdapter implements EmailInterface
      * Site Name
      *
      * @var     string
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $site_name;
 
@@ -51,7 +51,7 @@ abstract class AbstractAdapter implements EmailInterface
      * SMTP Authorisation
      *
      * @var     string
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $smtpauth;
 
@@ -59,7 +59,7 @@ abstract class AbstractAdapter implements EmailInterface
      * SMTP Host
      *
      * @var     string
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $smtphost;
 
@@ -67,7 +67,7 @@ abstract class AbstractAdapter implements EmailInterface
      * SMTP User
      *
      * @var     string
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $smtpuser;
 
@@ -75,7 +75,7 @@ abstract class AbstractAdapter implements EmailInterface
      * SMTP Password
      *
      * @var     string
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $smtppass;
 
@@ -83,7 +83,7 @@ abstract class AbstractAdapter implements EmailInterface
      * SMTP Secure
      *
      * @var     string
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $smtpsecure;
 
@@ -91,7 +91,7 @@ abstract class AbstractAdapter implements EmailInterface
      * SMTP Port
      *
      * @var     string
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $smtpport;
 
@@ -99,7 +99,7 @@ abstract class AbstractAdapter implements EmailInterface
      * Sendmail Path
      *
      * @var     bool
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $sendmail_path = 0;
 
@@ -107,7 +107,7 @@ abstract class AbstractAdapter implements EmailInterface
      * Disable Sending
      *
      * @var     bool
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $mailer_disable_sending = 0;
 
@@ -115,7 +115,7 @@ abstract class AbstractAdapter implements EmailInterface
      * Only Deliver To
      *
      * @var     string
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $mailer_only_deliver_to = '';
 
@@ -123,7 +123,7 @@ abstract class AbstractAdapter implements EmailInterface
      * To
      *
      * @var     array
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $to = array();
 
@@ -131,7 +131,7 @@ abstract class AbstractAdapter implements EmailInterface
      * From
      *
      * @var     array
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $from = array();
 
@@ -139,7 +139,7 @@ abstract class AbstractAdapter implements EmailInterface
      * Reply To
      *
      * @var     array
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $reply_to = array();
 
@@ -147,7 +147,7 @@ abstract class AbstractAdapter implements EmailInterface
      * Copy
      *
      * @var     array
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $cc = array();
 
@@ -155,7 +155,7 @@ abstract class AbstractAdapter implements EmailInterface
      * Blind Copy
      *
      * @var     array
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $bcc = array();
 
@@ -163,7 +163,7 @@ abstract class AbstractAdapter implements EmailInterface
      * Subject
      *
      * @var     string
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $subject = '';
 
@@ -171,7 +171,7 @@ abstract class AbstractAdapter implements EmailInterface
      * Body
      *
      * @var     string
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $body = '';
 
@@ -179,7 +179,7 @@ abstract class AbstractAdapter implements EmailInterface
      * HTML or Text
      *
      * @var     string
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $mailer_html_or_text = '';
 
@@ -187,7 +187,7 @@ abstract class AbstractAdapter implements EmailInterface
      * Attachment
      *
      * @var     string
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $attachment = '';
 
@@ -227,7 +227,7 @@ abstract class AbstractAdapter implements EmailInterface
      * @param   string $smtpport
      * @param   string $sendmail_path
      *
-     * @since   1.0
+     * @since   1.0.0
      */
     public function __construct(
         $email_instance,
@@ -260,7 +260,7 @@ abstract class AbstractAdapter implements EmailInterface
      * @param   mixed  $value
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function set($key, $value = null)
@@ -284,7 +284,7 @@ abstract class AbstractAdapter implements EmailInterface
      * @param   mixed       $default
      *
      * @return  mixed
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function get($key, $default = null)
@@ -307,7 +307,7 @@ abstract class AbstractAdapter implements EmailInterface
      * Send email
      *
      * @return  mixed
-     * @since   1.0
+     * @since   1.0.0
      */
     abstract public function send();
 
@@ -315,7 +315,7 @@ abstract class AbstractAdapter implements EmailInterface
      * Close the Connection
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     abstract public function close();
 
@@ -325,7 +325,7 @@ abstract class AbstractAdapter implements EmailInterface
      * @param   string $list
      *
      * @return  array
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function setRecipient($list)
@@ -356,7 +356,7 @@ abstract class AbstractAdapter implements EmailInterface
      * @param   array  $return_results
      *
      * @return  $return_results
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function setRecipientItem($item, $return_results)
     {
@@ -376,7 +376,7 @@ abstract class AbstractAdapter implements EmailInterface
      * @param   string $item
      *
      * @return  stdClass
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function extractSingleEmailName($item)
     {
@@ -404,7 +404,7 @@ abstract class AbstractAdapter implements EmailInterface
      * @param   string $email_address
      *
      * @return  string
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\UnexpectedValueException
      */
     protected function filterEmailAddress($email_address)
@@ -422,7 +422,7 @@ abstract class AbstractAdapter implements EmailInterface
      * @param   string $string
      *
      * @return  string
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\UnexpectedValueException
      */
     protected function filterString($string)
@@ -436,7 +436,7 @@ abstract class AbstractAdapter implements EmailInterface
      * @param   string $html
      *
      * @return  string
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\UnexpectedValueException
      */
     protected function filterHtml($html)

@@ -3,7 +3,7 @@
  * PhpMailer Email Class
  *
  * @package    Molajo
- * @copyright  2014 Amy Stephen. All rights reserved.
+ * @copyright  2014-2015 Amy Stephen. All rights reserved.
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  */
 namespace Molajo\Email\Adapter;
@@ -39,7 +39,7 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
      * Send email
      *
      * @return  bool
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function send()
@@ -69,7 +69,7 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
      * Only Deliver To
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function setOnlyDeliverTo()
@@ -93,7 +93,7 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
      * Set Subject
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function setSubject()
@@ -113,7 +113,7 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
      * Set Body
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function setBody()
@@ -160,7 +160,7 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
      * Process Email Attachment
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function setAttachment()
@@ -191,7 +191,7 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
      * @param   string $type
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     protected function addEmailByType($type, $method)
     {
@@ -212,7 +212,7 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
      * @param   object $item
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function addEmailByTypeItem($type, $method, $item)
@@ -236,7 +236,7 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
      * All fields processed, send email
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function sendMail()
@@ -263,7 +263,7 @@ class PhpMailer extends AbstractAdapter implements EmailInterface
      * All fields processed, send email
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function close()

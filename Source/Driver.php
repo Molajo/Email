@@ -3,7 +3,7 @@
  * Email
  *
  * @package    Molajo
- * @copyright  2014 Amy Stephen. All rights reserved.
+ * @copyright  2014-2015 Amy Stephen. All rights reserved.
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  */
 namespace Molajo\Email;
@@ -14,7 +14,7 @@ use CommonApi\Email\EmailInterface;
  * Adapter for Email
  *
  * @package    Molajo
- * @copyright  2014 Amy Stephen. All rights reserved.
+ * @copyright  2014-2015 Amy Stephen. All rights reserved.
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @since      1.0.0
  */
@@ -24,7 +24,7 @@ class Driver implements EmailInterface
      * Email Adapter Adapter
      *
      * @var     object
-     * @since   1.0
+     * @since   1.0.0
      */
     protected $adapter;
 
@@ -51,7 +51,7 @@ class Driver implements EmailInterface
      * @param   string $default
      *
      * @return  mixed
-     * @since   1.0
+     * @since   1.0.0
      */
     public function get($key, $default = null)
     {
@@ -65,7 +65,7 @@ class Driver implements EmailInterface
      * @param   mixed  $value
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     public function set($key, $value = null)
     {
@@ -78,7 +78,7 @@ class Driver implements EmailInterface
      * Send Email
      *
      * @return  Driver
-     * @since   1.0
+     * @since   1.0.0
      */
     public function send()
     {

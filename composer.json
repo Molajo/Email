@@ -2,7 +2,12 @@
     "name": "molajo/email",
     "type": "molajo-package",
     "description": "Molajo Email: platform independent support with adapters for PHPMailer, SwiftMail, and native PHP mail",
-    "keywords": ["Email", "Molajo", "phpMailer", "Swiftmail"],
+    "keywords": [
+        "Email",
+        "Molajo",
+        "phpMailer",
+        "Swiftmail"
+    ],
     "homepage": "http://github.com/Molajo/Email",
     "license": "MIT",
     "authors": [
